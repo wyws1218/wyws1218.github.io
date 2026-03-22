@@ -4,17 +4,28 @@
   <meta charset="utf-8">
   
   
-  <title>GAS-Part1-Initialization | Hexo</title>
+  <title>Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="article">
-<meta property="og:title" content="GAS-Part1-Initialization">
+  <meta name="description" content="1. 核心模块引入与配置在 UE5 引擎中勾选启用 Gameplay Abilities 插件是第一步。 图 1： GAS 核心插件  要让项目真正获得 GAS 的底层 C++ 支持，必须在项目的构建文件中进行手动配置。 图 2： 项目结构示意  我在项目的 Build.cs 文件中，加入了 GAS 相关的三大核心代码库：GameplayAbilities、GameplayTags 和 Gamep">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
 <meta property="og:url" content="https://wyws1218.github.io/2026/03/22/GAS-Part1-Initialization/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1. 核心模块引入与配置在 UE5 引擎中勾选启用 Gameplay Abilities 插件是第一步。 图 1： GAS 核心插件  要让项目真正获得 GAS 的底层 C++ 支持，必须在项目的构建文件中进行手动配置。 图 2： 项目结构示意  我在项目的 Build.cs 文件中，加入了 GAS 相关的三大核心代码库：GameplayAbilities、GameplayTags 和 Gamep">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2026-03-22T08:39:37.000Z">
-<meta property="article:modified_time" content="2026-03-22T08:39:37.490Z">
+<meta property="og:image" content="https://wyws1218.github.io/images/gasBuild1.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/gasBuild2.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/gasBuild3.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/gasBuild4.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/gasBuild5.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/gasBuild6.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/gasBuild7.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/gasBuild8.png">
+<meta property="article:published_time" content="2026-03-22T08:39:37.490Z">
+<meta property="article:modified_time" content="2026-03-22T13:44:15.713Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wyws1218.github.io/images/gasBuild1.png">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -74,30 +85,53 @@
         <section id="main"><article id="post-GAS-Part1-Initialization" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2026/03/22/GAS-Part1-Initialization/" class="article-date">
-  <time class="dt-published" datetime="2026-03-22T08:39:37.000Z" itemprop="datePublished">2026-03-22</time>
+  <time class="dt-published" datetime="2026-03-22T08:39:37.490Z" itemprop="datePublished">2026-03-22</time>
 </a>
     
   </div>
   <div class="article-inner">
     
     
-      <header class="article-header">
-        
-  
-    <h1 class="p-name article-title" itemprop="headline name">
-      GAS-Part1-Initialization
-    </h1>
-  
-
-      </header>
-    
     <div class="e-content article-entry" itemprop="articleBody">
       
-        
+        <h2 id="1-核心模块引入与配置"><a href="#1-核心模块引入与配置" class="headerlink" title="1. 核心模块引入与配置"></a>1. 核心模块引入与配置</h2><p>在 UE5 引擎中勾选启用 Gameplay Abilities 插件是第一步。<br><img src="/images/gasBuild1.png"></p>
+<center><b>图 1： GAS 核心插件</b></center>
+
+<p>要让项目真正获得 GAS 的底层 C++ 支持，必须在项目的构建文件中进行手动配置。<br><img src="/images/gasBuild2.png"></p>
+<center><b>图 2： 项目结构示意</b></center>
+
+<p>我在项目的 <code>Build.cs</code> 文件中，加入了 GAS 相关的三大核心代码库：<code>GameplayAbilities</code>、<code>GameplayTags</code> 和 <code>GameplayTasks</code>。<br><img src="/images/gasBuild3.png"></p>
+<center><b>图 3： 相关代码</b></center>
+
+<p>这一行代码相当于给项目“安装”了 GAS 插件的 C++ 底层操作，它为我们后续的代码开发正式 引入了技能系统、标签系统和任务系统的支持。<br><br></p>
+<h2 id="2-角色基类-WyBaseCharacter-与网络同步策略"><a href="#2-角色基类-WyBaseCharacter-与网络同步策略" class="headerlink" title="2. 角色基类 (WyBaseCharacter) 与网络同步策略"></a>2. 角色基类 (WyBaseCharacter) 与网络同步策略</h2><p>为了方便后期扩展与代码管理，我创建了一个基于 C++ 的基类（<code>WyCharacterBase</code>），作为玩家 (Player) 和敌人 (Enemy) 的共同基类，并对其目录结构进行了规范整理。<br>我第一步让基类继承了AbilitySystem的接口，如果不继承该接口，后续所有技能和属性无法挂在该角色上。<br><img src="/images/gasBuild4.png"></p>
+<center><b>图 4： 角色基类的接口</b></center>
+
+<p>在基类的头文件中，我为其手动硬编码挂载了核心的 <code>AbilitySystemComponent</code> (ASC)，并专门声明了网络同步模式 (Replication Mode) 的可配置变量。<br>这里使用Mixed模式：<br>一是为了同步完整GE信息，支持客户端预测，让玩家感觉不到延迟;<br>二是为了只同步极简的Tags和Attributes，节省带宽。<br><img src="/images/gasBuild5.png"></p>
+<center><b>图 5： 在头文件中声明 ASC 与 Mixed 同步模式</b></center>
+
+<br>
+<br>
+
+<h2 id="3-暴露接口与双端激活"><a href="#3-暴露接口与双端激活" class="headerlink" title="3. 暴露接口与双端激活"></a>3. 暴露接口与双端激活</h2><p>首先我返回了ASC这个组件，让系统发现我“硬件”的存在。<br><img src="/images/gasBuild6.png"></p>
+<center><b>图 6： 返回ASC</b></center>
+
+<p>然后明确客户端和服务端的身份，服务器在控制角色那一刻先认证挂在角色上的ASC，客户端收到服务器传来数据那一刻认证。<br><img src="/images/gasBuild7.png"></p>
+<center><b>图 7： 双端激活</b></center>
+
+<br>
+<br>
+
+<h2 id="4-角色初始化"><a href="#4-角色初始化" class="headerlink" title="4. 角色初始化"></a>4. 角色初始化</h2><p>利用模板给角色一些初始值，比如胶囊体的尺寸，旋转，移动，视角，速度等。<br>完成了角色基类的GAS基础配置。<br><img src="/images/gasBuild8.png"></p>
+<center><b>图 8：初始化配置 </b></center>
+
+
+
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Part1-Initialization/" data-id="cmn1iwsep0000hovng8qdfxeg" data-title="GAS-Part1-Initialization" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Part1-Initialization/" data-id="cmn1t8bqy0000pgvnflvxdt48" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -177,7 +211,7 @@
           </li>
         
           <li>
-            <a href="/2026/03/22/GAS-Part1-Initialization/">GAS-Part1-Initialization</a>
+            <a href="/2026/03/22/GAS-Part1-Initialization/">(no title)</a>
           </li>
         
       </ul>
