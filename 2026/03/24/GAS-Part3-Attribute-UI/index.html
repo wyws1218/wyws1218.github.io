@@ -4,25 +4,18 @@
   <meta charset="utf-8">
   
   
-  <title>【第一章】GAS 底层基建与 C++ 初始化实践 | Hexo</title>
+  <title>【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="1. 核心模块引入与配置在 UE5 引擎中勾选启用 Gameplay Abilities 插件是第一步。 图 1： GAS 核心插件  要让项目真正获得 GAS 的底层 C++ 支持，必须在项目的构建文件中进行手动配置。 图 2： 项目结构示意  我在项目的 Build.cs 文件中，加入了 GAS 相关的三大核心代码库：GameplayAbilities、GameplayTags 和 Gam">
+  <meta name="description" content="在完成了冲刺技能的物理位移与表现分离后，接下来我需要为技能引入消耗与冷却机制，并实现高度复用的 UI 绑定。这一切的基础，在于构建 GAS 的核心数据容器 AttributeSet。 1. C++ 构建基础属性集在 GAS 中，角色的血量、蓝量、耐力等所有数值都统一由 AttributeSet 进行管理。我创建了一个名为 UWyBasicAttributeSet 的 C++ 类，并在头文件中声明了">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【第一章】GAS 底层基建与 C++ 初始化实践">
-<meta property="og:url" content="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/index.html">
+<meta property="og:title" content="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框">
+<meta property="og:url" content="https://wyws1218.github.io/2026/03/24/GAS-Part3-Attribute-UI/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="1. 核心模块引入与配置在 UE5 引擎中勾选启用 Gameplay Abilities 插件是第一步。 图 1： GAS 核心插件  要让项目真正获得 GAS 的底层 C++ 支持，必须在项目的构建文件中进行手动配置。 图 2： 项目结构示意  我在项目的 Build.cs 文件中，加入了 GAS 相关的三大核心代码库：GameplayAbilities、GameplayTags 和 Gam">
+<meta property="og:description" content="在完成了冲刺技能的物理位移与表现分离后，接下来我需要为技能引入消耗与冷却机制，并实现高度复用的 UI 绑定。这一切的基础，在于构建 GAS 的核心数据容器 AttributeSet。 1. C++ 构建基础属性集在 GAS 中，角色的血量、蓝量、耐力等所有数值都统一由 AttributeSet 进行管理。我创建了一个名为 UWyBasicAttributeSet 的 C++ 类，并在头文件中声明了">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://wyws1218.github.io/images/gasBuild1.png">
-<meta property="og:image" content="https://wyws1218.github.io/images/gasBuild2.png">
-<meta property="og:image" content="https://wyws1218.github.io/images/gasBuild3.png">
-<meta property="og:image" content="https://wyws1218.github.io/images/gasBuild4.png">
-<meta property="og:image" content="https://wyws1218.github.io/images/gasBuild5.png">
-<meta property="og:image" content="https://wyws1218.github.io/images/gasBuild6.png">
-<meta property="og:image" content="https://wyws1218.github.io/images/gasBuild7.png">
-<meta property="og:image" content="https://wyws1218.github.io/images/gasBuild8.png">
-<meta property="article:published_time" content="2026-03-23T05:00:00.000Z">
-<meta property="article:modified_time" content="2026-03-24T12:24:28.789Z">
+<meta property="og:image" content="https://wyws1218.github.io/images/attr1.png">
+<meta property="article:published_time" content="2026-03-24T13:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-24T13:07:52.816Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="UE5">
 <meta property="article:tag" content="C++">
@@ -30,7 +23,7 @@
 <meta property="article:tag" content="GAS">
 <meta property="article:tag" content="作品集">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://wyws1218.github.io/images/gasBuild1.png">
+<meta name="twitter:image" content="https://wyws1218.github.io/images/attr1.png">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -87,10 +80,10 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-GAS-Part1-Initialization" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-GAS-Part3-Attribute-UI" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2026/03/23/GAS-Part1-Initialization/" class="article-date">
-  <time class="dt-published" datetime="2026-03-23T05:00:00.000Z" itemprop="datePublished">2026-03-23</time>
+    <a href="/2026/03/24/GAS-Part3-Attribute-UI/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T13:00:00.000Z" itemprop="datePublished">2026-03-24</time>
 </a>
     
   <div class="article-category">
@@ -105,7 +98,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      【第一章】GAS 底层基建与 C++ 初始化实践
+      【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框
     </h1>
   
 
@@ -113,46 +106,19 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <br>
+        <p>在完成了冲刺技能的物理位移与表现分离后，接下来我需要为技能引入消耗与冷却机制，并实现高度复用的 UI 绑定。这一切的基础，在于构建 GAS 的核心数据容器 AttributeSet。<br><br><br><br></p>
+<h2 id="1-C-构建基础属性集"><a href="#1-C-构建基础属性集" class="headerlink" title="1. C++ 构建基础属性集"></a>1. C++ 构建基础属性集</h2><p>在 GAS 中，角色的血量、蓝量、耐力等所有数值都统一由 AttributeSet 进行管理。我创建了一个名为 UWyBasicAttributeSet 的 C++ 类，并在头文件中声明了耐力值与最大耐力值属性。</p>
+<p><img src="/images/attr1.png"></p>
+<center><b>图 1： C++ 定义耐力值属性</b></center>
 
-<h2 id="1-核心模块引入与配置"><a href="#1-核心模块引入与配置" class="headerlink" title="1. 核心模块引入与配置"></a>1. 核心模块引入与配置</h2><p>在 UE5 引擎中勾选启用 Gameplay Abilities 插件是第一步。<br><img src="/images/gasBuild1.png"></p>
-<center><b>图 1： GAS 核心插件</b></center>
-
-<p>要让项目真正获得 GAS 的底层 C++ 支持，必须在项目的构建文件中进行手动配置。<br><img src="/images/gasBuild2.png"></p>
-<center><b>图 2： 项目结构示意</b></center>
-
-<p>我在项目的 <code>Build.cs</code> 文件中，加入了 GAS 相关的三大核心代码库：<code>GameplayAbilities</code>、<code>GameplayTags</code> 和 <code>GameplayTasks</code>。<br><img src="/images/gasBuild3.png"></p>
-<center><b>图 3： 相关代码</b></center>
-
-<p>这一行代码相当于给项目“安装”了 GAS 插件的 C++ 底层操作，它为我们后续的代码开发正式 引入了技能系统、标签系统和任务系统的支持。<br><br></p>
-<h2 id="2-角色基类-WyBaseCharacter-与网络同步策略"><a href="#2-角色基类-WyBaseCharacter-与网络同步策略" class="headerlink" title="2. 角色基类 (WyBaseCharacter) 与网络同步策略"></a>2. 角色基类 (WyBaseCharacter) 与网络同步策略</h2><p>为了方便后期扩展与代码管理，我创建了一个基于 C++ 的基类（<code>WyCharacterBase</code>），作为玩家 (Player) 和敌人 (Enemy) 的共同基类，并对其目录结构进行了规范整理。<br>我第一步让基类继承了AbilitySystem的接口，如果不继承该接口，后续所有技能和属性无法挂在该角色上。<br><img src="/images/gasBuild4.png"></p>
-<center><b>图 4： 角色基类的接口</b></center>
-
-<p>在基类的头文件中，我为其手动硬编码挂载了核心的 <code>AbilitySystemComponent</code> (ASC)，并专门声明了网络同步模式 (Replication Mode) 的可配置变量。<br>这里使用Mixed模式：<br>一是为了同步完整GE信息，支持客户端预测，让玩家感觉不到延迟;<br>二是为了只同步极简的Tags和Attributes，节省带宽。<br><img src="/images/gasBuild5.png"></p>
-<center><b>图 5： 在头文件中声明 ASC 与 Mixed 同步模式</b></center>
-
-<br>
-<br>
-
-<h2 id="3-暴露接口与双端激活"><a href="#3-暴露接口与双端激活" class="headerlink" title="3. 暴露接口与双端激活"></a>3. 暴露接口与双端激活</h2><p>首先我返回了ASC这个组件，让系统发现我“硬件”的存在。<br><img src="/images/gasBuild6.png"></p>
-<center><b>图 6： 返回ASC</b></center>
-
-<p>然后明确客户端和服务端的身份，服务器在控制角色那一刻先认证挂在角色上的ASC，客户端收到服务器传来数据那一刻认证。<br><img src="/images/gasBuild7.png"></p>
-<center><b>图 7： 双端激活</b></center>
-
-<br>
-<br>
-
-<h2 id="4-角色初始化"><a href="#4-角色初始化" class="headerlink" title="4. 角色初始化"></a>4. 角色初始化</h2><p>利用模板给角色一些初始值，比如胶囊体的尺寸，旋转，移动，视角，速度等。<br>完成了角色基类的GAS基础配置。<br><img src="/images/gasBuild8.png"></p>
-<center><b>图 8：初始化配置 </b></center>
-
-
-
+<p>在代码中，我使用 FGameplayAttributeData 结构体声明了 Stamina 和 MaxStamina。这是 GAS 专属的属性类型，它内置了基础值和当前值的计算逻辑，方便后续配合 Gameplay Effect 进行数值修改。</p>
+<p>为了提高开发效率，我引入了 ATTRIBUTE_ACCESSORS 宏。这个宏会自动为对应的属性生成 Get、Set 和 Init 函数，极大地减少了重复的样板代码编写工作。</p>
+<p>同时，作为多人联机框架，属性的网络同步是重中之重。我在 UPROPERTY 中专门配置了 ReplicatedUsing 参数。这保证了当服务器上的耐力值发生变化时，会自动触发客户端的 OnRep 回调函数，从而实现双端数值的精准同步。<br><br><br><br></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/" data-id="cmn4mrcpe0000ssvnfqj29cxl" data-title="【第一章】GAS 底层基建与 C++ 初始化实践" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part3-Attribute-UI/" data-id="cmn4mrcpk000qssvnhkblftc6" data-title="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -164,19 +130,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2026/03/24/GAS-Part2-Dash-Decoupling/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          【第二章】冲刺技能 (Dash) 的实现与解耦
-        
-      </div>
-    </a>
   
-  
-    <a href="/2026/03/22/GAS-Project-Overview/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2026/03/24/GAS-Part2-Dash-Decoupling/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">【项目总览】基于 UE5 GAS 的游戏技能框架</div>
+      <div class="article-nav-title">【第二章】冲刺技能 (Dash) 的实现与解耦</div>
     </a>
   
 </nav>

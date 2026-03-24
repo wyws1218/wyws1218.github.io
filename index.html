@@ -137,7 +137,59 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn4mhrwa000410vn6qrkfop3" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn4mrcpk000rssvngui0adfs" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GAS/" rel="tag">GAS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UE5/" rel="tag">UE5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" rel="tag">作品集</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-GAS-Part3-Attribute-UI" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/03/24/GAS-Part3-Attribute-UI/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T13:00:00.000Z" itemprop="datePublished">2026-03-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%BD%9C%E5%93%81%E9%9B%86%E5%B1%95%E7%A4%BA/">作品集展示</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/03/24/GAS-Part3-Attribute-UI/">【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在完成了冲刺技能的物理位移与表现分离后，接下来我需要为技能引入消耗与冷却机制，并实现高度复用的 UI 绑定。这一切的基础，在于构建 GAS 的核心数据容器 AttributeSet。<br><br><br><br></p>
+<h2 id="1-C-构建基础属性集"><a href="#1-C-构建基础属性集" class="headerlink" title="1. C++ 构建基础属性集"></a>1. C++ 构建基础属性集</h2><p>在 GAS 中，角色的血量、蓝量、耐力等所有数值都统一由 AttributeSet 进行管理。我创建了一个名为 UWyBasicAttributeSet 的 C++ 类，并在头文件中声明了耐力值与最大耐力值属性。</p>
+<p><img src="/images/attr1.png"></p>
+<center><b>图 1： C++ 定义耐力值属性</b></center>
+
+<p>在代码中，我使用 FGameplayAttributeData 结构体声明了 Stamina 和 MaxStamina。这是 GAS 专属的属性类型，它内置了基础值和当前值的计算逻辑，方便后续配合 Gameplay Effect 进行数值修改。</p>
+<p>为了提高开发效率，我引入了 ATTRIBUTE_ACCESSORS 宏。这个宏会自动为对应的属性生成 Get、Set 和 Init 函数，极大地减少了重复的样板代码编写工作。</p>
+<p>同时，作为多人联机框架，属性的网络同步是重中之重。我在 UPROPERTY 中专门配置了 ReplicatedUsing 参数。这保证了当服务器上的耐力值发生变化时，会自动触发客户端的 OnRep 回调函数，从而实现双端数值的精准同步。<br><br><br><br></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part3-Attribute-UI/" data-id="cmn4mrcpk000qssvnhkblftc6" data-title="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -245,7 +297,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmn4mhrw8000110vnapcabzaj" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmn4mrcpf0001ssvnf6k52eig" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -324,7 +376,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/" data-id="cmn4mhrw7000010vn1btf1mqa" data-title="【第一章】GAS 底层基建与 C++ 初始化实践" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/" data-id="cmn4mrcpe0000ssvnfqj29cxl" data-title="【第一章】GAS 底层基建与 C++ 初始化实践" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -388,6 +440,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2026/03/24/GAS-Part3-Attribute-UI/">【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框</a>
+          </li>
         
           <li>
             <a href="/2026/03/24/GAS-Part2-Dash-Decoupling/">【第二章】冲刺技能 (Dash) 的实现与解耦</a>
