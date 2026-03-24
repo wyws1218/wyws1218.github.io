@@ -15,8 +15,9 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://wyws1218.github.io/images/dash1.png">
 <meta property="og:image" content="https://wyws1218.github.io/images/dash2.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/dash3.png">
 <meta property="article:published_time" content="2026-03-24T05:00:00.000Z">
-<meta property="article:modified_time" content="2026-03-24T06:18:56.473Z">
+<meta property="article:modified_time" content="2026-03-24T12:10:29.027Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="UE5">
 <meta property="article:tag" content="C++">
@@ -117,16 +118,27 @@
 
 <p>在 <code>GA_Dash</code> 的类默认设置 (Class Defaults) 中，有三个极其关键的配置，这也是多人动作游戏开发中的核心考点：</p>
 <ol>
-<li>**Ability Tags (标签驱动)**：赋予其 <code>GameplayAbility.Movement.Dash</code> 标签。GAS 倡导“标签驱动”思想，后续我们可以通过判断角色身上是否有该标签，来替代传统的布尔值判断，彻底告别硬编码。</li>
-<li>**Instancing Policy (实例化策略)**：设置为 <code>Instanced Per Actor</code> (每个 Actor 实例化)。因为冲刺技能在释放过程中可能需要保存一些内部状态，非实例化策略无法存储状态，因此必须为每个角色单独实例化一个 GA 对象。</li>
-<li>**Net Execution Policy (网络执行策略)**：设置为 <code>Local Predicted</code> (本地预测)。这是多人动作游戏保证手感的灵魂。它允许客户端立刻在本地执行冲刺表现，而不需要等待服务器的 RPC 确认，实现客户端的“零延迟”体验。<br>
+<li>Ability Tags (标签驱动)：赋予其 <code>GameplayAbility.Movement.Dash</code> 标签。GAS 倡导“标签驱动”思想，后续我们可以通过判断角色身上是否有该标签，来替代传统的布尔值判断，彻底告别硬编码。</li>
+<li>Instancing Policy (实例化策略)：设置为 <code>Instanced Per Actor</code> (每个 Actor 实例化)。因为冲刺技能在释放过程中需要保存一些内部状态，非实例化策略无法存储状态，因此必须为每个角色单独实例化一个 GA 对象。</li>
+<li>Net Execution Policy (网络执行策略)：设置为 <code>Local Predicted</code> (本地预测)。这是多人动作游戏保证手感的灵魂。它允许客户端立刻在本地执行冲刺表现，而不需要等待服务器的 RPC 确认，实现客户端的“零延迟”体验。<br>
+<br></li>
+</ol>
+<h2 id="2-冲刺事件图表：提交逻辑与异步-Task"><a href="#2-冲刺事件图表：提交逻辑与异步-Task" class="headerlink" title="2. 冲刺事件图表：提交逻辑与异步 Task"></a>2. 冲刺事件图表：提交逻辑与异步 Task</h2><p>进入 <code>GA_Dash</code> 的事件图表 ，首先需要处理技能的触发。在 GAS 框架中，一个规范的技能生命周期通常包含：激活 (Activate)、提交消耗 (Cost)、执行异步行为 (Ability Task) 以及结束技能 (End Ability)。<br><img src="/images/dash3.png"></p>
+<center><b>图 3： GA_Dash 的完整事件图表逻辑</b></center>
+
+<p>这张图表包含了 GAS 动作开发中的几个核心规范：</p>
+<ol>
+<li>消耗与冷却的精准控制：技能通过 <code>Event ActivateAbility</code> 激活后，第一时间调用 <code>CommitAbilityCost</code> 扣除玩家体力（Cost）。而冷却（Cooldown）则挂载在位移结束的分支上通过 <code>CommitAbilityCooldown</code> 提交。</li>
+<li>利用 Ability Task 处理异步位移：冲刺是一个持续的过程。这里摒弃了传统的 Timeline 或 Tick 位移，使用了 GAS 内置的异步任务节点 <code>Apply Root Motion Constant Force</code>。它能给角色根组件施加一个持续 0.3 秒、强度为 2000 的推力，并在结束时利用 <code>Clamp Velocity on Finish</code> 限制最终速度，保证冲刺结束时的手感平滑，不会因为惯性滑步。</li>
+<li>表现与逻辑的彻底解耦 ： <code>Apply Root Motion</code> 节点右上方的异步触发引脚，它连接了 <code>Add GameplayCue To Owner</code> 节点。我没有在这里生成任何粒子特效或播放音效，而是仅仅发送了一个 <code>Gameplaycue.Dash.Fast</code> 的标签给系统。所有相关的视听表现，都交由客户端的 Gameplay Cue (GC) 去监听该标签并独立执行。这完美贯彻了“逻辑与表现分离”的 MVC 架构思想。</li>
+<li>规范闭环：当 Task 的 <code>On Finish</code> (任务完成) 触发时，必须调用 <code>End Ability</code> 来清理状态机，规范地结束该技能。<br>
 <br></li>
 </ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmn4859rt00043kvn6zfdhnio" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmn4kph0h000d18vngtc9ceak" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
