@@ -14,8 +14,10 @@
 <meta property="og:description" content="在完成了冲刺技能的物理位移与表现分离后，接下来我需要为技能引入消耗与冷却机制，并实现高度复用的 UI 绑定。这一切的基础，在于构建 GAS 的核心数据容器 AttributeSet。 1. C++ 构建基础属性集在 GAS 中，角色的血量、蓝量、耐力等所有数值都统一由 AttributeSet 进行管理。我创建了一个名为 UWyBasicAttributeSet 的 C++ 类，并在头文件中声明了">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://wyws1218.github.io/images/attr1.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/attr2.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/attr3.png">
 <meta property="article:published_time" content="2026-03-24T13:00:00.000Z">
-<meta property="article:modified_time" content="2026-03-24T13:07:52.816Z">
+<meta property="article:modified_time" content="2026-03-24T13:36:07.761Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="UE5">
 <meta property="article:tag" content="C++">
@@ -114,11 +116,25 @@
 <p>在代码中，我使用 FGameplayAttributeData 结构体声明了 Stamina 和 MaxStamina。这是 GAS 专属的属性类型，它内置了基础值和当前值的计算逻辑，方便后续配合 Gameplay Effect 进行数值修改。</p>
 <p>为了提高开发效率，我引入了 ATTRIBUTE_ACCESSORS 宏。这个宏会自动为对应的属性生成 Get、Set 和 Init 函数，极大地减少了重复的样板代码编写工作。</p>
 <p>同时，作为多人联机框架，属性的网络同步是重中之重。我在 UPROPERTY 中专门配置了 ReplicatedUsing 参数。这保证了当服务器上的耐力值发生变化时，会自动触发客户端的 OnRep 回调函数，从而实现双端数值的精准同步。<br><br><br><br></p>
+<h2 id="2-技能消耗：配置-Gameplay-Effect"><a href="#2-技能消耗：配置-Gameplay-Effect" class="headerlink" title="2. 技能消耗：配置 Gameplay Effect"></a>2. 技能消耗：配置 Gameplay Effect</h2><p>在 GAS 框架中，修改角色属性绝不能直接去写减法逻辑代码，而是要严格通过 GameplayEffect 来处理所有数值变动。首先我创建了一个继承自 GameplayEffect 的蓝图类来专门处理冲刺的体力消耗。</p>
+<p><img src="/images/attr2.png"></p>
+<center><b>图 2： 创建处理消耗的 GameplayEffect</b></center>
+
+<p>打开这个资产，核心的数值扣除逻辑都在右侧的详情面板中完成，全程不需要连任何蓝图节点。</p>
+<p><img src="/images/attr3.png"></p>
+<center><b>图 3： 配置瞬间扣除 25 点耐力</b></center>
+
+<p>这里有两个关键的配置项：</p>
+<ol>
+<li>Duration Policy: 设置为 Instant。这代表该效果是一次性瞬间执行的，非常适合用来做技能的瞬间消耗逻辑。</li>
+<li>Modifiers: 我添加了一个修饰器，将目标属性指定为刚才在 C++ 里写的 WyBasicAttributeSet 里的 Stamina。修改操作选择 Add，具体数值设为 -25.0。这就实现了每次冲刺扣除 25 点耐力的效果。</li>
+</ol>
+<p>只要将这个资产配置到冲刺技能的 Cost 选项里，技能激活时，第一章里写过的 CommitAbilityCost 节点就会自动调用这个效果，并且底层会自动完成多端的网络同步。<br><br><br><br></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part3-Attribute-UI/" data-id="cmn4mrcpk000qssvnhkblftc6" data-title="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part3-Attribute-UI/" data-id="cmn4nrnjv0001fovnbgg1capk" data-title="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
