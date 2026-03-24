@@ -136,7 +136,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn4l6f1s0004lgvn98ro7gcf" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn4lhhie00043wvn40x2a4nd" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -205,19 +205,22 @@
 <h2 id="3-获取物理化身：蓝图与-C-底层联动"><a href="#3-获取物理化身：蓝图与-C-底层联动" class="headerlink" title="3. 获取物理化身：蓝图与 C++ 底层联动"></a>3. 获取物理化身：蓝图与 C++ 底层联动</h2><p>在冲刺技能中，Task 节点需要知道应该对哪个目标施加物理推力。为了获取正确的方向，我使用了 <code>Get Avatar Actor from Actor Info</code> 节点，从系统信息表中把角色的物理化身提取出来单独使用。<br><img src="/images/dash4.png"></p>
 <center><b>图 4： 提取物理化身节点</b></center>
 这个节点之所以能成功获取到当前的实体角色，完全依赖于第一章角色初始化阶段我在 C++ 中写入的底层配置。
-![](/images/dash5.png)
+
+<p><img src="/images/dash5.png"></p>
 <center><b>图 5： 相关代码</b></center>
-在 GAS 系统的底层架构里，一个角色被分成了两个核心部分：
-1. Owner：负责管理数据的“大脑”，比如判断技能冷却好了没、蓝量够不够。
-2. Avatar：负责在游戏里跑跳、播放动画、被物理碰撞推着走的“肉体”。
-我在 C++ 阶段分别在服务端的 `PossessedBy` 和客户端的 `OnRep_PlayerState` 中调用了 `InitAbilityActorInfo(this, this)` 函数。传入的两个 `this` 就相当于在系统双端登记表上写明，我既是管理数据的大脑，我也是负责挨打和跑跳的肉体。
-冲刺的 Task 节点本身没有目标识别能力，它不知道要推谁。因此它必须通过这个蓝图节点去查阅 C++ 写的登记表，拿到登记好的肉体角色，再获取它的前向向量，最终把推力精准地作用在这个肉体上。如果当时没有写那段 C++ 代码做初始化，蓝图节点就会查不到肉体，冲刺技能便会因为找不到受力对象而当场报错失效。
-<br>
-<br>
+
+<p>在 GAS 系统的底层架构里，一个角色被分成了两个核心部分：</p>
+<ol>
+<li>Owner: 负责管理数据的“大脑”，比如判断技能冷却好了没、蓝量够不够。</li>
+<li>Avatar: 负责在游戏里跑跳、播放动画、被物理碰撞推着走的“肉体”。</li>
+</ol>
+<p>我在 C++ 阶段分别在服务端的 <code>PossessedBy</code> 和客户端的 <code>OnRep_PlayerState</code> 中调用了 <code>InitAbilityActorInfo(this, this)</code> 函数。传入的两个 <code>this</code> 就相当于在系统双端登记表上写明，我既是管理数据的大脑，我也是负责挨打和跑跳的肉体。</p>
+<p>冲刺的 Task 节点本身没有目标识别能力，它不知道要推谁。因此它必须通过这个蓝图节点去查阅 C++ 写的登记表，拿到登记好的肉体角色，再获取它的前向向量，最终把推力精准地作用在这个肉体上。如果当时没有写那段 C++ 代码做初始化，蓝图节点就会查不到肉体，冲刺技能便会因为找不到受力对象而当场报错失效。<br><br><br><br></p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmn4l6f1p0000lgvnfzj96m2y" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmn4lhhic00013wvn4xhj62jd" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -296,7 +299,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/" data-id="cmn4l6f1q0001lgvndastf6jg" data-title="【第一章】GAS 底层基建与 C++ 初始化实践" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/" data-id="cmn4lhhib00003wvnh7io9tow" data-title="【第一章】GAS 底层基建与 C++ 初始化实践" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
