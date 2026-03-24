@@ -137,7 +137,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn4ny0p50005dgvn92fv09cn" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn4of3u80004lkvn43lg8yaj" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -177,7 +177,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>在完成了冲刺技能的物理位移与表现分离后，接下来我需要为技能引入消耗与冷却机制，并实现高度复用的 UI 绑定。这一切的基础，在于构建 GAS 的核心数据容器 AttributeSet。<br><br><br><br></p>
+        <p>在完成了冲刺技能的物理位移与表现分离后，接下来我需要为技能引入消耗与冷却机制，并实现高度复用的 UI 绑定。这一切的基础，在于构建 GAS 的核心数据容器 AttributeSet。<br><br></p>
 <h2 id="1-C-构建基础属性集"><a href="#1-C-构建基础属性集" class="headerlink" title="1. C++ 构建基础属性集"></a>1. C++ 构建基础属性集</h2><p>在 GAS 中，角色的血量、蓝量、耐力等所有数值都统一由 AttributeSet 进行管理。我创建了一个名为 UWyBasicAttributeSet 的 C++ 类，并在头文件中声明了耐力值与最大耐力值属性。</p>
 <p><img src="/images/attr1.png"></p>
 <center><b>图 1： C++ 定义耐力值属性</b></center>
@@ -199,11 +199,23 @@
 <li>Modifiers: 我添加了一个修饰器，将目标属性指定为刚才在 C++ 里写的 WyBasicAttributeSet 里的 Stamina。修改操作选择 Add，具体数值设为 -25.0。这就实现了每次冲刺扣除 25 点耐力的效果。</li>
 </ol>
 <p>只要将这个资产配置到冲刺技能的 Cost 选项里，技能激活时，第一章里写过的 CommitAbilityCost 节点就会自动调用这个效果，并且底层会自动完成多端的网络同步。<br><br><br><br></p>
+<h2 id="3-耐力恢复：周期性效果与堆叠防错"><a href="#3-耐力恢复：周期性效果与堆叠防错" class="headerlink" title="3. 耐力恢复：周期性效果与堆叠防错"></a>3. 耐力恢复：周期性效果与堆叠防错</h2><p>有了瞬间扣除的机制，自然需要有持续恢复的逻辑。与冲刺的瞬间扣除不同，耐力的恢复是一个随时间线性增长的过程。因此我创建了另一个专门用于恢复耐力的 GameplayEffect。</p>
+<p><img src="/images/attr4.png"></p>
+<center><b>图 4： 配置持续恢复耐力的 GameplayEffect</b></center>
+
+<p>在这个资产的详情面板中，我使用了与消耗截然不同的配置策略，这里有几个非常关键的技术点：</p>
+<ol>
+<li>Duration Policy 与 Period：我将持续时间策略设置为 Infinite，代表这是一个无限持续的效果。同时开启了 Period，数值设为 0.033333，这意味着该效果会以每秒约 30 次的频率周期性执行。</li>
+<li>Modifiers：在修饰器中，我依然将目标属性指向 Stamina，修改操作为 Add，数值设为 0.2。结合上面的周期配置，角色每秒大约能平滑地恢复 6 点耐力。</li>
+<li>状态标签赋予：在 Components 中添加了 Target Tags 模块，在效果持续期间赋予角色 Status.Stamina.Regen 标签。这体现了标签驱动的优势，后续 UI 或者其他技能可以通过检测这个标签，立刻知道角色目前正处于耐力恢复状态。</li>
+<li>Stacking 堆叠限制：这是防范游戏数值崩坏的重要设置。我开启了堆叠控制，并将 Stack Limit Count 设为 1。这能绝对保证无论角色触发了多少次恢复逻辑，身上永远只会存在一层恢复效果，彻底杜绝了因为多次调用导致耐力回复速度叠加翻倍的 Bug。<br>
+<br></li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part3-Attribute-UI/" data-id="cmn4ny0p30001dgvn5uff6pla" data-title="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part3-Attribute-UI/" data-id="cmn4of3u90005lkvn6z7kcntl" data-title="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -311,7 +323,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmn4ny0p50004dgvnecr37cgh" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmn4of3u70001lkvn9xcu1pen" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -390,7 +402,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/" data-id="cmn4ny0p20000dgvnd9sq7hjc" data-title="【第一章】GAS 底层基建与 C++ 初始化实践" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/" data-id="cmn4of3u50000lkvn0u6o8fk5" data-title="【第一章】GAS 底层基建与 C++ 初始化实践" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
