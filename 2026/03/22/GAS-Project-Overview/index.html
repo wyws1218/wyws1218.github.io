@@ -14,7 +14,7 @@
 <meta property="og:description" content="项目背景与演示在类似MOBA与 MMO 游戏中，技能系统的可扩展性是核心痛点。本项目想要脱离庞杂的业务逻辑，从零开始使用 C++ 与蓝图混合开发 的模式，搭建一套 Gameplay Ability System (GAS) 底层框架。 目前已将该框架的核心运行闭环打通，并逐步封装为独立可拔插的 UE5 插件 。  🔗 源码仓库：点击访问我的 GitHub 源码 (gasup)  核心工程亮点 C">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-03-22T10:00:00.000Z">
-<meta property="article:modified_time" content="2026-03-22T08:51:19.256Z">
+<meta property="article:modified_time" content="2026-03-24T05:40:50.403Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="UE5">
 <meta property="article:tag" content="C++">
@@ -132,7 +132,7 @@
 <h2 id="详细技术沉淀-系列目录"><a href="#详细技术沉淀-系列目录" class="headerlink" title="详细技术沉淀 (系列目录)"></a>详细技术沉淀 (系列目录)</h2><p>这里记录了我在搭建这套 GAS 框架时的详细过程、源码解析以及踩坑记录：</p>
 <ul>
 <li><a href="/2026/03/22/GAS-Part1-Initialization/" title="GAS-Part1-Initialization">第一章：GAS 底层基建与 C++ 初始化实践</a></li>
-<li>第二章：冲刺技能实现、Task 运用与表现解耦 </li>
+<li><a href="/2026/03/24/GAS-Part2-Dash-Decoupling/" title="GAS-Part2-Dash-Decoupling">第二章：冲刺技能实现,Task运用与表现解耦</a> </li>
 <li>第三章：TargetData 目标提取与伤害输出闭环 </li>
 <li>第四章：框架剥离与独立插件 (Plugin) 打包实战</li>
 </ul>
@@ -143,7 +143,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn1t8bqz0001pgvn385p7tri" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn46z6ka0001l0vnhr7i6jjp" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -154,6 +154,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2026/03/24/GAS-Part2-Dash-Decoupling/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
   
   
     <a href="/2026/03/22/GAS-Part1-Initialization/" id="article-nav-older" class="article-nav-link-wrap">
@@ -215,6 +224,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2026/03/24/GAS-Part2-Dash-Decoupling/">(no title)</a>
+          </li>
         
           <li>
             <a href="/2026/03/22/GAS-Project-Overview/">【项目总览】基于 UE5 GAS 的游戏技能框架</a>
