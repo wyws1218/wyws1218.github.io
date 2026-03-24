@@ -18,8 +18,11 @@
 <meta property="og:image" content="https://wyws1218.github.io/images/attr3.png">
 <meta property="og:image" content="https://wyws1218.github.io/images/attr4.png">
 <meta property="og:image" content="https://wyws1218.github.io/images/attr5.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/ui1.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/ui2.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/ui3.png">
 <meta property="article:published_time" content="2026-03-24T13:00:00.000Z">
-<meta property="article:modified_time" content="2026-03-24T14:17:19.759Z">
+<meta property="article:modified_time" content="2026-03-24T14:26:00.023Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="UE5">
 <meta property="article:tag" content="C++">
@@ -154,11 +157,25 @@
 </ol>
 <p>底层运行闭环是这样的：当冲刺技能执行结束时，会调用之前在事件图表里写过的 CommitAbilityCooldown 节点，系统便会将这个两秒的冷却效果应用到角色身上。在此期间，如果玩家再次按下冲刺键，系统在激活前置条件检查时，一旦检测到角色身上带有 Cooldown.Dash 标签，就会直接拦截并拒绝激活技能。</p>
 <p>整个冷却过程不需要写任何传统的 Timer 计时器变量，也没有繁琐的逻辑判断代码，纯靠标签的赋予和移除来控制状态，彻底实现了干净的数据驱动。<br><br></p>
+<h2 id="5-动态技能-UI：整体架构与容器生成逻辑"><a href="#5-动态技能-UI：整体架构与容器生成逻辑" class="headerlink" title="5. 动态技能 UI：整体架构与容器生成逻辑"></a>5. 动态技能 UI：整体架构与容器生成逻辑</h2><p>为了让技能框实现完全的数据驱动和高复用性，我设计了一套层级分明的 UI 架构。整体思路是由 Controller 将主 HUD 放置在视口上，HUD 内部再嵌套负责技能布局的 Wy_AbilityContainer 和负责血条耐力的 Wy_PlayerStatus。最底层的逻辑是，技能容器会根据角色实际拥有的技能，动态生成对应的技能插槽 Wy_AbilitySlot。</p>
+<p><img src="/images/ui1.png"></p>
+<center><b>图 6： UI 蓝图层级架构展示</b></center>
+
+<p>打开技能容器 Wy_AbilityContainer 的事件图表，这里的核心任务是遍历角色身上的所有技能，并为它们逐一创建可视化的 UI 插槽。</p>
+<p><img src="/images/ui2.png"></p>
+<center><b>图 7： 延迟校验与获取技能句柄</b></center>
+
+<p>在 UI 构造事件触发时，我首先加入了一个 0.2 秒的延迟。这是一个非常实用的工程化防错技巧，因为客户端 UI 的创建速度往往快于角色内部 GAS 数据的初始化，直接获取极易导致空指针崩溃。安全校验通过后，我通过 Get All Abilities 节点提取了当前角色被赋予的所有技能句柄数组。</p>
+<p><img src="/images/ui3.png"></p>
+<center><b>图 8： 遍历生成插槽并完成布局堆叠</b></center>
+
+<p>拿到技能数组后，我使用 For Each Loop 节点进行遍历。每拿出一个技能句柄，就动态生成一个单独的 Wy_AbilitySlot 实例，并将当前的技能详细信息传递给它。最后，把生成的图标实例作为子节点添加进 Horizontal Box 水平盒容器中，并统一设置四周各 5 像素的间距，保证排版整洁。</p>
+<p>通过这套逻辑，不论角色在底层被赋予了多少个技能，UI 层都会全自动响应，横向排布出对应数量的技能图标。这彻底告别了在 UI 编辑器里手动拖拽拼凑按钮的低效开发模式。<br><br></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part3-Attribute-UI/" data-id="cmn4p89aq0004o8vn9w74ha8x" data-title="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part3-Attribute-UI/" data-id="cmn4pk9i90001wwvn2fic75v1" data-title="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
