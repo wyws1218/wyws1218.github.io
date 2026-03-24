@@ -136,7 +136,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn4lhhie00043wvn40x2a4nd" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn4lpg9d0001g8vnecpfghu7" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -216,11 +216,20 @@
 </ol>
 <p>我在 C++ 阶段分别在服务端的 <code>PossessedBy</code> 和客户端的 <code>OnRep_PlayerState</code> 中调用了 <code>InitAbilityActorInfo(this, this)</code> 函数。传入的两个 <code>this</code> 就相当于在系统双端登记表上写明，我既是管理数据的大脑，我也是负责挨打和跑跳的肉体。</p>
 <p>冲刺的 Task 节点本身没有目标识别能力，它不知道要推谁。因此它必须通过这个蓝图节点去查阅 C++ 写的登记表，拿到登记好的肉体角色，再获取它的前向向量，最终把推力精准地作用在这个肉体上。如果当时没有写那段 C++ 代码做初始化，蓝图节点就会查不到肉体，冲刺技能便会因为找不到受力对象而当场报错失效。<br><br><br><br></p>
+<h2 id="4-技能的赋予与激活"><a href="#4-技能的赋予与激活" class="headerlink" title="4. 技能的赋予与激活"></a>4. 技能的赋予与激活</h2><p>在 GAS 框架中，技能的使用遵循一个严格的两步流程：先赋予，再激活。我首先在角色初始化完成后的逻辑中，调用了 Give Ability 节点，将 GA_Dash 这个类注册到角色的 Ability System Component 中。这相当于把技能真正装进了角色的技能栏里。</p>
+<p><img src="/images/dash6.png"></p>
+<center><b>图 6： 赋予角色冲刺能力</b></center>
+
+<p>技能装备好之后，我就可以在角色的事件图表中处理玩家的输入逻辑了。</p>
+<p><img src="/images/dash7.png"></p>
+<center><b>图 7： 通过按键激活冲刺技能</b></center>
+
+<p>当玩家按下 Q 键时，我调用了 Try Activate Ability by Class 节点，并指定了之前赋予的 GA_Dash 类。此时系统会自动去角色的技能栏里查找是否拥有这个技能，如果有且满足冷却和消耗条件，就会真正触发前面写的冲刺事件图表逻辑。节点上的 Allow Remote Activation 选项被勾选，这保证了客户端按下按键时，可以通过网络通知服务器同步激活该技能。<br><br><br><br></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmn4lhhic00013wvn4xhj62jd" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmn4lpg9i000qg8vnfxtifk2b" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -299,7 +308,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/" data-id="cmn4lhhib00003wvnh7io9tow" data-title="【第一章】GAS 底层基建与 C++ 初始化实践" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/" data-id="cmn4lpg9b0000g8vngzscaaz7" data-title="【第一章】GAS 底层基建与 C++ 初始化实践" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
