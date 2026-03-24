@@ -124,7 +124,7 @@
 </ol>
 <h2 id="详细技术沉淀-系列目录"><a href="#详细技术沉淀-系列目录" class="headerlink" title="详细技术沉淀 (系列目录)"></a>详细技术沉淀 (系列目录)</h2><p>这里记录了我在搭建这套 GAS 框架时的详细过程、源码解析以及踩坑记录：</p>
 <ul>
-<li><a href="/2026/03/22/GAS-Part1-Initialization/" title="GAS-Part1-Initialization">第一章：GAS 底层基建与 C++ 初始化实践</a></li>
+<li><a href="/2026/03/23/GAS-Part1-Initialization/" title="【第一章】GAS 底层基建与 C++ 初始化实践">第一章：GAS 底层基建与 C++ 初始化实践</a></li>
 <li><a href="/2026/03/24/GAS-Part2-Dash-Decoupling/" title="【第二章】冲刺技能 (Dash) 的实现与解耦">第二章：冲刺技能实现,Task运用与表现解耦</a> </li>
 <li>第三章：TargetData 目标提取与伤害输出闭环 </li>
 <li>第四章：框架剥离与独立插件 (Plugin) 打包实战</li>
@@ -136,7 +136,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn47je84000248vnfbem6peo" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn47tnkv00048ovn5x4wavnd" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -176,7 +176,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>在传统的开发模式中，角色的冲刺（Dash）、跳跃等能力往往被硬编码在 <code>Character</code> 或 <code>PlayerController</code> 中，导致类文件极度臃肿。在本套 GAS 框架中，我们将严格遵守高内聚低耦合的原则，将所有技能逻辑剥离到独立的 Gameplay Ability (GA) 中。<br><br><br><br></p>
+        <p>在传统的开发模式中，角色的冲刺（Dash）、跳跃等能力往往被硬编码在 <code>Character</code> 或 <code>PlayerController</code> 中，导致类文件极度臃肿。在本套 GAS 框架中，我们将严格遵守高内聚低耦合的原则，将所有技能逻辑剥离到独立的 Gameplay Ability (GA) 中。<br><br></p>
 <h2 id="1-创建冲刺技能-GA-与核心配置"><a href="#1-创建冲刺技能-GA-与核心配置" class="headerlink" title="1. 创建冲刺技能 (GA) 与核心配置"></a>1. 创建冲刺技能 (GA) 与核心配置</h2><p>为了将冲刺逻辑与角色实体解耦，我们首先需要创建一个专门负责处理冲刺逻辑的技能容器。这里我们新建一个继承自 <code>GameplayAbility</code> 的蓝图类，将其命名为 <code>GA_Dash</code>。<br><img src="/images/dash1.png"></p>
 <center><b>图 1： 创建 GA_Dash 蓝图类</b></center>
 
@@ -194,7 +194,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmn47je83000148vn8hyx4t3t" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmn47tnkr00018ovncztk7asc" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -210,17 +210,33 @@
   
     <article id="post-GAS-Part1-Initialization" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2026/03/22/GAS-Part1-Initialization/" class="article-date">
-  <time class="dt-published" datetime="2026-03-22T08:39:37.490Z" itemprop="datePublished">2026-03-22</time>
+    <a href="/2026/03/23/GAS-Part1-Initialization/" class="article-date">
+  <time class="dt-published" datetime="2026-03-23T05:00:00.000Z" itemprop="datePublished">2026-03-23</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%BD%9C%E5%93%81%E9%9B%86%E5%B1%95%E7%A4%BA/">作品集展示</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
     
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/03/23/GAS-Part1-Initialization/">【第一章】GAS 底层基建与 C++ 初始化实践</a>
+    </h1>
+  
+
+      </header>
+    
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="1-核心模块引入与配置"><a href="#1-核心模块引入与配置" class="headerlink" title="1. 核心模块引入与配置"></a>1. 核心模块引入与配置</h2><p>在 UE5 引擎中勾选启用 Gameplay Abilities 插件是第一步。<br><img src="/images/gasBuild1.png"></p>
+        <br>
+
+<h2 id="1-核心模块引入与配置"><a href="#1-核心模块引入与配置" class="headerlink" title="1. 核心模块引入与配置"></a>1. 核心模块引入与配置</h2><p>在 UE5 引擎中勾选启用 Gameplay Abilities 插件是第一步。<br><img src="/images/gasBuild1.png"></p>
 <center><b>图 1： GAS 核心插件</b></center>
 
 <p>要让项目真正获得 GAS 的底层 C++ 支持，必须在项目的构建文件中进行手动配置。<br><img src="/images/gasBuild2.png"></p>
@@ -257,10 +273,12 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Part1-Initialization/" data-id="cmn47je7z000048vn5qkwbs2c" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/" data-id="cmn47tnko00008ovngoqv90qz" data-title="【第一章】GAS 底层基建与 C++ 初始化实践" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GAS/" rel="tag">GAS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UE5/" rel="tag">UE5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" rel="tag">作品集</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+
     </footer>
   </div>
   
@@ -325,11 +343,11 @@
           </li>
         
           <li>
-            <a href="/2026/03/22/GAS-Project-Overview/">【项目总览】基于 UE5 GAS 的游戏技能框架</a>
+            <a href="/2026/03/23/GAS-Part1-Initialization/">【第一章】GAS 底层基建与 C++ 初始化实践</a>
           </li>
         
           <li>
-            <a href="/2026/03/22/GAS-Part1-Initialization/">(no title)</a>
+            <a href="/2026/03/22/GAS-Project-Overview/">【项目总览】基于 UE5 GAS 的游戏技能框架</a>
           </li>
         
       </ul>
