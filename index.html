@@ -136,7 +136,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn4lpg9d0001g8vnecpfghu7" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn4m4b7p0001hovncc9e4h3e" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -225,11 +225,26 @@
 <center><b>图 7： 通过按键激活冲刺技能</b></center>
 
 <p>当玩家按下 Q 键时，我调用了 Try Activate Ability by Class 节点，并指定了之前赋予的 GA_Dash 类。此时系统会自动去角色的技能栏里查找是否拥有这个技能，如果有且满足冷却和消耗条件，就会真正触发前面写的冲刺事件图表逻辑。节点上的 Allow Remote Activation 选项被勾选，这保证了客户端按下按键时，可以通过网络通知服务器同步激活该技能。<br><br><br><br></p>
+<h2 id="5-表现解耦：Gameplay-Cue-接管视听效果"><a href="#5-表现解耦：Gameplay-Cue-接管视听效果" class="headerlink" title="5. 表现解耦：Gameplay Cue 接管视听效果"></a>5. 表现解耦：Gameplay Cue 接管视听效果</h2><p>在传统的开发流程里，播放特效和音效的代码通常和位移逻辑混杂在一起。但在本套 GAS 框架中，<code>GC_Dash</code> 里只需要重写一个核心函数即可完成所有工作。</p>
+<p>其核心机制是标签监听。我首先在它的详情面板中，将这个蓝图类与 <code>Gameplaycue.Dash.Fast</code> 标签进行了绑定。</p>
+<p><img src="/images/dash8.png"></p>
+<center><b>图 8： 绑定对应的 Gameplay Cue 标签</b></center>
+
+<p>回忆一下前面在冲刺的 GA 蓝图里，我在 Task 节点上方单独调用了 Add GameplayCue 节点来发送这个标签，并在技能结束时自动移除它。这就意味着，系统会自动根据这个标签的添加和移除，来触发 <code>GC_Dash</code> 里的 <code>HandleGameplayCue</code> 函数。</p>
+<p><img src="/images/dash9.png"></p>
+<center><b>图 9： HandleGameplayCue 的完整表现逻辑</b></center>
+
+<p>在这个核心函数中，我使用了 <code>Switch on EGameplayCueEvent</code> 节点。这个节点极其强大，它能根据标签所处的生命周期，将表现逻辑完美拆分：</p>
+<ol>
+<li>On Active 阶段：当冲刺刚开始，标签被添加时触发。我在这里生成了一个附着在根组件上的拖尾粒子特效，播放了风声破空的音效。同时，为了体现冲刺极快的视觉冲击力，我获取了角色的 Mesh 网格体并将其隐藏，模拟出一种瞬间闪现的视觉感。</li>
+<li>Removed 阶段：当 Task 任务完成，GA 调用 End Ability 导致标签被移除时触发。此时我播放了技能结束的音效，在角色当前落地位置生成了一个结尾爆点特效，并将隐藏的角色模型重新显示出来。</li>
+</ol>
+<p>通过这种方式，冲刺的物理逻辑和视听表现彻底分家。将来美术同学如果需要替换特效或调整表现逻辑，只需要打开这个 GC 蓝图即可，完全没有破坏核心技能逻辑的风险。这种高度解耦的架构，也是大型多人游戏项目必备的底层设计。<br><br><br><br></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmn4lpg9i000qg8vnfxtifk2b" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmn4m4b7r0004hovnfaezgi5e" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -308,7 +323,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/" data-id="cmn4lpg9b0000g8vngzscaaz7" data-title="【第一章】GAS 底层基建与 C++ 初始化实践" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/" data-id="cmn4m4b7n0000hovn2rg9geb0" data-title="【第一章】GAS 底层基建与 C++ 初始化实践" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
