@@ -71,126 +71,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-GAS-Part2-Dash-Decoupling" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/03/24/GAS-Part2-Dash-Decoupling/" class="article-date">
-  <time class="dt-published" datetime="2026-03-24T05:44:56.893Z" itemprop="datePublished">2026-03-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>title: 【第二章】冲刺技能 (Dash) 的实现与解耦 date: 2026-03-24 13:00:00 tags: [UE5, C++, 游戏开发, GAS, 作品集] categories: 作品集展示<br>在传统的开发模式中，角色的冲刺（Dash）、跳跃等能力往往被硬编码在 Character 或 PlayerController 中，导致类文件极度臃肿。在本套 GAS 框架中，我们将严格遵守高内聚低耦合的原则，将所有技能逻辑剥离到独立的 Gameplay Ability (GA) 中。</p>
-<ol>
-<li>创建冲刺技能 (GA) 与核心配置<br>为了将冲刺逻辑与角色实体解耦，我们首先需要创建一个专门负责处理冲刺逻辑的技能容器。这里我们新建一个继承自 GameplayAbility 的蓝图类，将其命名为 GA_Dash。</li>
-</ol>
-<center><b>图 1： 创建 GA_Dash 蓝图类</b></center>
-
-<p>将技能独立为单独的 GA 资产后，我们不仅实现了代码的解耦，还可以通过配置参数来决定该技能在多人网络环境下的运行表现。这也是 GAS 框架最强大的优势之一。</p>
-<center><b>图 2： GA_Dash 的核心标签与网络参数配置</b></center>
-
-<p>在 GA_Dash 的类默认设置（Class Defaults）中，有三个极其关键的配置，这也是多人动作游戏开发中的核心考点：</p>
-<p>Ability Tags（标签驱动）：赋予其 GameplayAbility.Movement.Dash 标签。GAS 倡导“标签驱动”思想，后续我们可以通过判断角色身上是否有该标签，来替代传统的 bIsDashing 等布尔值判断，彻底告别硬编码。</p>
-<p>Instancing Policy（实例化策略）：设置为 Instanced Per Actor（每个 Actor 实例化）。因为冲刺技能在释放过程中可能需要保存一些内部状态（例如当前冲刺的时间、方向向量或绑定的委托），非实例化（Non-Instanced）策略无法存储状态，因此必须为每个释放该技能的角色单独实例化一个 GA 对象。</p>
-<p>Net Execution Policy（网络执行策略）：设置为 Local Predicted（本地预测）。这是多人动作游戏保证手感的灵魂。它允许客户端在按下按键的瞬间，立刻在本地执行冲刺表现（播放动画、位移），而不需要等待服务器的 RPC 确认。服务器会在后台进行校验，从而在保证防作弊安全性的同时，实现客户端的“零延迟”体验。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmn472ef100016ovn1jsmgcwo" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-GAS-Project-Overview" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/03/22/GAS-Project-Overview/" class="article-date">
-  <time class="dt-published" datetime="2026-03-22T10:00:00.000Z" itemprop="datePublished">2026-03-22</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E4%BD%9C%E5%93%81%E9%9B%86%E5%B1%95%E7%A4%BA/">作品集展示</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/03/22/GAS-Project-Overview/">【项目总览】基于 UE5 GAS 的游戏技能框架</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="项目背景与演示"><a href="#项目背景与演示" class="headerlink" title="项目背景与演示"></a>项目背景与演示</h2><p>在类似MOBA与 MMO 游戏中，技能系统的可扩展性是核心痛点。本项目想要脱离庞杂的业务逻辑，从零开始使用 <strong>C++ 与蓝图混合开发</strong> 的模式，搭建一套 Gameplay Ability System (GAS) 底层框架。</p>
-<p>目前已将该框架的核心运行闭环打通，并逐步封装为独立可拔插的 UE5 插件 。</p>
-<blockquote>
-<p><strong>🔗 源码仓库</strong>：<a target="_blank" rel="noopener" href="https://github.com/wyws1218/GasUp">点击访问我的 GitHub 源码 (gasup)</a></p>
-</blockquote>
-<h2 id="核心工程亮点"><a href="#核心工程亮点" class="headerlink" title="核心工程亮点"></a>核心工程亮点</h2><ol>
-<li><strong>C++ 底层基建与网络优化</strong><ul>
-<li>在 <code>BaseCharacter</code> 中硬编码挂载 ASC，确保最高运行效率。</li>
-<li>为 Player (Mixed) 与 Enemy (Minimal) 区分了网络 Replication Mode，从底层兼顾了预测精准度与服务器带宽性能。</li>
-</ul>
-</li>
-<li><strong>技能逻辑与视听表现解耦</strong><ul>
-<li>使用 Gameplay Ability (GA) 和 Task 节点处理纯逻辑（如 Root Motion 驱动的位移）。</li>
-<li>使用 Gameplay Cue (GC) 全权接管客户端的粒子特效、音效与模型显隐，实现严格的逻辑与表现分离。</li>
-</ul>
-</li>
-<li><strong>数据驱动设计 (告别硬编码)</strong><ul>
-<li>利用 Gameplay Effect (GE) 的 Cost 机制替代传统的 <code>if (体力 &gt; xx)</code> 逻辑判断，提升了代码可读性与策划配表自由度。</li>
-</ul>
-</li>
-<li><strong>MVC 架构思考的沉淀</strong><ul>
-<li>摒弃了将移动逻辑塞入 PlayerController 的做法，将状态收束至 Character，贯彻高内聚设计。</li>
-</ul>
-</li>
-</ol>
-<h2 id="详细技术沉淀-系列目录"><a href="#详细技术沉淀-系列目录" class="headerlink" title="详细技术沉淀 (系列目录)"></a>详细技术沉淀 (系列目录)</h2><p>这里记录了我在搭建这套 GAS 框架时的详细过程、源码解析以及踩坑记录：</p>
-<ul>
-<li><a href="/2026/03/22/GAS-Part1-Initialization/" title="GAS-Part1-Initialization">第一章：GAS 底层基建与 C++ 初始化实践</a></li>
-<li><a href="/2026/03/24/GAS-Part2-Dash-Decoupling/" title="GAS-Part2-Dash-Decoupling">第二章：冲刺技能实现,Task运用与表现解耦</a> </li>
-<li>第三章：TargetData 目标提取与伤害输出闭环 </li>
-<li>第四章：框架剥离与独立插件 (Plugin) 打包实战</li>
-</ul>
-<blockquote>
-<p><em>注：点击上方链接进入对应章节查看详细的蓝图截图与 C++ 源码分析。</em></p>
-</blockquote>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn472ef300026ovn22zwhqg8" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GAS/" rel="tag">GAS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UE5/" rel="tag">UE5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" rel="tag">作品集</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
     <article id="post-GAS-Part1-Initialization" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2026/03/22/GAS-Part1-Initialization/" class="article-date">
@@ -240,7 +120,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Part1-Initialization/" data-id="cmn472eey00006ovn3ueaawti" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Part1-Initialization/" data-id="cmn477eqo0000igvn94hd0ccj" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -259,33 +139,12 @@
           <aside id="sidebar">
   
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BD%9C%E5%93%81%E9%9B%86%E5%B1%95%E7%A4%BA/">作品集展示</a></li></ul>
-    </div>
-  </div>
-
 
   
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GAS/" rel="tag">GAS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UE5/" rel="tag">UE5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" rel="tag">作品集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
-    </div>
-  </div>
-
 
   
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/GAS/" style="font-size: 10px;">GAS</a> <a href="/tags/UE5/" style="font-size: 10px;">UE5</a> <a href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" style="font-size: 10px;">作品集</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" style="font-size: 10px;">游戏开发</a>
-    </div>
-  </div>
-
   
     
   <div class="widget-wrap">
@@ -302,14 +161,6 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
-        
-          <li>
-            <a href="/2026/03/24/GAS-Part2-Dash-Decoupling/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2026/03/22/GAS-Project-Overview/">【项目总览】基于 UE5 GAS 的游戏技能框架</a>
-          </li>
         
           <li>
             <a href="/2026/03/22/GAS-Part1-Initialization/">(no title)</a>
