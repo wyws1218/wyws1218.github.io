@@ -14,7 +14,7 @@
 <meta property="og:description" content="项目背景与演示在类似 MOBA 与 MMO 游戏中，技能系统的可扩展性是核心痛点。我想要脱离庞杂的业务逻辑，从零开始使用 C++ 与蓝图混合开发的模式，搭建一套 GAS 底层框架。 目前我已经将该框架的核心运行闭环打通，并逐步封装为独立可拔插的 UE5 插件。  🔗 源码仓库：点击访问我的 GitHub 源码 gasup  核心工程亮点 C++ 底层基建与网络优化 在 BaseCharacter">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-03-22T10:00:00.000Z">
-<meta property="article:modified_time" content="2026-03-24T13:00:29.979Z">
+<meta property="article:modified_time" content="2026-03-25T13:47:37.639Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="UE5">
 <meta property="article:tag" content="C++">
@@ -133,9 +133,9 @@
 <ul>
 <li><a href="/2026/03/23/GAS-Part1-Initialization/" title="【第一章】GAS 底层基建与 C++ 初始化实践">第一章：GAS 底层基建与 C++ 初始化实践</a></li>
 <li><a href="/2026/03/24/GAS-Part2-Dash-Decoupling/" title="【第二章】冲刺技能 (Dash) 的实现与解耦">第二章：冲刺技能实现、Task 运用与表现解耦</a></li>
-<li>第三章：属性集构建与 UI 解耦：消耗、冷却与动态技能框</li>
-<li>第四章：TargetData 目标提取与伤害输出闭环</li>
-<li>第五章：框架剥离与独立插件打包实战</li>
+<li><a href="/2026/03/24/GAS-Part3-Attribute-UI/" title="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框">第三章：属性集构建与 UI 解耦：消耗、冷却与动态技能框</a></li>
+<li><a href="/2026/03/25/GAS-Part4-TargetData-Damage/" title="【第四章】TargetData 目标提取与伤害输出闭环">第四章：TargetData 目标提取与伤害输出闭环</a></li>
+<li><a href="/2026/03/25/GAS-Part5-Plugin/" title="GAS-Part5-Plugin">第五章：框架剥离与独立插件打包实战</a></li>
 </ul>
 <blockquote>
 <p>注：点击上方链接进入对应章节查看详细的蓝图截图与 C++ 源码分析。</p>
@@ -144,7 +144,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn62l5qi0014icvnbz4k8jy6" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn63m75c0004l0vn9iehehsw" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -222,6 +222,10 @@
       <ul>
         
           <li>
+            <a href="/2026/03/25/GAS-Part5-Plugin/">GAS-Part5-Plugin</a>
+          </li>
+        
+          <li>
             <a href="/2026/03/25/GAS-Part4-TargetData-Damage/">【第四章】TargetData 目标提取与伤害输出闭环</a>
           </li>
         
@@ -235,10 +239,6 @@
         
           <li>
             <a href="/2026/03/23/GAS-Part1-Initialization/">【第一章】GAS 底层基建与 C++ 初始化实践</a>
-          </li>
-        
-          <li>
-            <a href="/2026/03/22/GAS-Project-Overview/">【项目总览】基于 UE5 GAS 的游戏技能框架</a>
           </li>
         
       </ul>
