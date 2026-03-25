@@ -137,7 +137,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn4pk9ib0005wwvnccw8avrm" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn5makee000g88vnhzdchu22" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -235,11 +235,30 @@
 
 <p>拿到技能数组后，我使用 For Each Loop 节点进行遍历。每拿出一个技能句柄，就动态生成一个单独的 Wy_AbilitySlot 实例，并将当前的技能详细信息传递给它。最后，把生成的图标实例作为子节点添加进 Horizontal Box 水平盒容器中，并统一设置四周各 5 像素的间距，保证排版整洁。</p>
 <p>通过这套逻辑，不论角色在底层被赋予了多少个技能，UI 层都会全自动响应，横向排布出对应数量的技能图标。这彻底告别了在 UI 编辑器里手动拖拽拼凑按钮的低效开发模式。<br><br></p>
+<h2 id="6-核心插槽逻辑：基于数据驱动的高度复用"><a href="#6-核心插槽逻辑：基于数据驱动的高度复用" class="headerlink" title="6. 核心插槽逻辑：基于数据驱动的高度复用"></a>6. 核心插槽逻辑：基于数据驱动的高度复用</h2><p>在 UI 插槽 Wy_AbilitySlot 的内部逻辑中，看似写了很长的冷却代码，但这恰恰是实现完全复用的关键。因为在这个蓝图里，我没有任何一处硬编码去判断“当前是不是冲刺技能”，所有的数据都是动态读取的。</p>
+<p><img src="/images/slot1.png"></p>
+<center><b>图 9： 提取技能实体并绑定基础信息</b></center>
+
+<p>首先在初始化阶段，插槽接收到了外部容器传来的编号。我通过 Get Gameplay Ability from Spec Handle 节点，将这个编号还原成了真正的技能实体，并存为引用。紧接着，我将其转化为自定义的技能基类 WyAbilityBase，从中直接读取配置好的技能名称，并赋予给 UI 文本。这意味着无论传入的是冲刺、火球还是治疗，UI 都会全自动显示对应的名字。</p>
+<p><img src="/images/slot2.png"></p>
+<center><b>图 10： 标签驱动的异步冷却监听</b></center>
+
+<p>接下来是最核心的冷却解耦设计。我使用了 Wait Gameplay Tag Count Changed on Actor 这个自己封装的异步节点。它不需要用到事件 Tick，也不需要每帧去询问角色技能好了没有，而是静默监听角色身上的特定标签。</p>
+<p>这里的 Tag 引脚并没有直接写死冲刺的冷却标签，而是动态读取当前这个技能基类里配置的冷却标签。</p>
+<p><img src="/images/slot3.png"></p>
+<center><b>图 11： 遮罩控制与倒计时逻辑</b></center>
+
+<p>当系统监听到这个专属的冷却标签数量发生变化时：</p>
+<ol>
+<li>如果标签数量大于 0，说明技能刚进入冷却。系统会自动显示黑色的冷却遮罩，并开启一个 0.1 秒循环的定时器，用来实时刷新界面上的倒计时数字与扇形进度。</li>
+<li>如果标签数量变回 0，说明冷却结束。系统会立刻清理并销毁这个定时器，同时隐藏黑色遮罩，让技能图标重新亮起。</li>
+</ol>
+<p>正因为名字、图标、冷却标签、剩余时间等所有数据，都是从抽象的技能引用中提取出来的，所以这个 Widget 插槽做到了彻底的泛型化。将来哪怕游戏里新增了一百个新技能，我也只需要在数据表里配好它们的参数，UI 层就可以直接复用这套逻辑，不需要修改任何蓝图连线。<br><br></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part3-Attribute-UI/" data-id="cmn4pk9i90001wwvn2fic75v1" data-title="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part3-Attribute-UI/" data-id="cmn5makee000e88vna4p2enb4" data-title="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -347,7 +366,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmn4pk9ib0004wwvn1pqvfwxj" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmn5makee000d88vnfg68ciiy" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -426,7 +445,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/" data-id="cmn4pk9i70000wwvnhihrblq3" data-title="【第一章】GAS 底层基建与 C++ 初始化实践" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/" data-id="cmn5makea000088vn1npkfjhx" data-title="【第一章】GAS 底层基建与 C++ 初始化实践" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
