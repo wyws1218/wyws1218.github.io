@@ -128,7 +128,7 @@
 <li><a href="/2026/03/24/GAS-Part2-Dash-Decoupling/" title="【第二章】冲刺技能 (Dash) 的实现与解耦">第二章：冲刺技能实现、Task 运用与表现解耦</a></li>
 <li><a href="/2026/03/24/GAS-Part3-Attribute-UI/" title="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框">第三章：属性集构建与 UI 解耦：消耗、冷却与动态技能框</a></li>
 <li><a href="/2026/03/25/GAS-Part4-TargetData-Damage/" title="【第四章】TargetData 目标提取与伤害输出闭环">第四章：TargetData 目标提取与伤害输出闭环</a></li>
-<li><a href="/2026/03/25/GAS-Part5-Plugin/" title="GAS-Part5-Plugin">第五章：框架剥离与独立插件打包实战</a></li>
+<li><a href="/2026/03/25/GAS-Part5-Plugin/" title="【第五章】沉淀与升华：GAS 框架的插件化封装">第五章：框架剥离与独立插件打包实战</a></li>
 </ul>
 <blockquote>
 <p>注：点击上方链接进入对应章节查看详细的蓝图截图与 C++ 源码分析。</p>
@@ -137,7 +137,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn63m75c0004l0vn9iehehsw" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn63sr15001fq0vnh64aevz9" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -154,9 +154,13 @@
     <article id="post-GAS-Part5-Plugin" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2026/03/25/GAS-Part5-Plugin/" class="article-date">
-  <time class="dt-published" datetime="2026-03-25T13:41:35.000Z" itemprop="datePublished">2026-03-25</time>
+  <time class="dt-published" datetime="2026-03-25T08:00:00.000Z" itemprop="datePublished">2026-03-25</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%BD%9C%E5%93%81%E9%9B%86%E5%B1%95%E7%A4%BA/">作品集展示</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -165,7 +169,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2026/03/25/GAS-Part5-Plugin/">GAS-Part5-Plugin</a>
+      <a class="p-name article-title" href="/2026/03/25/GAS-Part5-Plugin/">【第五章】沉淀与升华：GAS 框架的插件化封装</a>
     </h1>
   
 
@@ -173,14 +177,29 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        
+        <p>在完成了整个底层基建、技能配置、动态 UI 绑定以及目标数据提取的闭环后，这套轻量级的 GAS 框架已经具备了很强的实战价值。为了将其打造成一个真正意义上的商业级可复用资产，我决定在最后一章将它进行插件化封装。<br><br><br><br></p>
+<h2 id="1-核心资产的安全迁移"><a href="#1-核心资产的安全迁移" class="headerlink" title="1. 核心资产的安全迁移"></a>1. 核心资产的安全迁移</h2><p>在 UE5 中，将项目级别的资产提取为插件的核心在于路径的平滑过渡。为了防止底层 C++ 与蓝图之间的强引用断裂，我采用了极其严格的安全迁移标准。</p>
+<p><img src="/images/plugin1.png"></p>
+<center>图 1： 核心资产成功迁移至独立插件目录</center>
+
+<p>我首先创建了一个名为 WyGasFramework 的空模板插件，随后将前期编写的基础属性集、技能基类、动态 UI 容器以及蓝图函数库等核心文件统统迁移至插件的内容目录中。迁移完成后，我通过引擎自带的重定向器修复功能，刷新了所有底层的指针路径，确保整个框架在脱离原项目后依然能够无缝运转。<br><br></p>
+<h2 id="2-插件打包与跨项目部署"><a href="#2-插件打包与跨项目部署" class="headerlink" title="2. 插件打包与跨项目部署"></a>2. 插件打包与跨项目部署</h2><p>资产就位后，接下来就是将其打包为独立的模块。我在引擎的插件管理器中选中了这套框架，并执行了打包操作。系统自动剥离了原项目的零散业务逻辑，将这套纯粹的底层战斗框架编译成了一个极其轻量级的独立包。</p>
+<p>对于任何全新的 UE5 项目，我只需要将这个打包好的文件夹拖入新项目的插件目录下。重启引擎后，即可在插件列表中搜索并勾选启用这套系统。</p>
+<p><img src="/images/plugin2.png"></p>
+<center>图 2： 在新项目中成功挂载并启用独立插件</center>
+
+<p>启用之后，新角色就能瞬间无缝接入完整的 GAS 驱动能力，包括自动生成动态技能框、处理消耗与冷却，以及标准的伤害目标提取闭环。</p>
+<p>这不仅极大地缩短了新项目的研发周期，也是对我这段时间学习引擎底层架构交出的一份详细记录。至此，我的这套 UE5 技能系统全记录正式完结。<br><br></p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/25/GAS-Part5-Plugin/" data-id="cmn63m75d0009l0vncza842p2" data-title="GAS-Part5-Plugin" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/25/GAS-Part5-Plugin/" data-id="cmn63sr14001eq0vn2g3pb1aw" data-title="【第五章】沉淀与升华：GAS 框架的插件化封装" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GAS/" rel="tag">GAS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UE5/" rel="tag">UE5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" rel="tag">作品集</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+
     </footer>
   </div>
   
@@ -255,7 +274,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/25/GAS-Part4-TargetData-Damage/" data-id="cmn63m75c0006l0vn6bfsf0nv" data-title="【第四章】TargetData 目标提取与伤害输出闭环" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/25/GAS-Part4-TargetData-Damage/" data-id="cmn63sr0z0001q0vn6n4nfemw" data-title="【第四章】TargetData 目标提取与伤害输出闭环" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -376,7 +395,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part3-Attribute-UI/" data-id="cmn63m75a0001l0vnfhtt0c6h" data-title="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part3-Attribute-UI/" data-id="cmn63sr110005q0vn355taxup" data-title="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -484,7 +503,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmn63m75c0005l0vn7or3gi0t" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmn63sr110004q0vnf8vw8wis" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -563,7 +582,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/" data-id="cmn63m7580000l0vn2w6rhbh0" data-title="【第一章】GAS 底层基建与 C++ 初始化实践" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/" data-id="cmn63sr0y0000q0vnc48i4vl8" data-title="【第一章】GAS 底层基建与 C++ 初始化实践" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -629,7 +648,7 @@
       <ul>
         
           <li>
-            <a href="/2026/03/25/GAS-Part5-Plugin/">GAS-Part5-Plugin</a>
+            <a href="/2026/03/25/GAS-Part5-Plugin/">【第五章】沉淀与升华：GAS 框架的插件化封装</a>
           </li>
         
           <li>
