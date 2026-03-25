@@ -6,17 +6,17 @@
   
   <title>【第五章】沉淀与升华：GAS 框架的插件化封装 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="在完成了整个底层基建、技能配置、动态 UI 绑定以及目标数据提取的闭环后，这套轻量级的 GAS 框架已经具备了很强的实战价值。为了将其打造成一个真正意义上的商业级可复用资产，我决定在最后一章将它进行插件化封装。 1. 核心资产的安全迁移在 UE5 中，将项目级别的资产提取为插件的核心在于路径的平滑过渡。为了防止底层 C++ 与蓝图之间的强引用断裂，我采用了极其严格的安全迁移标准。  图 1： 核心">
+  <meta name="description" content="在完成了整个底层基建、技能配置、动态 UI 绑定以及目标数据提取的闭环后，这套轻量级的 GAS 框架已经具备了一定完整性。为了将其打造成一个真正意义上的可复用资产，我决定在最后一章将它进行插件化封装。 1. 核心资产的安全迁移在 UE5 中，将项目级别的资产提取为插件的核心在于路径的平滑过渡。为了防止底层 C++ 与蓝图之间的强引用断裂，我采用了严谨的安全迁移标准。  图 1： 核心资产成功迁移至">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【第五章】沉淀与升华：GAS 框架的插件化封装">
 <meta property="og:url" content="https://wyws1218.github.io/2026/03/25/GAS-Part5-Plugin/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="在完成了整个底层基建、技能配置、动态 UI 绑定以及目标数据提取的闭环后，这套轻量级的 GAS 框架已经具备了很强的实战价值。为了将其打造成一个真正意义上的商业级可复用资产，我决定在最后一章将它进行插件化封装。 1. 核心资产的安全迁移在 UE5 中，将项目级别的资产提取为插件的核心在于路径的平滑过渡。为了防止底层 C++ 与蓝图之间的强引用断裂，我采用了极其严格的安全迁移标准。  图 1： 核心">
+<meta property="og:description" content="在完成了整个底层基建、技能配置、动态 UI 绑定以及目标数据提取的闭环后，这套轻量级的 GAS 框架已经具备了一定完整性。为了将其打造成一个真正意义上的可复用资产，我决定在最后一章将它进行插件化封装。 1. 核心资产的安全迁移在 UE5 中，将项目级别的资产提取为插件的核心在于路径的平滑过渡。为了防止底层 C++ 与蓝图之间的强引用断裂，我采用了严谨的安全迁移标准。  图 1： 核心资产成功迁移至">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://wyws1218.github.io/images/plugin1.png">
 <meta property="og:image" content="https://wyws1218.github.io/images/plugin2.png">
 <meta property="article:published_time" content="2026-03-25T08:00:00.000Z">
-<meta property="article:modified_time" content="2026-03-25T13:52:40.412Z">
+<meta property="article:modified_time" content="2026-03-25T14:52:09.188Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="UE5">
 <meta property="article:tag" content="C++">
@@ -107,8 +107,8 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>在完成了整个底层基建、技能配置、动态 UI 绑定以及目标数据提取的闭环后，这套轻量级的 GAS 框架已经具备了很强的实战价值。为了将其打造成一个真正意义上的商业级可复用资产，我决定在最后一章将它进行插件化封装。<br><br><br><br></p>
-<h2 id="1-核心资产的安全迁移"><a href="#1-核心资产的安全迁移" class="headerlink" title="1. 核心资产的安全迁移"></a>1. 核心资产的安全迁移</h2><p>在 UE5 中，将项目级别的资产提取为插件的核心在于路径的平滑过渡。为了防止底层 C++ 与蓝图之间的强引用断裂，我采用了极其严格的安全迁移标准。</p>
+        <p>在完成了整个底层基建、技能配置、动态 UI 绑定以及目标数据提取的闭环后，这套轻量级的 GAS 框架已经具备了一定完整性。为了将其打造成一个真正意义上的可复用资产，我决定在最后一章将它进行插件化封装。<br><br></p>
+<h2 id="1-核心资产的安全迁移"><a href="#1-核心资产的安全迁移" class="headerlink" title="1. 核心资产的安全迁移"></a>1. 核心资产的安全迁移</h2><p>在 UE5 中，将项目级别的资产提取为插件的核心在于路径的平滑过渡。为了防止底层 C++ 与蓝图之间的强引用断裂，我采用了严谨的安全迁移标准。</p>
 <p><img src="/images/plugin1.png"></p>
 <center>图 1： 核心资产成功迁移至独立插件目录</center>
 
@@ -119,12 +119,12 @@
 <center>图 2： 在新项目中成功挂载并启用独立插件</center>
 
 <p>启用之后，新角色就能瞬间无缝接入完整的 GAS 驱动能力，包括自动生成动态技能框、处理消耗与冷却，以及标准的伤害目标提取闭环。</p>
-<p>这不仅极大地缩短了新项目的研发周期，也是对我这段时间学习引擎底层架构交出的一份详细记录。至此，我的这套 UE5 技能系统全记录正式完结。<br><br></p>
+<p>这不仅极大地缩短了其他同类型Demo的开发周期，也是对我这段时间学习引擎底层架构交出的一份详细记录。至此，我的这套 UE5 技能系统全记录正式完结。<br><br></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/25/GAS-Part5-Plugin/" data-id="cmn63sr14001eq0vn2g3pb1aw" data-title="【第五章】沉淀与升华：GAS 框架的插件化封装" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/25/GAS-Part5-Plugin/" data-id="cmn65zbm80006l4vnfhed0c3y" data-title="【第五章】沉淀与升华：GAS 框架的插件化封装" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
