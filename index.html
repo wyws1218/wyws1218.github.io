@@ -137,7 +137,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn5pvcqj001ef4vn853vei21" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn62l5qi0014icvnbz4k8jy6" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -197,11 +197,27 @@
 
 <p>由于在第一章的底层基建中，我让玩家和敌人都继承自同一个 C++ 基类，因此它们天生自带同一套规范的属性集。在这里，我直接从命中目标身上提取出 Ability System Component，并读取了其当前的 Health 属性值打印到屏幕上。</p>
 <p>在实际运行测试中，每次释放攻击射线命中敌人，屏幕上都会实时打印出敌人扣减 20 点后的剩余生命值。这标志着从按键输入、UI 动态响应、射线检测、目标提取，再到最终的底层 Attribute 数值真实扣除，整个基于 GAS 的底层战斗框架已经彻底跑通。<br><br></p>
+<h2 id="4-动态标签与实例化策略-可复用技能框）"><a href="#4-动态标签与实例化策略-可复用技能框）" class="headerlink" title="4. 动态标签与实例化策略(可复用技能框）"></a>4. 动态标签与实例化策略(可复用技能框）</h2><p>在实现技能 UI 复用的过程中，我遇到了 GAS 框架中非常经典的两个底层陷阱。通过排查和解决这些问题，我对数据驱动和面向对象架构有了更深的理解。</p>
+<p>第一个问题是标签的层级触发与硬编码逻辑。起初当释放攻击技能时，冲刺技能的图标也会跟着触发冷却遮罩。这是因为两个插槽的 UI 蓝图都在死板地监听同一个父类冷却标签。为了彻底实现插槽的泛型化，我在技能基类中提取了专属的冷却标签变量。</p>
+<p><img src="/images/target4.png"></p>
+<center>图 4： 彻底解除硬编码实现动态读取冷却标签</center>
+
+<p>在 UI 插槽的初始化逻辑中，我将其修改为从当前绑定的技能实体中动态读取这个专属标签。这样一来，冲刺插槽只监听冲刺标签，攻击插槽只监听攻击标签，完美解决了多个技能互相干扰的逻辑漏洞。</p>
+<p>第二个问题是实例化策略导致的生命周期丢失。在修复了标签干扰后，我发现技能确实进入了冷却，但 UI 上的倒计时数字却始终为空白。经过深入的底层逻辑排查，我定位到了 GAS 技能的默认生命周期设置。</p>
+<p><img src="/images/target5.png"></p>
+<center>图 5： 修改技能实例化策略保证实体存活</center>
+
+<p>GAS 中每次新建技能实例时，默认的 Instancing Policy 是 Instanced per Execution。这意味着技能一旦执行完毕调用 End Ability 后，其在内存中的实体就会被立即销毁。而我的 UI 计时器还在持续向这个已经被销毁的实体查询剩余冷却时间，自然只能得到零秒的返回结果。</p>
+<p>将实例化策略修改为 Instanced per Actor 后，技能实体会在角色初始化时生成并伴随角色的整个生命周期。此时 UI 便能稳定地获取到技能的完整数据状态。</p>
+<p><img src="/images/target6.png"></p>
+<center>图 6： 彻底跑通的独立技能冷却与 UI 动态复用</center>
+
+<p>通过这一系列底层机制的梳理与重构，这套 UI 框架真正具备了商业项目的健壮性。不论未来在数据表中添加多少种花样繁多的新技能，这套系统都能在零代码修改的前提下，完美实现数据的自动绑定与表现层的独立剥离。<br><br></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/25/GAS-Part4-TargetData-Damage/" data-id="cmn5pvcqg0004f4vnb1pk4ox9" data-title="【第四章】TargetData 目标提取与伤害输出闭环" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/25/GAS-Part4-TargetData-Damage/" data-id="cmn62l5qf0004icvnfm2j266a" data-title="【第四章】TargetData 目标提取与伤害输出闭环" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -322,7 +338,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part3-Attribute-UI/" data-id="cmn5pvcqe0001f4vn4le706ur" data-title="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part3-Attribute-UI/" data-id="cmn62l5qi0013icvn1x8qcfmb" data-title="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -430,7 +446,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmn5pvcqc0000f4vnfyn6ef0c" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmn62l5qd0001icvnbsj78v8b" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -509,7 +525,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/" data-id="cmn5pvcqg0005f4vn50l20dnh" data-title="【第一章】GAS 底层基建与 C++ 初始化实践" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/" data-id="cmn62l5qc0000icvnf3nxgxyl" data-title="【第一章】GAS 底层基建与 C++ 初始化实践" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
