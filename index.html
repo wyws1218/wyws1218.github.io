@@ -137,7 +137,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn5mijnf0014rcvndzw6d8fb" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn5pvcqj001ef4vn853vei21" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -154,7 +154,7 @@
     <article id="post-GAS-Part4-TargetData-Damage" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2026/03/25/GAS-Part4-TargetData-Damage/" class="article-date">
-  <time class="dt-published" datetime="2026-03-25T06:00:00.000Z" itemprop="datePublished">2026-03-25</time>
+  <time class="dt-published" datetime="2026-03-25T07:00:00.000Z" itemprop="datePublished">2026-03-25</time>
 </a>
     
   <div class="article-category">
@@ -178,17 +178,30 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <p>在上一章中，我搭建了一套完全由数据驱动的动态技能 UI 框架。为了验证这套框架的高复用性，同时引出 GAS 中至关重要的伤害结算机制，我决定创建一个极简的攻击技能。这个技能不需要复杂的动作与特效，它的核心任务是跑通 TargetData 目标提取与伤害输出的网络闭环。<br><br></p>
-<h2 id="1-极简攻击技能与-UI-自动复用"><a href="#1-极简攻击技能与-UI-自动复用" class="headerlink" title="1. 极简攻击技能与 UI 自动复用"></a>1. 极简攻击技能与 UI 自动复用</h2><p>为了让测试逻辑尽可能清晰，我新建了一个基础的 GameplayAbility 蓝图类，作为本次测试的攻击技能。</p>
+<h2 id="1-数据驱动验证：零代码新增技能-UI"><a href="#1-数据驱动验证：零代码新增技能-UI" class="headerlink" title="1. 数据驱动验证：零代码新增技能 UI"></a>1. 数据驱动验证：零代码新增技能 UI</h2><p>为了让测试逻辑尽可能清晰，我新建了一个基础的 GameplayAbility 蓝图类 GA_SimpleAttack 作为本次测试的攻击技能。我仅仅是在玩家角色的初始化环节，将这个新技能类赋予了角色，并在技能基类中为其配置了专属的冷却标签与技能名称。</p>
 <p><img src="/images/target1.png"></p>
-<center><b>图 1： 配置基础攻击技能与冷却消耗</b></center>
+<center>图 1： UI 技能插槽的全自动扩展</center>
 
-<p>在这个新技能的详情面板中，我只需像之前配置冲刺一样，为它分配专属的冷却标签和消耗效果。</p>
-<p>当我将这个新技能的类通过初始化节点赋予给角色后，不需要对 UI 蓝图做任何一行代码的修改，主界面的技能容器就全自动读取到了这个新技能。当我运行游戏时，屏幕上自动生成了攻击技能的插槽图标，并且按键触发后的冷却倒计时与黑色遮罩全部完美生效。这就从实战角度证明了这套 UI 框架完全脱离了硬编码，真正实现了开箱即用的高复用性。<br><br></p>
+<p>当我运行游戏时：主界面的技能容器全自动读取到了这个新技能，并完美生成了第二个技能插槽，上面精准地显示着“攻击”字样。在这个过程中，我没有对 UI 的蓝图连线进行任何一处的修改。这从应用角度证明了这套 UI 架构完全脱离了硬编码，真正实现了开箱即用与高度复用。<br><br></p>
+<h2 id="2-射线检测与目标数据提取"><a href="#2-射线检测与目标数据提取" class="headerlink" title="2. 射线检测与目标数据提取"></a>2. 射线检测与目标数据提取</h2><p>有了技能实体，接下来需要在事件图表里实现具体的攻击判定逻辑。为了保持逻辑极简并聚焦于框架本身，我使用了射线检测来模拟攻击范围。</p>
+<p><img src="/images/target2.png"></p>
+<center>图 2： 射线检测与生成 TargetData</center>
+
+<p>在蓝图中，我通过获取角色当前位置作为起点，并提取角色正前方的朝向向量乘以 1000 作为终点，以此构建了一条长达 10 米的攻击判定线。</p>
+<p>当射线成功命中物体后，最核心的一步是调用 AbilityTargetDataFromHitResult 节点。在 GAS 的底层设计里，纯粹的物理碰撞信息是无法直接被技能系统识别和传递的。这个节点的作用，就是将物理的命中结果提取出来，打包封装成系统专用的 TargetData 数据格式。</p>
+<p>这种设计彻底解耦了判定方式与后续逻辑。将来无论是把单体射线改成球形检测还是范围爆炸，只需替换生成 TargetData 的节点即可，后续的数据下发流程无需进行任何变动。<br><br></p>
+<h2 id="3-伤害下发与数值验证闭环"><a href="#3-伤害下发与数值验证闭环" class="headerlink" title="3. 伤害下发与数值验证闭环"></a>3. 伤害下发与数值验证闭环</h2><p>在成功提取 TargetData 后，紧接着就是将伤害实质性地下发给受击者。我调用了 ApplyGameplayEffectToTarget 节点，将之前配置好的瞬间扣血 GameplayEffect 与目标数据一并提交给系统。</p>
+<p>为了直观验证敌人的底层数据是否真正受到了影响，我在应用伤害之后加入了一段测试逻辑。</p>
+<p><img src="/images/target3.png"></p>
+<center>图 3： 提取敌人属性集并验证生命值变化</center>
+
+<p>由于在第一章的底层基建中，我让玩家和敌人都继承自同一个 C++ 基类，因此它们天生自带同一套规范的属性集。在这里，我直接从命中目标身上提取出 Ability System Component，并读取了其当前的 Health 属性值打印到屏幕上。</p>
+<p>在实际运行测试中，每次释放攻击射线命中敌人，屏幕上都会实时打印出敌人扣减 20 点后的剩余生命值。这标志着从按键输入、UI 动态响应、射线检测、目标提取，再到最终的底层 Attribute 数值真实扣除，整个基于 GAS 的底层战斗框架已经彻底跑通。<br><br></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/25/GAS-Part4-TargetData-Damage/" data-id="cmn5mijne0013rcvnhjm3eom1" data-title="【第四章】TargetData 目标提取与伤害输出闭环" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/25/GAS-Part4-TargetData-Damage/" data-id="cmn5pvcqg0004f4vnb1pk4ox9" data-title="【第四章】TargetData 目标提取与伤害输出闭环" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -309,7 +322,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part3-Attribute-UI/" data-id="cmn5mijnb0004rcvnhldsb9xz" data-title="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part3-Attribute-UI/" data-id="cmn5pvcqe0001f4vn4le706ur" data-title="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -417,7 +430,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmn5mijn90001rcvnfblu300t" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmn5pvcqc0000f4vnfyn6ef0c" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -496,7 +509,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/" data-id="cmn5mijn80000rcvnhvls9cc3" data-title="【第一章】GAS 底层基建与 C++ 初始化实践" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/" data-id="cmn5pvcqg0005f4vn50l20dnh" data-title="【第一章】GAS 底层基建与 C++ 初始化实践" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
