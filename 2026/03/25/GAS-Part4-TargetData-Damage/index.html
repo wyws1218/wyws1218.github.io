@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>【第四章】TargetData 目标提取与伤害输出闭环 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="在上一章中，我搭建了一套完全由数据驱动的动态技能 UI 框架。为了验证这套框架的高复用性，同时引出 GAS 中至关重要的伤害结算机制，我决定创建一个极简的攻击技能。这个技能不需要复杂的动作与特效，它的核心任务是跑通 TargetData 目标提取与伤害输出的网络闭环。 1. 数据驱动验证：零代码新增技能 UI为了让测试逻辑尽可能清晰，我新建了一个基础的 GameplayAbility 蓝图类 GA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【第四章】TargetData 目标提取与伤害输出闭环">
+<meta property="og:url" content="https://wyws1218.github.io/2026/03/25/GAS-Part4-TargetData-Damage/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在上一章中，我搭建了一套完全由数据驱动的动态技能 UI 框架。为了验证这套框架的高复用性，同时引出 GAS 中至关重要的伤害结算机制，我决定创建一个极简的攻击技能。这个技能不需要复杂的动作与特效，它的核心任务是跑通 TargetData 目标提取与伤害输出的网络闭环。 1. 数据驱动验证：零代码新增技能 UI为了让测试逻辑尽可能清晰，我新建了一个基础的 GameplayAbility 蓝图类 GA">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wyws1218.github.io/images/target1.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/target2.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/target3.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/target4.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/target5.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/target6.png">
+<meta property="article:published_time" content="2026-03-25T07:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-25T13:19:33.563Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="UE5">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="GAS">
+<meta property="article:tag" content="作品集">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wyws1218.github.io/images/target1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://wyws1218.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-GAS-Part4-TargetData-Damage" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/03/25/GAS-Part4-TargetData-Damage/" class="article-date">
+  <time class="dt-published" datetime="2026-03-25T07:00:00.000Z" itemprop="datePublished">2026-03-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%BD%9C%E5%93%81%E9%9B%86%E5%B1%95%E7%A4%BA/">作品集展示</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      【第四章】TargetData 目标提取与伤害输出闭环
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上一章中，我搭建了一套完全由数据驱动的动态技能 UI 框架。为了验证这套框架的高复用性，同时引出 GAS 中至关重要的伤害结算机制，我决定创建一个极简的攻击技能。这个技能不需要复杂的动作与特效，它的核心任务是跑通 TargetData 目标提取与伤害输出的网络闭环。<br><br></p>
+<h2 id="1-数据驱动验证：零代码新增技能-UI"><a href="#1-数据驱动验证：零代码新增技能-UI" class="headerlink" title="1. 数据驱动验证：零代码新增技能 UI"></a>1. 数据驱动验证：零代码新增技能 UI</h2><p>为了让测试逻辑尽可能清晰，我新建了一个基础的 GameplayAbility 蓝图类 GA_SimpleAttack 作为本次测试的攻击技能。我仅仅是在玩家角色的初始化环节，将这个新技能类赋予了角色，并在技能基类中为其配置了专属的冷却标签与技能名称。</p>
+<p><img src="/images/target1.png"></p>
+<center>图 1： UI 技能插槽的全自动扩展</center>
+
+<p>当我运行游戏时：主界面的技能容器全自动读取到了这个新技能，并完美生成了第二个技能插槽，上面精准地显示着“攻击”字样。在这个过程中，我没有对 UI 的蓝图连线进行任何一处的修改。这从应用角度证明了这套 UI 架构完全脱离了硬编码，真正实现了开箱即用与高度复用。<br><br></p>
+<h2 id="2-射线检测与目标数据提取"><a href="#2-射线检测与目标数据提取" class="headerlink" title="2. 射线检测与目标数据提取"></a>2. 射线检测与目标数据提取</h2><p>有了技能实体，接下来需要在事件图表里实现具体的攻击判定逻辑。为了保持逻辑极简并聚焦于框架本身，我使用了射线检测来模拟攻击范围。</p>
+<p><img src="/images/target2.png"></p>
+<center>图 2： 射线检测与生成 TargetData</center>
+
+<p>在蓝图中，我通过获取角色当前位置作为起点，并提取角色正前方的朝向向量乘以 1000 作为终点，以此构建了一条长达 10 米的攻击判定线。</p>
+<p>当射线成功命中物体后，最核心的一步是调用 AbilityTargetDataFromHitResult 节点。在 GAS 的底层设计里，纯粹的物理碰撞信息是无法直接被技能系统识别和传递的。这个节点的作用，就是将物理的命中结果提取出来，打包封装成系统专用的 TargetData 数据格式。</p>
+<p>这种设计彻底解耦了判定方式与后续逻辑。将来无论是把单体射线改成球形检测还是范围爆炸，只需替换生成 TargetData 的节点即可，后续的数据下发流程无需进行任何变动。<br><br></p>
+<h2 id="3-伤害下发与数值验证闭环"><a href="#3-伤害下发与数值验证闭环" class="headerlink" title="3. 伤害下发与数值验证闭环"></a>3. 伤害下发与数值验证闭环</h2><p>在成功提取 TargetData 后，紧接着就是将伤害实质性地下发给受击者。我调用了 ApplyGameplayEffectToTarget 节点，将之前配置好的瞬间扣血 GameplayEffect 与目标数据一并提交给系统。</p>
+<p>为了直观验证敌人的底层数据是否真正受到了影响，我在应用伤害之后加入了一段测试逻辑。</p>
+<p><img src="/images/target3.png"></p>
+<center>图 3： 提取敌人属性集并验证生命值变化</center>
+
+<p>由于在第一章的底层基建中，我让玩家和敌人都继承自同一个 C++ 基类，因此它们天生自带同一套规范的属性集。在这里，我直接从命中目标身上提取出 Ability System Component，并读取了其当前的 Health 属性值打印到屏幕上。</p>
+<p>在实际运行测试中，每次释放攻击射线命中敌人，屏幕上都会实时打印出敌人扣减 20 点后的剩余生命值。这标志着从按键输入、UI 动态响应、射线检测、目标提取，再到最终的底层 Attribute 数值真实扣除，整个基于 GAS 的底层战斗框架已经彻底跑通。<br><br></p>
+<h2 id="4-动态标签与实例化策略-可复用技能框）"><a href="#4-动态标签与实例化策略-可复用技能框）" class="headerlink" title="4. 动态标签与实例化策略(可复用技能框）"></a>4. 动态标签与实例化策略(可复用技能框）</h2><p>在实现技能 UI 复用的过程中，我遇到了 GAS 框架中非常经典的两个底层陷阱。通过排查和解决这些问题，我对数据驱动和面向对象架构有了更深的理解。</p>
+<p>第一个问题是标签的层级触发与硬编码逻辑。起初当释放攻击技能时，冲刺技能的图标也会跟着触发冷却遮罩。这是因为两个插槽的 UI 蓝图都在死板地监听同一个父类冷却标签。为了彻底实现插槽的泛型化，我在技能基类中提取了专属的冷却标签变量。</p>
+<p><img src="/images/target4.png"></p>
+<center>图 4： 彻底解除硬编码实现动态读取冷却标签</center>
+
+<p>在 UI 插槽的初始化逻辑中，我将其修改为从当前绑定的技能实体中动态读取这个专属标签。这样一来，冲刺插槽只监听冲刺标签，攻击插槽只监听攻击标签，完美解决了多个技能互相干扰的逻辑漏洞。</p>
+<p>第二个问题是实例化策略导致的生命周期丢失。在修复了标签干扰后，我发现技能确实进入了冷却，但 UI 上的倒计时数字却始终为空白。经过深入的底层逻辑排查，我定位到了 GAS 技能的默认生命周期设置。</p>
+<p><img src="/images/target5.png"></p>
+<center>图 5： 修改技能实例化策略保证实体存活</center>
+
+<p>GAS 中每次新建技能实例时，默认的 Instancing Policy 是 Instanced per Execution。这意味着技能一旦执行完毕调用 End Ability 后，其在内存中的实体就会被立即销毁。而我的 UI 计时器还在持续向这个已经被销毁的实体查询剩余冷却时间，自然只能得到零秒的返回结果。</p>
+<p>将实例化策略修改为 Instanced per Actor 后，技能实体会在角色初始化时生成并伴随角色的整个生命周期。此时 UI 便能稳定地获取到技能的完整数据状态。</p>
+<p><img src="/images/target6.png"></p>
+<center>图 6： 彻底跑通的独立技能冷却与 UI 动态复用</center>
+
+<p>通过这一系列底层机制的梳理与重构，这套 UI 框架真正具备了商业项目的健壮性。不论未来在数据表中添加多少种花样繁多的新技能，这套系统都能在零代码修改的前提下，完美实现数据的自动绑定与表现层的独立剥离。<br><br></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wyws1218.github.io/2026/03/25/GAS-Part4-TargetData-Damage/" data-id="cmn780ybe001e08vn8wcq7066" data-title="【第四章】TargetData 目标提取与伤害输出闭环" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GAS/" rel="tag">GAS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UE5/" rel="tag">UE5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" rel="tag">作品集</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2026/03/25/GAS-Part5-Plugin/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【第五章】GAS 框架的插件化封装
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2026/03/24/GAS-Part3-Attribute-UI/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BD%9C%E5%93%81%E9%9B%86%E5%B1%95%E7%A4%BA/">作品集展示</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GAS/" rel="tag">GAS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UE5/" rel="tag">UE5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" rel="tag">作品集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/GAS/" style="font-size: 10px;">GAS</a> <a href="/tags/UE5/" style="font-size: 10px;">UE5</a> <a href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" style="font-size: 10px;">作品集</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" style="font-size: 10px;">游戏开发</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">March 2026</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/03/25/GAS-Part5-Plugin/">【第五章】GAS 框架的插件化封装</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/25/GAS-Part4-TargetData-Damage/">【第四章】TargetData 目标提取与伤害输出闭环</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/24/GAS-Part3-Attribute-UI/">【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/24/GAS-Part2-Dash-Decoupling/">【第二章】冲刺技能 (Dash) 的实现与解耦</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/23/GAS-Part1-Initialization/">【第一章】GAS 底层基建与 C++ 初始化实践</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

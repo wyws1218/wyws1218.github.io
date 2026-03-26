@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="在完成了冲刺技能的物理位移与表现分离后，接下来我需要为技能引入消耗与冷却机制，并实现高度复用的 UI 绑定。这一切的基础，在于构建 GAS 的核心数据容器 AttributeSet。 1. C++ 构建基础属性集在 GAS 中，角色的血量、蓝量、耐力等所有数值都统一由 AttributeSet 进行管理。我创建了一个名为 UWyBasicAttributeSet 的 C++ 类，并在头文件中声明了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框">
+<meta property="og:url" content="https://wyws1218.github.io/2026/03/24/GAS-Part3-Attribute-UI/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在完成了冲刺技能的物理位移与表现分离后，接下来我需要为技能引入消耗与冷却机制，并实现高度复用的 UI 绑定。这一切的基础，在于构建 GAS 的核心数据容器 AttributeSet。 1. C++ 构建基础属性集在 GAS 中，角色的血量、蓝量、耐力等所有数值都统一由 AttributeSet 进行管理。我创建了一个名为 UWyBasicAttributeSet 的 C++ 类，并在头文件中声明了">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wyws1218.github.io/images/attr1.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/attr2.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/attr3.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/attr4.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/attr5.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/ui1.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/ui2.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/ui3.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/slot1.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/slot2.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/slot3.png">
+<meta property="article:published_time" content="2026-03-24T13:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-25T14:53:51.010Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="UE5">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="GAS">
+<meta property="article:tag" content="作品集">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wyws1218.github.io/images/attr1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://wyws1218.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-GAS-Part3-Attribute-UI" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/03/24/GAS-Part3-Attribute-UI/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T13:00:00.000Z" itemprop="datePublished">2026-03-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%BD%9C%E5%93%81%E9%9B%86%E5%B1%95%E7%A4%BA/">作品集展示</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在完成了冲刺技能的物理位移与表现分离后，接下来我需要为技能引入消耗与冷却机制，并实现高度复用的 UI 绑定。这一切的基础，在于构建 GAS 的核心数据容器 AttributeSet。<br><br></p>
+<h2 id="1-C-构建基础属性集"><a href="#1-C-构建基础属性集" class="headerlink" title="1. C++ 构建基础属性集"></a>1. C++ 构建基础属性集</h2><p>在 GAS 中，角色的血量、蓝量、耐力等所有数值都统一由 AttributeSet 进行管理。我创建了一个名为 UWyBasicAttributeSet 的 C++ 类，并在头文件中声明了耐力值与最大耐力值属性。</p>
+<p><img src="/images/attr1.png"></p>
+<center><b>图 1： C++ 定义耐力值属性</b></center>
+
+<p>在代码中，我使用 FGameplayAttributeData 结构体声明了 Stamina 和 MaxStamina。这是 GAS 专属的属性类型，它内置了基础值和当前值的计算逻辑，方便后续配合 Gameplay Effect 进行数值修改。</p>
+<p>为了提高开发效率，我引入了 ATTRIBUTE_ACCESSORS 宏。这个宏会自动为对应的属性生成 Get、Set 和 Init 函数，极大地减少了重复的样板代码编写工作。</p>
+<p>同时，作为多人联机框架，属性的网络同步是重中之重。我在 UPROPERTY 中专门配置了 ReplicatedUsing 参数。这保证了当服务器上的耐力值发生变化时，会自动触发客户端的 OnRep 回调函数，从而实现双端数值的精准同步。<br><br></p>
+<h2 id="2-技能消耗：配置-Gameplay-Effect"><a href="#2-技能消耗：配置-Gameplay-Effect" class="headerlink" title="2. 技能消耗：配置 Gameplay Effect"></a>2. 技能消耗：配置 Gameplay Effect</h2><p>在 GAS 框架中，修改角色属性绝不能直接去写减法逻辑代码，而是要严格通过 GameplayEffect 来处理所有数值变动。首先我创建了一个继承自 GameplayEffect 的蓝图类来专门处理冲刺的体力消耗。</p>
+<p><img src="/images/attr2.png"></p>
+<center><b>图 2： 创建处理消耗的 GameplayEffect</b></center>
+
+<p>打开这个资产，核心的数值扣除逻辑都在右侧的详情面板中完成，全程不需要连任何蓝图节点。</p>
+<p><img src="/images/attr3.png"></p>
+<center><b>图 3： 配置瞬间扣除 25 点耐力</b></center>
+
+<p>这里有两个关键的配置项：</p>
+<ol>
+<li>Duration Policy: 设置为 Instant。这代表该效果是一次性瞬间执行的，非常适合用来做技能的瞬间消耗逻辑。</li>
+<li>Modifiers: 我添加了一个修饰器，将目标属性指定为刚才在 C++ 里写的 WyBasicAttributeSet 里的 Stamina。修改操作选择 Add，具体数值设为 -25.0。这就实现了每次冲刺扣除 25 点耐力的效果。</li>
+</ol>
+<p>只要将这个资产配置到冲刺技能的 Cost 选项里，技能激活时，第一章里写过的 CommitAbilityCost 节点就会自动调用这个效果，并且底层会自动完成多端的网络同步。<br><br></p>
+<h2 id="3-耐力恢复：周期性效果与堆叠防错"><a href="#3-耐力恢复：周期性效果与堆叠防错" class="headerlink" title="3. 耐力恢复：周期性效果与堆叠防错"></a>3. 耐力恢复：周期性效果与堆叠防错</h2><p>有了瞬间扣除的机制，自然需要有持续恢复的逻辑。与冲刺的瞬间扣除不同，耐力的恢复是一个随时间线性增长的过程。因此我创建了另一个专门用于恢复耐力的 GameplayEffect。</p>
+<p><img src="/images/attr4.png"></p>
+<center><b>图 4： 配置持续恢复耐力的 GameplayEffect</b></center>
+
+<p>在这个资产的详情面板中，我使用了与消耗截然不同的配置策略，这里有几个非常关键的技术点：</p>
+<ol>
+<li>Duration Policy 与 Period：我将持续时间策略设置为 Infinite，代表这是一个无限持续的效果。同时开启了 Period，数值设为 0.033333，这意味着该效果会以每秒约 30 次的频率周期性执行。</li>
+<li>Modifiers：在修饰器中，我依然将目标属性指向 Stamina，修改操作为 Add，数值设为 0.2。结合上面的周期配置，角色每秒大约能平滑地恢复 6 点耐力。</li>
+<li>状态标签赋予：在 Components 中添加了 Target Tags 模块，在效果持续期间赋予角色 Status.Stamina.Regen 标签。这体现了标签驱动的优势，后续 UI 或者其他技能可以通过检测这个标签，立刻知道角色目前正处于耐力恢复状态。</li>
+<li>Stacking 堆叠限制：这是防范游戏数值崩坏的重要设置。我开启了堆叠控制，并将 Stack Limit Count 设为 1。这能绝对保证无论角色触发了多少次恢复逻辑，身上永远只会存在一层恢复效果，彻底杜绝了因为多次调用导致耐力回复速度叠加翻倍的 Bug。<br></li>
+</ol>
+<h2 id="4-技能冷却：标签驱动的倒计时"><a href="#4-技能冷却：标签驱动的倒计时" class="headerlink" title="4. 技能冷却：标签驱动的倒计时"></a>4. 技能冷却：标签驱动的倒计时</h2><p>处理完耐力消耗，接下来是技能的冷却机制。在 GAS 中，冷却同样是通过 GameplayEffect 来实现的，而且它的核心运转逻辑完全依赖于标签驱动。我创建了一个专门处理冲刺冷却的资产。</p>
+<p><img src="/images/attr5.png"></p>
+<center><b>图 5： 配置冲刺的冷却 GameplayEffect</b></center>
+
+<p>这个资产的配置逻辑非常简洁，主要通过两个核心设置来完成：</p>
+<ol>
+<li>Duration Policy: 设置为 Has Duration，并将时间标量设定为 2.0。这代表该效果会在角色身上持续存在 2 秒钟，也就是冲刺的固定冷却时间。</li>
+<li>Target Tags: 在组件配置中，我将目标标签指定为 Cooldown.Dash。这意味着在这 2 秒的持续时间内，系统会强制赋予角色这个冷却标签。</li>
+</ol>
+<p>底层运行闭环是这样的：当冲刺技能执行结束时，会调用之前在事件图表里写过的 CommitAbilityCooldown 节点，系统便会将这个两秒的冷却效果应用到角色身上。在此期间，如果玩家再次按下冲刺键，系统在激活前置条件检查时，一旦检测到角色身上带有 Cooldown.Dash 标签，就会直接拦截并拒绝激活技能。</p>
+<p>整个冷却过程不需要写任何传统的 Timer 计时器变量，也没有繁琐的逻辑判断代码，纯靠标签的赋予和移除来控制状态，彻底实现了干净的数据驱动。<br><br></p>
+<h2 id="5-动态技能-UI：整体架构与容器生成逻辑"><a href="#5-动态技能-UI：整体架构与容器生成逻辑" class="headerlink" title="5. 动态技能 UI：整体架构与容器生成逻辑"></a>5. 动态技能 UI：整体架构与容器生成逻辑</h2><p>为了让技能框实现完全的数据驱动和高复用性，我设计了一套层级分明的 UI 架构。整体思路是由 Controller 将主 HUD 放置在视口上，HUD 内部再嵌套负责技能布局的 Wy_AbilityContainer 和负责血条耐力的 Wy_PlayerStatus。最底层的逻辑是，技能容器会根据角色实际拥有的技能，动态生成对应的技能插槽 Wy_AbilitySlot。</p>
+<p><img src="/images/ui1.png"></p>
+<center><b>图 6： UI 蓝图层级架构展示</b></center>
+
+<p>打开技能容器 Wy_AbilityContainer 的事件图表，这里的核心任务是遍历角色身上的所有技能，并为它们逐一创建可视化的 UI 插槽。</p>
+<p><img src="/images/ui2.png"></p>
+<center><b>图 7： 延迟校验与获取技能句柄</b></center>
+
+<p>在 UI 构造事件触发时，我首先加入了一个 0.2 秒的延迟。这是一个非常实用的工程化防错技巧，因为客户端 UI 的创建速度往往快于角色内部 GAS 数据的初始化，直接获取极易导致空指针崩溃。安全校验通过后，我通过 Get All Abilities 节点提取了当前角色被赋予的所有技能句柄数组。</p>
+<p><img src="/images/ui3.png"></p>
+<center><b>图 8： 遍历生成插槽并完成布局堆叠</b></center>
+
+<p>拿到技能数组后，我使用 For Each Loop 节点进行遍历。每拿出一个技能句柄，就动态生成一个单独的 Wy_AbilitySlot 实例，并将当前的技能详细信息传递给它。最后，把生成的图标实例作为子节点添加进 Horizontal Box 水平盒容器中，并统一设置四周各 5 像素的间距，保证排版整洁。</p>
+<p>通过这套逻辑，不论角色在底层被赋予了多少个技能，UI 层都会全自动响应，横向排布出对应数量的技能图标。这彻底告别了在 UI 编辑器里手动拖拽拼凑按钮的低效开发模式。<br><br></p>
+<h2 id="6-核心插槽逻辑：基于数据驱动的高度复用"><a href="#6-核心插槽逻辑：基于数据驱动的高度复用" class="headerlink" title="6. 核心插槽逻辑：基于数据驱动的高度复用"></a>6. 核心插槽逻辑：基于数据驱动的高度复用</h2><p>在 UI 插槽 Wy_AbilitySlot 的内部逻辑中，看似写了很长的冷却代码，但这恰恰是实现完全复用的关键。因为在这个蓝图里，我没有任何一处硬编码去判断“当前是不是冲刺技能”，所有的数据都是动态读取的。</p>
+<p><img src="/images/slot1.png"></p>
+<center><b>图 9： 提取技能实体并绑定基础信息</b></center>
+
+<p>首先在初始化阶段，插槽接收到了外部容器传来的编号。我通过 Get Gameplay Ability from Spec Handle 节点，将这个编号还原成了真正的技能实体，并存为引用。紧接着，我将其转化为自定义的技能基类 WyAbilityBase，从中直接读取配置好的技能名称，并赋予给 UI 文本。这意味着无论传入的是冲刺、火球还是治疗，UI 都会全自动显示对应的名字。</p>
+<p><img src="/images/slot2.png"></p>
+<center><b>图 10： 标签驱动的异步冷却监听</b></center>
+
+<p>接下来是最核心的冷却解耦设计。我使用了 Wait Gameplay Tag Count Changed on Actor 这个自己封装的异步节点。它不需要用到事件 Tick，也不需要每帧去询问角色技能好了没有，而是静默监听角色身上的特定标签。</p>
+<p>这里的 Tag 引脚并没有直接写死冲刺的冷却标签，而是动态读取当前这个技能基类里配置的冷却标签。</p>
+<p><img src="/images/slot3.png"></p>
+<center><b>图 11： 遮罩控制与倒计时逻辑</b></center>
+
+<p>当系统监听到这个专属的冷却标签数量发生变化时：</p>
+<ol>
+<li>如果标签数量大于 0，说明技能刚进入冷却。系统会自动显示黑色的冷却遮罩，并开启一个 0.1 秒循环的定时器，用来实时刷新界面上的倒计时数字与扇形进度。</li>
+<li>如果标签数量变回 0，说明冷却结束。系统会立刻清理并销毁这个定时器，同时隐藏黑色遮罩，让技能图标重新亮起。</li>
+</ol>
+<p>正因为名字、图标、冷却标签、剩余时间等所有数据，都是从抽象的技能引用中提取出来的，所以这个 Widget 插槽做到了彻底的泛型化。将来哪怕游戏里新增了一百个新技能，我也只需要在数据表里配好它们的参数，UI 层就可以直接复用这套逻辑，不需要修改任何蓝图连线。<br><br></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part3-Attribute-UI/" data-id="cmn780ybb000408vn609c5qho" data-title="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GAS/" rel="tag">GAS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UE5/" rel="tag">UE5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" rel="tag">作品集</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2026/03/25/GAS-Part4-TargetData-Damage/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【第四章】TargetData 目标提取与伤害输出闭环
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2026/03/24/GAS-Part2-Dash-Decoupling/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【第二章】冲刺技能 (Dash) 的实现与解耦</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BD%9C%E5%93%81%E9%9B%86%E5%B1%95%E7%A4%BA/">作品集展示</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GAS/" rel="tag">GAS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UE5/" rel="tag">UE5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" rel="tag">作品集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/GAS/" style="font-size: 10px;">GAS</a> <a href="/tags/UE5/" style="font-size: 10px;">UE5</a> <a href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" style="font-size: 10px;">作品集</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" style="font-size: 10px;">游戏开发</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">March 2026</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/03/25/GAS-Part5-Plugin/">【第五章】GAS 框架的插件化封装</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/25/GAS-Part4-TargetData-Damage/">【第四章】TargetData 目标提取与伤害输出闭环</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/24/GAS-Part3-Attribute-UI/">【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/24/GAS-Part2-Dash-Decoupling/">【第二章】冲刺技能 (Dash) 的实现与解耦</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/23/GAS-Part1-Initialization/">【第一章】GAS 底层基建与 C++ 初始化实践</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

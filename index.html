@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://wyws1218.github.io/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://wyws1218.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-GAS-Project-Overview" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/03/22/GAS-Project-Overview/" class="article-date">
+  <time class="dt-published" datetime="2026-03-22T10:00:00.000Z" itemprop="datePublished">2026-03-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%BD%9C%E5%93%81%E9%9B%86%E5%B1%95%E7%A4%BA/">作品集展示</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/03/22/GAS-Project-Overview/">【项目总览】基于 UE5 GAS 的游戏技能框架</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="项目背景与演示"><a href="#项目背景与演示" class="headerlink" title="项目背景与演示"></a>项目背景与演示</h2><p>在类似 MOBA 与 MMO 游戏中，技能系统的可扩展性是核心痛点。我想要脱离庞杂的业务逻辑，从零开始使用 C++ 与蓝图混合开发的模式，搭建一套 GAS 底层框架。</p>
+<p>目前我已经将该框架的核心运行闭环打通，并逐步封装为独立可拔插的 UE5 插件。</p>
+<blockquote>
+<p>🔗 源码仓库：<a target="_blank" rel="noopener" href="https://github.com/wyws1218/GasUp">点击访问我的 GitHub 源码 gasup</a></p>
+</blockquote>
+<h2 id="核心工程亮点"><a href="#核心工程亮点" class="headerlink" title="核心工程亮点"></a>核心工程亮点</h2><ol>
+<li>C++ 底层基建与网络优化<ul>
+<li>在 BaseCharacter 中硬编码挂载 ASC，确保最高运行效率。</li>
+<li>为玩家与敌人区分了网络同步模式，从底层兼顾了预测精准度与服务器带宽性能。</li>
+</ul>
+</li>
+<li>技能逻辑与视听表现解耦<ul>
+<li>使用 Gameplay Ability 和 Task 节点处理纯逻辑。</li>
+<li>使用 Gameplay Cue 全权接管客户端的粒子特效、音效与模型显隐，实现严格的逻辑与表现分离。</li>
+</ul>
+</li>
+<li>数据驱动设计 告别硬编码<ul>
+<li>利用 Gameplay Effect 的 Cost 机制替代传统的逻辑判断，提升了代码可读性与策划配表自由度。</li>
+</ul>
+</li>
+<li>MVC 架构思考的沉淀<ul>
+<li>摒弃了将移动逻辑塞入 PlayerController 的做法，将状态收束至 Character，贯彻高内聚设计。</li>
+</ul>
+</li>
+</ol>
+<h2 id="详细技术沉淀-系列目录"><a href="#详细技术沉淀-系列目录" class="headerlink" title="详细技术沉淀 系列目录"></a>详细技术沉淀 系列目录</h2><p>这里记录了我在搭建这套 GAS 框架时的详细过程、源码解析以及踩坑记录：</p>
+<ul>
+<li><a href="/2026/03/23/GAS-Part1-Initialization/" title="【第一章】GAS 底层基建与 C++ 初始化实践">第一章：GAS 底层基建与 C++ 初始化实践</a></li>
+<li><a href="/2026/03/24/GAS-Part2-Dash-Decoupling/" title="【第二章】冲刺技能 (Dash) 的实现与解耦">第二章：冲刺技能实现、Task 运用与表现解耦</a></li>
+<li><a href="/2026/03/24/GAS-Part3-Attribute-UI/" title="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框">第三章：属性集构建与 UI 解耦：消耗、冷却与动态技能框</a></li>
+<li><a href="/2026/03/25/GAS-Part4-TargetData-Damage/" title="【第四章】TargetData 目标提取与伤害输出闭环">第四章：TargetData 目标提取与伤害输出闭环</a></li>
+<li><a href="/2026/03/25/GAS-Part5-Plugin/" title="【第五章】GAS 框架的插件化封装">第五章：框架剥离与独立插件打包实战</a></li>
+</ul>
+<blockquote>
+<p>注：点击上方链接进入对应章节查看详细的蓝图截图与 C++ 源码分析。</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmn780ybf001f08vnfeuehyh4" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GAS/" rel="tag">GAS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UE5/" rel="tag">UE5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" rel="tag">作品集</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-GAS-Part5-Plugin" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/03/25/GAS-Part5-Plugin/" class="article-date">
+  <time class="dt-published" datetime="2026-03-25T08:00:00.000Z" itemprop="datePublished">2026-03-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%BD%9C%E5%93%81%E9%9B%86%E5%B1%95%E7%A4%BA/">作品集展示</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/03/25/GAS-Part5-Plugin/">【第五章】GAS 框架的插件化封装</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在完成了整个底层基建、技能配置、动态 UI 绑定以及目标数据提取的闭环后，这套轻量级的 GAS 框架已经具备了一定完整性。为了将其打造成一个真正意义上的可复用资产，我决定在最后一章将它进行插件化封装。</p>
+<h2 id="1-核心资产的安全迁移"><a href="#1-核心资产的安全迁移" class="headerlink" title="1. 核心资产的安全迁移"></a>1. 核心资产的安全迁移</h2><p>在 UE5 中，将项目级别的资产提取为插件的核心在于路径的平滑过渡。为了防止底层 C++ 与蓝图之间的强引用断裂，我采用了严谨的安全迁移标准。</p>
+<p><img src="/images/plugin1.png"></p>
+<center>图 1： 核心资产成功迁移至独立插件目录</center>
+
+<p>我首先创建了一个名为 WyGasFramework 的空模板插件，随后将前期编写的基础属性集、技能基类、动态 UI 容器以及蓝图函数库等核心文件统统迁移至插件的内容目录中。迁移完成后，我通过引擎自带的重定向器修复功能，刷新了所有底层的指针路径，确保整个框架在脱离原项目后依然能够无缝运转。<br><br></p>
+<h2 id="2-插件打包与跨项目部署"><a href="#2-插件打包与跨项目部署" class="headerlink" title="2. 插件打包与跨项目部署"></a>2. 插件打包与跨项目部署</h2><p>资产就位后，接下来就是将其打包为独立的模块。我在引擎的插件管理器中选中了这套框架，并执行了打包操作。系统自动剥离了原项目的零散业务逻辑，将这套纯粹的底层战斗框架编译成了一个极其轻量级的独立包。</p>
+<p>对于任何全新的 UE5 项目，我只需要将这个打包好的文件夹拖入新项目的插件目录下。重启引擎后，即可在插件列表中搜索并勾选启用这套系统。</p>
+<p><img src="/images/plugin2.png"></p>
+<center>图 2： 在新项目中成功挂载并启用独立插件</center>
+
+<p>启用之后，新角色就能瞬间无缝接入完整的 GAS 驱动能力，包括自动生成动态技能框、处理消耗与冷却，以及标准的伤害目标提取闭环。</p>
+<p>这不仅极大地缩短了其他同类型Demo的开发周期，也是对我这段时间学习引擎底层架构交出的一份详细记录。至此，我的这套 UE5 技能系统全记录正式完结。<br><br></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wyws1218.github.io/2026/03/25/GAS-Part5-Plugin/" data-id="cmn780ybb000508vn7qxuek3b" data-title="【第五章】GAS 框架的插件化封装" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GAS/" rel="tag">GAS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UE5/" rel="tag">UE5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" rel="tag">作品集</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-GAS-Part4-TargetData-Damage" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/03/25/GAS-Part4-TargetData-Damage/" class="article-date">
+  <time class="dt-published" datetime="2026-03-25T07:00:00.000Z" itemprop="datePublished">2026-03-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%BD%9C%E5%93%81%E9%9B%86%E5%B1%95%E7%A4%BA/">作品集展示</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/03/25/GAS-Part4-TargetData-Damage/">【第四章】TargetData 目标提取与伤害输出闭环</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在上一章中，我搭建了一套完全由数据驱动的动态技能 UI 框架。为了验证这套框架的高复用性，同时引出 GAS 中至关重要的伤害结算机制，我决定创建一个极简的攻击技能。这个技能不需要复杂的动作与特效，它的核心任务是跑通 TargetData 目标提取与伤害输出的网络闭环。<br><br></p>
+<h2 id="1-数据驱动验证：零代码新增技能-UI"><a href="#1-数据驱动验证：零代码新增技能-UI" class="headerlink" title="1. 数据驱动验证：零代码新增技能 UI"></a>1. 数据驱动验证：零代码新增技能 UI</h2><p>为了让测试逻辑尽可能清晰，我新建了一个基础的 GameplayAbility 蓝图类 GA_SimpleAttack 作为本次测试的攻击技能。我仅仅是在玩家角色的初始化环节，将这个新技能类赋予了角色，并在技能基类中为其配置了专属的冷却标签与技能名称。</p>
+<p><img src="/images/target1.png"></p>
+<center>图 1： UI 技能插槽的全自动扩展</center>
+
+<p>当我运行游戏时：主界面的技能容器全自动读取到了这个新技能，并完美生成了第二个技能插槽，上面精准地显示着“攻击”字样。在这个过程中，我没有对 UI 的蓝图连线进行任何一处的修改。这从应用角度证明了这套 UI 架构完全脱离了硬编码，真正实现了开箱即用与高度复用。<br><br></p>
+<h2 id="2-射线检测与目标数据提取"><a href="#2-射线检测与目标数据提取" class="headerlink" title="2. 射线检测与目标数据提取"></a>2. 射线检测与目标数据提取</h2><p>有了技能实体，接下来需要在事件图表里实现具体的攻击判定逻辑。为了保持逻辑极简并聚焦于框架本身，我使用了射线检测来模拟攻击范围。</p>
+<p><img src="/images/target2.png"></p>
+<center>图 2： 射线检测与生成 TargetData</center>
+
+<p>在蓝图中，我通过获取角色当前位置作为起点，并提取角色正前方的朝向向量乘以 1000 作为终点，以此构建了一条长达 10 米的攻击判定线。</p>
+<p>当射线成功命中物体后，最核心的一步是调用 AbilityTargetDataFromHitResult 节点。在 GAS 的底层设计里，纯粹的物理碰撞信息是无法直接被技能系统识别和传递的。这个节点的作用，就是将物理的命中结果提取出来，打包封装成系统专用的 TargetData 数据格式。</p>
+<p>这种设计彻底解耦了判定方式与后续逻辑。将来无论是把单体射线改成球形检测还是范围爆炸，只需替换生成 TargetData 的节点即可，后续的数据下发流程无需进行任何变动。<br><br></p>
+<h2 id="3-伤害下发与数值验证闭环"><a href="#3-伤害下发与数值验证闭环" class="headerlink" title="3. 伤害下发与数值验证闭环"></a>3. 伤害下发与数值验证闭环</h2><p>在成功提取 TargetData 后，紧接着就是将伤害实质性地下发给受击者。我调用了 ApplyGameplayEffectToTarget 节点，将之前配置好的瞬间扣血 GameplayEffect 与目标数据一并提交给系统。</p>
+<p>为了直观验证敌人的底层数据是否真正受到了影响，我在应用伤害之后加入了一段测试逻辑。</p>
+<p><img src="/images/target3.png"></p>
+<center>图 3： 提取敌人属性集并验证生命值变化</center>
+
+<p>由于在第一章的底层基建中，我让玩家和敌人都继承自同一个 C++ 基类，因此它们天生自带同一套规范的属性集。在这里，我直接从命中目标身上提取出 Ability System Component，并读取了其当前的 Health 属性值打印到屏幕上。</p>
+<p>在实际运行测试中，每次释放攻击射线命中敌人，屏幕上都会实时打印出敌人扣减 20 点后的剩余生命值。这标志着从按键输入、UI 动态响应、射线检测、目标提取，再到最终的底层 Attribute 数值真实扣除，整个基于 GAS 的底层战斗框架已经彻底跑通。<br><br></p>
+<h2 id="4-动态标签与实例化策略-可复用技能框）"><a href="#4-动态标签与实例化策略-可复用技能框）" class="headerlink" title="4. 动态标签与实例化策略(可复用技能框）"></a>4. 动态标签与实例化策略(可复用技能框）</h2><p>在实现技能 UI 复用的过程中，我遇到了 GAS 框架中非常经典的两个底层陷阱。通过排查和解决这些问题，我对数据驱动和面向对象架构有了更深的理解。</p>
+<p>第一个问题是标签的层级触发与硬编码逻辑。起初当释放攻击技能时，冲刺技能的图标也会跟着触发冷却遮罩。这是因为两个插槽的 UI 蓝图都在死板地监听同一个父类冷却标签。为了彻底实现插槽的泛型化，我在技能基类中提取了专属的冷却标签变量。</p>
+<p><img src="/images/target4.png"></p>
+<center>图 4： 彻底解除硬编码实现动态读取冷却标签</center>
+
+<p>在 UI 插槽的初始化逻辑中，我将其修改为从当前绑定的技能实体中动态读取这个专属标签。这样一来，冲刺插槽只监听冲刺标签，攻击插槽只监听攻击标签，完美解决了多个技能互相干扰的逻辑漏洞。</p>
+<p>第二个问题是实例化策略导致的生命周期丢失。在修复了标签干扰后，我发现技能确实进入了冷却，但 UI 上的倒计时数字却始终为空白。经过深入的底层逻辑排查，我定位到了 GAS 技能的默认生命周期设置。</p>
+<p><img src="/images/target5.png"></p>
+<center>图 5： 修改技能实例化策略保证实体存活</center>
+
+<p>GAS 中每次新建技能实例时，默认的 Instancing Policy 是 Instanced per Execution。这意味着技能一旦执行完毕调用 End Ability 后，其在内存中的实体就会被立即销毁。而我的 UI 计时器还在持续向这个已经被销毁的实体查询剩余冷却时间，自然只能得到零秒的返回结果。</p>
+<p>将实例化策略修改为 Instanced per Actor 后，技能实体会在角色初始化时生成并伴随角色的整个生命周期。此时 UI 便能稳定地获取到技能的完整数据状态。</p>
+<p><img src="/images/target6.png"></p>
+<center>图 6： 彻底跑通的独立技能冷却与 UI 动态复用</center>
+
+<p>通过这一系列底层机制的梳理与重构，这套 UI 框架真正具备了商业项目的健壮性。不论未来在数据表中添加多少种花样繁多的新技能，这套系统都能在零代码修改的前提下，完美实现数据的自动绑定与表现层的独立剥离。<br><br></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wyws1218.github.io/2026/03/25/GAS-Part4-TargetData-Damage/" data-id="cmn780ybe001e08vn8wcq7066" data-title="【第四章】TargetData 目标提取与伤害输出闭环" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GAS/" rel="tag">GAS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UE5/" rel="tag">UE5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" rel="tag">作品集</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-GAS-Part3-Attribute-UI" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/03/24/GAS-Part3-Attribute-UI/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T13:00:00.000Z" itemprop="datePublished">2026-03-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%BD%9C%E5%93%81%E9%9B%86%E5%B1%95%E7%A4%BA/">作品集展示</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/03/24/GAS-Part3-Attribute-UI/">【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在完成了冲刺技能的物理位移与表现分离后，接下来我需要为技能引入消耗与冷却机制，并实现高度复用的 UI 绑定。这一切的基础，在于构建 GAS 的核心数据容器 AttributeSet。<br><br></p>
+<h2 id="1-C-构建基础属性集"><a href="#1-C-构建基础属性集" class="headerlink" title="1. C++ 构建基础属性集"></a>1. C++ 构建基础属性集</h2><p>在 GAS 中，角色的血量、蓝量、耐力等所有数值都统一由 AttributeSet 进行管理。我创建了一个名为 UWyBasicAttributeSet 的 C++ 类，并在头文件中声明了耐力值与最大耐力值属性。</p>
+<p><img src="/images/attr1.png"></p>
+<center><b>图 1： C++ 定义耐力值属性</b></center>
+
+<p>在代码中，我使用 FGameplayAttributeData 结构体声明了 Stamina 和 MaxStamina。这是 GAS 专属的属性类型，它内置了基础值和当前值的计算逻辑，方便后续配合 Gameplay Effect 进行数值修改。</p>
+<p>为了提高开发效率，我引入了 ATTRIBUTE_ACCESSORS 宏。这个宏会自动为对应的属性生成 Get、Set 和 Init 函数，极大地减少了重复的样板代码编写工作。</p>
+<p>同时，作为多人联机框架，属性的网络同步是重中之重。我在 UPROPERTY 中专门配置了 ReplicatedUsing 参数。这保证了当服务器上的耐力值发生变化时，会自动触发客户端的 OnRep 回调函数，从而实现双端数值的精准同步。<br><br></p>
+<h2 id="2-技能消耗：配置-Gameplay-Effect"><a href="#2-技能消耗：配置-Gameplay-Effect" class="headerlink" title="2. 技能消耗：配置 Gameplay Effect"></a>2. 技能消耗：配置 Gameplay Effect</h2><p>在 GAS 框架中，修改角色属性绝不能直接去写减法逻辑代码，而是要严格通过 GameplayEffect 来处理所有数值变动。首先我创建了一个继承自 GameplayEffect 的蓝图类来专门处理冲刺的体力消耗。</p>
+<p><img src="/images/attr2.png"></p>
+<center><b>图 2： 创建处理消耗的 GameplayEffect</b></center>
+
+<p>打开这个资产，核心的数值扣除逻辑都在右侧的详情面板中完成，全程不需要连任何蓝图节点。</p>
+<p><img src="/images/attr3.png"></p>
+<center><b>图 3： 配置瞬间扣除 25 点耐力</b></center>
+
+<p>这里有两个关键的配置项：</p>
+<ol>
+<li>Duration Policy: 设置为 Instant。这代表该效果是一次性瞬间执行的，非常适合用来做技能的瞬间消耗逻辑。</li>
+<li>Modifiers: 我添加了一个修饰器，将目标属性指定为刚才在 C++ 里写的 WyBasicAttributeSet 里的 Stamina。修改操作选择 Add，具体数值设为 -25.0。这就实现了每次冲刺扣除 25 点耐力的效果。</li>
+</ol>
+<p>只要将这个资产配置到冲刺技能的 Cost 选项里，技能激活时，第一章里写过的 CommitAbilityCost 节点就会自动调用这个效果，并且底层会自动完成多端的网络同步。<br><br></p>
+<h2 id="3-耐力恢复：周期性效果与堆叠防错"><a href="#3-耐力恢复：周期性效果与堆叠防错" class="headerlink" title="3. 耐力恢复：周期性效果与堆叠防错"></a>3. 耐力恢复：周期性效果与堆叠防错</h2><p>有了瞬间扣除的机制，自然需要有持续恢复的逻辑。与冲刺的瞬间扣除不同，耐力的恢复是一个随时间线性增长的过程。因此我创建了另一个专门用于恢复耐力的 GameplayEffect。</p>
+<p><img src="/images/attr4.png"></p>
+<center><b>图 4： 配置持续恢复耐力的 GameplayEffect</b></center>
+
+<p>在这个资产的详情面板中，我使用了与消耗截然不同的配置策略，这里有几个非常关键的技术点：</p>
+<ol>
+<li>Duration Policy 与 Period：我将持续时间策略设置为 Infinite，代表这是一个无限持续的效果。同时开启了 Period，数值设为 0.033333，这意味着该效果会以每秒约 30 次的频率周期性执行。</li>
+<li>Modifiers：在修饰器中，我依然将目标属性指向 Stamina，修改操作为 Add，数值设为 0.2。结合上面的周期配置，角色每秒大约能平滑地恢复 6 点耐力。</li>
+<li>状态标签赋予：在 Components 中添加了 Target Tags 模块，在效果持续期间赋予角色 Status.Stamina.Regen 标签。这体现了标签驱动的优势，后续 UI 或者其他技能可以通过检测这个标签，立刻知道角色目前正处于耐力恢复状态。</li>
+<li>Stacking 堆叠限制：这是防范游戏数值崩坏的重要设置。我开启了堆叠控制，并将 Stack Limit Count 设为 1。这能绝对保证无论角色触发了多少次恢复逻辑，身上永远只会存在一层恢复效果，彻底杜绝了因为多次调用导致耐力回复速度叠加翻倍的 Bug。<br></li>
+</ol>
+<h2 id="4-技能冷却：标签驱动的倒计时"><a href="#4-技能冷却：标签驱动的倒计时" class="headerlink" title="4. 技能冷却：标签驱动的倒计时"></a>4. 技能冷却：标签驱动的倒计时</h2><p>处理完耐力消耗，接下来是技能的冷却机制。在 GAS 中，冷却同样是通过 GameplayEffect 来实现的，而且它的核心运转逻辑完全依赖于标签驱动。我创建了一个专门处理冲刺冷却的资产。</p>
+<p><img src="/images/attr5.png"></p>
+<center><b>图 5： 配置冲刺的冷却 GameplayEffect</b></center>
+
+<p>这个资产的配置逻辑非常简洁，主要通过两个核心设置来完成：</p>
+<ol>
+<li>Duration Policy: 设置为 Has Duration，并将时间标量设定为 2.0。这代表该效果会在角色身上持续存在 2 秒钟，也就是冲刺的固定冷却时间。</li>
+<li>Target Tags: 在组件配置中，我将目标标签指定为 Cooldown.Dash。这意味着在这 2 秒的持续时间内，系统会强制赋予角色这个冷却标签。</li>
+</ol>
+<p>底层运行闭环是这样的：当冲刺技能执行结束时，会调用之前在事件图表里写过的 CommitAbilityCooldown 节点，系统便会将这个两秒的冷却效果应用到角色身上。在此期间，如果玩家再次按下冲刺键，系统在激活前置条件检查时，一旦检测到角色身上带有 Cooldown.Dash 标签，就会直接拦截并拒绝激活技能。</p>
+<p>整个冷却过程不需要写任何传统的 Timer 计时器变量，也没有繁琐的逻辑判断代码，纯靠标签的赋予和移除来控制状态，彻底实现了干净的数据驱动。<br><br></p>
+<h2 id="5-动态技能-UI：整体架构与容器生成逻辑"><a href="#5-动态技能-UI：整体架构与容器生成逻辑" class="headerlink" title="5. 动态技能 UI：整体架构与容器生成逻辑"></a>5. 动态技能 UI：整体架构与容器生成逻辑</h2><p>为了让技能框实现完全的数据驱动和高复用性，我设计了一套层级分明的 UI 架构。整体思路是由 Controller 将主 HUD 放置在视口上，HUD 内部再嵌套负责技能布局的 Wy_AbilityContainer 和负责血条耐力的 Wy_PlayerStatus。最底层的逻辑是，技能容器会根据角色实际拥有的技能，动态生成对应的技能插槽 Wy_AbilitySlot。</p>
+<p><img src="/images/ui1.png"></p>
+<center><b>图 6： UI 蓝图层级架构展示</b></center>
+
+<p>打开技能容器 Wy_AbilityContainer 的事件图表，这里的核心任务是遍历角色身上的所有技能，并为它们逐一创建可视化的 UI 插槽。</p>
+<p><img src="/images/ui2.png"></p>
+<center><b>图 7： 延迟校验与获取技能句柄</b></center>
+
+<p>在 UI 构造事件触发时，我首先加入了一个 0.2 秒的延迟。这是一个非常实用的工程化防错技巧，因为客户端 UI 的创建速度往往快于角色内部 GAS 数据的初始化，直接获取极易导致空指针崩溃。安全校验通过后，我通过 Get All Abilities 节点提取了当前角色被赋予的所有技能句柄数组。</p>
+<p><img src="/images/ui3.png"></p>
+<center><b>图 8： 遍历生成插槽并完成布局堆叠</b></center>
+
+<p>拿到技能数组后，我使用 For Each Loop 节点进行遍历。每拿出一个技能句柄，就动态生成一个单独的 Wy_AbilitySlot 实例，并将当前的技能详细信息传递给它。最后，把生成的图标实例作为子节点添加进 Horizontal Box 水平盒容器中，并统一设置四周各 5 像素的间距，保证排版整洁。</p>
+<p>通过这套逻辑，不论角色在底层被赋予了多少个技能，UI 层都会全自动响应，横向排布出对应数量的技能图标。这彻底告别了在 UI 编辑器里手动拖拽拼凑按钮的低效开发模式。<br><br></p>
+<h2 id="6-核心插槽逻辑：基于数据驱动的高度复用"><a href="#6-核心插槽逻辑：基于数据驱动的高度复用" class="headerlink" title="6. 核心插槽逻辑：基于数据驱动的高度复用"></a>6. 核心插槽逻辑：基于数据驱动的高度复用</h2><p>在 UI 插槽 Wy_AbilitySlot 的内部逻辑中，看似写了很长的冷却代码，但这恰恰是实现完全复用的关键。因为在这个蓝图里，我没有任何一处硬编码去判断“当前是不是冲刺技能”，所有的数据都是动态读取的。</p>
+<p><img src="/images/slot1.png"></p>
+<center><b>图 9： 提取技能实体并绑定基础信息</b></center>
+
+<p>首先在初始化阶段，插槽接收到了外部容器传来的编号。我通过 Get Gameplay Ability from Spec Handle 节点，将这个编号还原成了真正的技能实体，并存为引用。紧接着，我将其转化为自定义的技能基类 WyAbilityBase，从中直接读取配置好的技能名称，并赋予给 UI 文本。这意味着无论传入的是冲刺、火球还是治疗，UI 都会全自动显示对应的名字。</p>
+<p><img src="/images/slot2.png"></p>
+<center><b>图 10： 标签驱动的异步冷却监听</b></center>
+
+<p>接下来是最核心的冷却解耦设计。我使用了 Wait Gameplay Tag Count Changed on Actor 这个自己封装的异步节点。它不需要用到事件 Tick，也不需要每帧去询问角色技能好了没有，而是静默监听角色身上的特定标签。</p>
+<p>这里的 Tag 引脚并没有直接写死冲刺的冷却标签，而是动态读取当前这个技能基类里配置的冷却标签。</p>
+<p><img src="/images/slot3.png"></p>
+<center><b>图 11： 遮罩控制与倒计时逻辑</b></center>
+
+<p>当系统监听到这个专属的冷却标签数量发生变化时：</p>
+<ol>
+<li>如果标签数量大于 0，说明技能刚进入冷却。系统会自动显示黑色的冷却遮罩，并开启一个 0.1 秒循环的定时器，用来实时刷新界面上的倒计时数字与扇形进度。</li>
+<li>如果标签数量变回 0，说明冷却结束。系统会立刻清理并销毁这个定时器，同时隐藏黑色遮罩，让技能图标重新亮起。</li>
+</ol>
+<p>正因为名字、图标、冷却标签、剩余时间等所有数据，都是从抽象的技能引用中提取出来的，所以这个 Widget 插槽做到了彻底的泛型化。将来哪怕游戏里新增了一百个新技能，我也只需要在数据表里配好它们的参数，UI 层就可以直接复用这套逻辑，不需要修改任何蓝图连线。<br><br></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part3-Attribute-UI/" data-id="cmn780ybb000408vn609c5qho" data-title="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GAS/" rel="tag">GAS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UE5/" rel="tag">UE5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" rel="tag">作品集</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-GAS-Part2-Dash-Decoupling" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/03/24/GAS-Part2-Dash-Decoupling/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T05:00:00.000Z" itemprop="datePublished">2026-03-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%BD%9C%E5%93%81%E9%9B%86%E5%B1%95%E7%A4%BA/">作品集展示</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/03/24/GAS-Part2-Dash-Decoupling/">【第二章】冲刺技能 (Dash) 的实现与解耦</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <br>
+
+<h2 id="1-创建冲刺技能-GA-与核心配置"><a href="#1-创建冲刺技能-GA-与核心配置" class="headerlink" title="1. 创建冲刺技能 (GA) 与核心配置"></a>1. 创建冲刺技能 (GA) 与核心配置</h2><p>为了将冲刺逻辑与角色实体解耦，首先需要创建一个专门负责处理冲刺逻辑的技能容器。这里我新建一个继承自 <code>GameplayAbility</code> 的蓝图类，将其命名为 <code>GA_Dash</code>。<br><img src="/images/dash1.png"></p>
+<center><b>图 1： 创建 GA_Dash 蓝图类</b></center>
+
+<p>将技能独立为单独的 GA 资产后，我不仅实现了代码的解耦，还可以通过配置参数来决定该技能在多人网络环境下的运行表现。这也是 GAS 框架最强大的优势之一。<br><img src="/images/dash2.png"></p>
+<center><b>图 2： GA_Dash 的核心标签与网络参数配置</b></center>
+
+<p>在 <code>GA_Dash</code> 的类默认设置 (Class Defaults) 中，有三个极其关键的配置，这也是多人动作游戏开发中的核心考点：</p>
+<ol>
+<li>Ability Tags (标签驱动)：赋予其 <code>GameplayAbility.Movement.Dash</code> 标签。GAS 倡导“标签驱动”思想，后续我们可以通过判断角色身上是否有该标签，来替代传统的布尔值判断，彻底告别硬编码。</li>
+<li>Instancing Policy (实例化策略)：设置为 <code>Instanced Per Actor</code> (每个 Actor 实例化)。因为冲刺技能在释放过程中需要保存一些内部状态，非实例化策略无法存储状态，因此必须为每个角色单独实例化一个 GA 对象。</li>
+<li>Net Execution Policy (网络执行策略)：设置为 <code>Local Predicted</code> (本地预测)。这是多人动作游戏保证手感的灵魂。它允许客户端立刻在本地执行冲刺表现，而不需要等待服务器的 RPC 确认，实现客户端的“零延迟”体验。<br>
+<br></li>
+</ol>
+<h2 id="2-冲刺事件图表：提交逻辑与异步-Task"><a href="#2-冲刺事件图表：提交逻辑与异步-Task" class="headerlink" title="2. 冲刺事件图表：提交逻辑与异步 Task"></a>2. 冲刺事件图表：提交逻辑与异步 Task</h2><p>进入 <code>GA_Dash</code> 的事件图表 ，首先需要处理技能的触发。在 GAS 框架中，一个规范的技能生命周期通常包含：激活 (Activate)、提交消耗 (Cost)、执行异步行为 (Ability Task) 以及结束技能 (End Ability)。<br><img src="/images/dash3.png"></p>
+<center><b>图 3： GA_Dash 的完整事件图表逻辑</b></center>
+
+<p>这张图表包含了 GAS 动作开发中的几个核心规范：</p>
+<ol>
+<li>消耗与冷却的精准控制：技能通过 <code>Event ActivateAbility</code> 激活后，第一时间调用 <code>CommitAbilityCost</code> 扣除玩家体力（Cost）。而冷却（Cooldown）则挂载在位移结束的分支上通过 <code>CommitAbilityCooldown</code> 提交。</li>
+<li>利用 Ability Task 处理异步位移：冲刺是一个持续的过程。这里摒弃了传统的 Timeline 或 Tick 位移，使用了 GAS 内置的异步任务节点 <code>Apply Root Motion Constant Force</code>。它能给角色根组件施加一个持续 0.3 秒、强度为 2000 的推力，并在结束时利用 <code>Clamp Velocity on Finish</code> 限制最终速度，保证冲刺结束时的手感平滑，不会因为惯性滑步。</li>
+<li>表现与逻辑的彻底解耦 ： <code>Apply Root Motion</code> 节点右上方的异步触发引脚，它连接了 <code>Add GameplayCue To Owner</code> 节点。我没有在这里生成任何粒子特效或播放音效，而是仅仅发送了一个 <code>Gameplaycue.Dash.Fast</code> 的标签给系统。所有相关的视听表现，都交由客户端的 Gameplay Cue (GC) 去监听该标签并独立执行。这完美贯彻了“逻辑与表现分离”的 MVC 架构思想。</li>
+<li>规范闭环：当 Task 的 <code>On Finish</code> (任务完成) 触发时，必须调用 <code>End Ability</code> 来清理状态机，规范地结束该技能。<br>
+<br></li>
+</ol>
+<h2 id="3-获取物理化身：蓝图与-C-底层联动"><a href="#3-获取物理化身：蓝图与-C-底层联动" class="headerlink" title="3. 获取物理化身：蓝图与 C++ 底层联动"></a>3. 获取物理化身：蓝图与 C++ 底层联动</h2><p>在冲刺技能中，Task 节点需要知道应该对哪个目标施加物理推力。为了获取正确的方向，我使用了 <code>Get Avatar Actor from Actor Info</code> 节点，从系统信息表中把角色的物理化身提取出来单独使用。<br><img src="/images/dash4.png"></p>
+<center><b>图 4： 提取物理化身节点</b></center>
+这个节点之所以能成功获取到当前的实体角色，完全依赖于第一章角色初始化阶段我在 C++ 中写入的底层配置。
+
+<p><img src="/images/dash5.png"></p>
+<center><b>图 5： 相关代码</b></center>
+
+<p>在 GAS 系统的底层架构里，一个角色被分成了两个核心部分：</p>
+<ol>
+<li>Owner: 负责管理数据的“大脑”，比如判断技能冷却好了没、蓝量够不够。</li>
+<li>Avatar: 负责在游戏里跑跳、播放动画、被物理碰撞推着走的“肉体”。</li>
+</ol>
+<p>我在 C++ 阶段分别在服务端的 <code>PossessedBy</code> 和客户端的 <code>OnRep_PlayerState</code> 中调用了 <code>InitAbilityActorInfo(this, this)</code> 函数。传入的两个 <code>this</code> 就相当于在系统双端登记表上写明，我既是管理数据的大脑，我也是负责挨打和跑跳的肉体。</p>
+<p>冲刺的 Task 节点本身没有目标识别能力，它不知道要推谁。因此它必须通过这个蓝图节点去查阅 C++ 写的登记表，拿到登记好的肉体角色，再获取它的前向向量，最终把推力精准地作用在这个肉体上。如果当时没有写那段 C++ 代码做初始化，蓝图节点就会查不到肉体，冲刺技能便会因为找不到受力对象而当场报错失效。<br><br><br><br></p>
+<h2 id="4-技能的赋予与激活"><a href="#4-技能的赋予与激活" class="headerlink" title="4. 技能的赋予与激活"></a>4. 技能的赋予与激活</h2><p>在 GAS 框架中，技能的使用遵循一个严格的两步流程：先赋予，再激活。我首先在角色初始化完成后的逻辑中，调用了 Give Ability 节点，将 GA_Dash 这个类注册到角色的 Ability System Component 中。这相当于把技能真正装进了角色的技能栏里。</p>
+<p><img src="/images/dash6.png"></p>
+<center><b>图 6： 赋予角色冲刺能力</b></center>
+
+<p>技能装备好之后，我就可以在角色的事件图表中处理玩家的输入逻辑了。</p>
+<p><img src="/images/dash7.png"></p>
+<center><b>图 7： 通过按键激活冲刺技能</b></center>
+
+<p>当玩家按下 Q 键时，我调用了 Try Activate Ability by Class 节点，并指定了之前赋予的 GA_Dash 类。此时系统会自动去角色的技能栏里查找是否拥有这个技能，如果有且满足冷却和消耗条件，就会真正触发前面写的冲刺事件图表逻辑。节点上的 Allow Remote Activation 选项被勾选，这保证了客户端按下按键时，可以通过网络通知服务器同步激活该技能。<br><br><br><br></p>
+<h2 id="5-表现解耦：Gameplay-Cue-接管视听效果"><a href="#5-表现解耦：Gameplay-Cue-接管视听效果" class="headerlink" title="5. 表现解耦：Gameplay Cue 接管视听效果"></a>5. 表现解耦：Gameplay Cue 接管视听效果</h2><p>在传统的开发流程里，播放特效和音效的代码通常和位移逻辑混杂在一起。但在本套 GAS 框架中，<code>GC_Dash</code> 里只需要重写一个核心函数即可完成所有工作。</p>
+<p>其核心机制是标签监听。我首先在它的详情面板中，将这个蓝图类与 <code>Gameplaycue.Dash.Fast</code> 标签进行了绑定。</p>
+<p><img src="/images/dash8.png"></p>
+<center><b>图 8： 绑定对应的 Gameplay Cue 标签</b></center>
+
+<p>回忆一下前面在冲刺的 GA 蓝图里，我在 Task 节点上方单独调用了 Add GameplayCue 节点来发送这个标签，并在技能结束时自动移除它。这就意味着，系统会自动根据这个标签的添加和移除，来触发 <code>GC_Dash</code> 里的 <code>HandleGameplayCue</code> 函数。</p>
+<p><img src="/images/dash9.png"></p>
+<center><b>图 9： HandleGameplayCue 的完整表现逻辑</b></center>
+
+<p>在这个核心函数中，我使用了 <code>Switch on EGameplayCueEvent</code> 节点。这个节点极其强大，它能根据标签所处的生命周期，将表现逻辑完美拆分：</p>
+<ol>
+<li>On Active 阶段：当冲刺刚开始，标签被添加时触发。我在这里生成了一个附着在根组件上的拖尾粒子特效，播放了风声破空的音效。同时，为了体现冲刺极快的视觉冲击力，我获取了角色的 Mesh 网格体并将其隐藏，模拟出一种瞬间闪现的视觉感。</li>
+<li>Removed 阶段：当 Task 任务完成，GA 调用 End Ability 导致标签被移除时触发。此时我播放了技能结束的音效，在角色当前落地位置生成了一个结尾爆点特效，并将隐藏的角色模型重新显示出来。</li>
+</ol>
+<p>通过这种方式，冲刺的物理逻辑和视听表现彻底分家。将来美术同学如果需要替换特效或调整表现逻辑，只需要打开这个 GC 蓝图即可，完全没有破坏核心技能逻辑的风险。这种高度解耦的架构，也是大型多人游戏项目必备的底层设计。<br><br><br><br></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmn780yb9000108vndkbp224y" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GAS/" rel="tag">GAS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UE5/" rel="tag">UE5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" rel="tag">作品集</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-GAS-Part1-Initialization" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/03/23/GAS-Part1-Initialization/" class="article-date">
+  <time class="dt-published" datetime="2026-03-23T05:00:00.000Z" itemprop="datePublished">2026-03-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%BD%9C%E5%93%81%E9%9B%86%E5%B1%95%E7%A4%BA/">作品集展示</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/03/23/GAS-Part1-Initialization/">【第一章】GAS 底层基建与 C++ 初始化实践</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <br>
+
+<h2 id="1-核心模块引入与配置"><a href="#1-核心模块引入与配置" class="headerlink" title="1. 核心模块引入与配置"></a>1. 核心模块引入与配置</h2><p>在 UE5 引擎中勾选启用 Gameplay Abilities 插件是第一步。<br><img src="/images/gasBuild1.png"></p>
+<center><b>图 1： GAS 核心插件</b></center>
+
+<p>要让项目真正获得 GAS 的底层 C++ 支持，必须在项目的构建文件中进行手动配置。<br><img src="/images/gasBuild2.png"></p>
+<center><b>图 2： 项目结构示意</b></center>
+
+<p>我在项目的 <code>Build.cs</code> 文件中，加入了 GAS 相关的三大核心代码库：<code>GameplayAbilities</code>、<code>GameplayTags</code> 和 <code>GameplayTasks</code>。<br><img src="/images/gasBuild3.png"></p>
+<center><b>图 3： 相关代码</b></center>
+
+<p>这一行代码相当于给项目“安装”了 GAS 插件的 C++ 底层操作，它为我们后续的代码开发正式 引入了技能系统、标签系统和任务系统的支持。<br><br></p>
+<h2 id="2-角色基类-WyBaseCharacter-与网络同步策略"><a href="#2-角色基类-WyBaseCharacter-与网络同步策略" class="headerlink" title="2. 角色基类 (WyBaseCharacter) 与网络同步策略"></a>2. 角色基类 (WyBaseCharacter) 与网络同步策略</h2><p>为了方便后期扩展与代码管理，我创建了一个基于 C++ 的基类（<code>WyCharacterBase</code>），作为玩家 (Player) 和敌人 (Enemy) 的共同基类，并对其目录结构进行了规范整理。<br>我第一步让基类继承了AbilitySystem的接口，如果不继承该接口，后续所有技能和属性无法挂在该角色上。<br><img src="/images/gasBuild4.png"></p>
+<center><b>图 4： 角色基类的接口</b></center>
+
+<p>在基类的头文件中，我为其手动硬编码挂载了核心的 <code>AbilitySystemComponent</code> (ASC)，并专门声明了网络同步模式 (Replication Mode) 的可配置变量。<br>这里使用Mixed模式：<br>一是为了同步完整GE信息，支持客户端预测，让玩家感觉不到延迟;<br>二是为了只同步极简的Tags和Attributes，节省带宽。<br><img src="/images/gasBuild5.png"></p>
+<center><b>图 5： 在头文件中声明 ASC 与 Mixed 同步模式</b></center>
+
+<br>
+<br>
+
+<h2 id="3-暴露接口与双端激活"><a href="#3-暴露接口与双端激活" class="headerlink" title="3. 暴露接口与双端激活"></a>3. 暴露接口与双端激活</h2><p>首先我返回了ASC这个组件，让系统发现我“硬件”的存在。<br><img src="/images/gasBuild6.png"></p>
+<center><b>图 6： 返回ASC</b></center>
+
+<p>然后明确客户端和服务端的身份，服务器在控制角色那一刻先认证挂在角色上的ASC，客户端收到服务器传来数据那一刻认证。<br><img src="/images/gasBuild7.png"></p>
+<center><b>图 7： 双端激活</b></center>
+
+<br>
+<br>
+
+<h2 id="4-角色初始化"><a href="#4-角色初始化" class="headerlink" title="4. 角色初始化"></a>4. 角色初始化</h2><p>利用模板给角色一些初始值，比如胶囊体的尺寸，旋转，移动，视角，速度等。<br>完成了角色基类的GAS基础配置。<br><img src="/images/gasBuild8.png"></p>
+<center><b>图 8：初始化配置 </b></center>
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/" data-id="cmn780yb8000008vn3ohqgdgj" data-title="【第一章】GAS 底层基建与 C++ 初始化实践" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GAS/" rel="tag">GAS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UE5/" rel="tag">UE5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" rel="tag">作品集</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BD%9C%E5%93%81%E9%9B%86%E5%B1%95%E7%A4%BA/">作品集展示</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GAS/" rel="tag">GAS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UE5/" rel="tag">UE5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" rel="tag">作品集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/GAS/" style="font-size: 10px;">GAS</a> <a href="/tags/UE5/" style="font-size: 10px;">UE5</a> <a href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" style="font-size: 10px;">作品集</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" style="font-size: 10px;">游戏开发</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">March 2026</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/03/25/GAS-Part5-Plugin/">【第五章】GAS 框架的插件化封装</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/25/GAS-Part4-TargetData-Damage/">【第四章】TargetData 目标提取与伤害输出闭环</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/24/GAS-Part3-Attribute-UI/">【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/24/GAS-Part2-Dash-Decoupling/">【第二章】冲刺技能 (Dash) 的实现与解耦</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/23/GAS-Part1-Initialization/">【第一章】GAS 底层基建与 C++ 初始化实践</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

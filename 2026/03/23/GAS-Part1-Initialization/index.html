@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>【第一章】GAS 底层基建与 C++ 初始化实践 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="1. 核心模块引入与配置在 UE5 引擎中勾选启用 Gameplay Abilities 插件是第一步。 图 1： GAS 核心插件  要让项目真正获得 GAS 的底层 C++ 支持，必须在项目的构建文件中进行手动配置。 图 2： 项目结构示意  我在项目的 Build.cs 文件中，加入了 GAS 相关的三大核心代码库：GameplayAbilities、GameplayTags 和 Gam">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【第一章】GAS 底层基建与 C++ 初始化实践">
+<meta property="og:url" content="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1. 核心模块引入与配置在 UE5 引擎中勾选启用 Gameplay Abilities 插件是第一步。 图 1： GAS 核心插件  要让项目真正获得 GAS 的底层 C++ 支持，必须在项目的构建文件中进行手动配置。 图 2： 项目结构示意  我在项目的 Build.cs 文件中，加入了 GAS 相关的三大核心代码库：GameplayAbilities、GameplayTags 和 Gam">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wyws1218.github.io/images/gasBuild1.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/gasBuild2.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/gasBuild3.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/gasBuild4.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/gasBuild5.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/gasBuild6.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/gasBuild7.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/gasBuild8.png">
+<meta property="article:published_time" content="2026-03-23T05:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-25T14:52:36.227Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="UE5">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="GAS">
+<meta property="article:tag" content="作品集">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wyws1218.github.io/images/gasBuild1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://wyws1218.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-GAS-Part1-Initialization" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/03/23/GAS-Part1-Initialization/" class="article-date">
+  <time class="dt-published" datetime="2026-03-23T05:00:00.000Z" itemprop="datePublished">2026-03-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%BD%9C%E5%93%81%E9%9B%86%E5%B1%95%E7%A4%BA/">作品集展示</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      【第一章】GAS 底层基建与 C++ 初始化实践
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <br>
+
+<h2 id="1-核心模块引入与配置"><a href="#1-核心模块引入与配置" class="headerlink" title="1. 核心模块引入与配置"></a>1. 核心模块引入与配置</h2><p>在 UE5 引擎中勾选启用 Gameplay Abilities 插件是第一步。<br><img src="/images/gasBuild1.png"></p>
+<center><b>图 1： GAS 核心插件</b></center>
+
+<p>要让项目真正获得 GAS 的底层 C++ 支持，必须在项目的构建文件中进行手动配置。<br><img src="/images/gasBuild2.png"></p>
+<center><b>图 2： 项目结构示意</b></center>
+
+<p>我在项目的 <code>Build.cs</code> 文件中，加入了 GAS 相关的三大核心代码库：<code>GameplayAbilities</code>、<code>GameplayTags</code> 和 <code>GameplayTasks</code>。<br><img src="/images/gasBuild3.png"></p>
+<center><b>图 3： 相关代码</b></center>
+
+<p>这一行代码相当于给项目“安装”了 GAS 插件的 C++ 底层操作，它为我们后续的代码开发正式 引入了技能系统、标签系统和任务系统的支持。<br><br></p>
+<h2 id="2-角色基类-WyBaseCharacter-与网络同步策略"><a href="#2-角色基类-WyBaseCharacter-与网络同步策略" class="headerlink" title="2. 角色基类 (WyBaseCharacter) 与网络同步策略"></a>2. 角色基类 (WyBaseCharacter) 与网络同步策略</h2><p>为了方便后期扩展与代码管理，我创建了一个基于 C++ 的基类（<code>WyCharacterBase</code>），作为玩家 (Player) 和敌人 (Enemy) 的共同基类，并对其目录结构进行了规范整理。<br>我第一步让基类继承了AbilitySystem的接口，如果不继承该接口，后续所有技能和属性无法挂在该角色上。<br><img src="/images/gasBuild4.png"></p>
+<center><b>图 4： 角色基类的接口</b></center>
+
+<p>在基类的头文件中，我为其手动硬编码挂载了核心的 <code>AbilitySystemComponent</code> (ASC)，并专门声明了网络同步模式 (Replication Mode) 的可配置变量。<br>这里使用Mixed模式：<br>一是为了同步完整GE信息，支持客户端预测，让玩家感觉不到延迟;<br>二是为了只同步极简的Tags和Attributes，节省带宽。<br><img src="/images/gasBuild5.png"></p>
+<center><b>图 5： 在头文件中声明 ASC 与 Mixed 同步模式</b></center>
+
+<br>
+<br>
+
+<h2 id="3-暴露接口与双端激活"><a href="#3-暴露接口与双端激活" class="headerlink" title="3. 暴露接口与双端激活"></a>3. 暴露接口与双端激活</h2><p>首先我返回了ASC这个组件，让系统发现我“硬件”的存在。<br><img src="/images/gasBuild6.png"></p>
+<center><b>图 6： 返回ASC</b></center>
+
+<p>然后明确客户端和服务端的身份，服务器在控制角色那一刻先认证挂在角色上的ASC，客户端收到服务器传来数据那一刻认证。<br><img src="/images/gasBuild7.png"></p>
+<center><b>图 7： 双端激活</b></center>
+
+<br>
+<br>
+
+<h2 id="4-角色初始化"><a href="#4-角色初始化" class="headerlink" title="4. 角色初始化"></a>4. 角色初始化</h2><p>利用模板给角色一些初始值，比如胶囊体的尺寸，旋转，移动，视角，速度等。<br>完成了角色基类的GAS基础配置。<br><img src="/images/gasBuild8.png"></p>
+<center><b>图 8：初始化配置 </b></center>
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/" data-id="cmn780yb8000008vn3ohqgdgj" data-title="【第一章】GAS 底层基建与 C++ 初始化实践" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GAS/" rel="tag">GAS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UE5/" rel="tag">UE5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" rel="tag">作品集</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2026/03/24/GAS-Part2-Dash-Decoupling/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【第二章】冲刺技能 (Dash) 的实现与解耦
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2026/03/22/GAS-Project-Overview/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【项目总览】基于 UE5 GAS 的游戏技能框架</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BD%9C%E5%93%81%E9%9B%86%E5%B1%95%E7%A4%BA/">作品集展示</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GAS/" rel="tag">GAS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UE5/" rel="tag">UE5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" rel="tag">作品集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/GAS/" style="font-size: 10px;">GAS</a> <a href="/tags/UE5/" style="font-size: 10px;">UE5</a> <a href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" style="font-size: 10px;">作品集</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" style="font-size: 10px;">游戏开发</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">March 2026</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/03/25/GAS-Part5-Plugin/">【第五章】GAS 框架的插件化封装</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/25/GAS-Part4-TargetData-Damage/">【第四章】TargetData 目标提取与伤害输出闭环</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/24/GAS-Part3-Attribute-UI/">【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/24/GAS-Part2-Dash-Decoupling/">【第二章】冲刺技能 (Dash) 的实现与解耦</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/23/GAS-Part1-Initialization/">【第一章】GAS 底层基建与 C++ 初始化实践</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

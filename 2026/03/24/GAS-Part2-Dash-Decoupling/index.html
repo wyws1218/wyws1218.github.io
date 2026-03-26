@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>【第二章】冲刺技能 (Dash) 的实现与解耦 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="1. 创建冲刺技能 (GA) 与核心配置为了将冲刺逻辑与角色实体解耦，首先需要创建一个专门负责处理冲刺逻辑的技能容器。这里我新建一个继承自 GameplayAbility 的蓝图类，将其命名为 GA_Dash。 图 1： 创建 GA_Dash 蓝图类  将技能独立为单独的 GA 资产后，我不仅实现了代码的解耦，还可以通过配置参数来决定该技能在多人网络环境下的运行表现。这也是 GAS 框架最强大">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【第二章】冲刺技能 (Dash) 的实现与解耦">
+<meta property="og:url" content="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1. 创建冲刺技能 (GA) 与核心配置为了将冲刺逻辑与角色实体解耦，首先需要创建一个专门负责处理冲刺逻辑的技能容器。这里我新建一个继承自 GameplayAbility 的蓝图类，将其命名为 GA_Dash。 图 1： 创建 GA_Dash 蓝图类  将技能独立为单独的 GA 资产后，我不仅实现了代码的解耦，还可以通过配置参数来决定该技能在多人网络环境下的运行表现。这也是 GAS 框架最强大">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wyws1218.github.io/images/dash1.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/dash2.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/dash3.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/dash4.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/dash5.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/dash6.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/dash7.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/dash8.png">
+<meta property="og:image" content="https://wyws1218.github.io/images/dash9.png">
+<meta property="article:published_time" content="2026-03-24T05:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-25T14:53:25.952Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="UE5">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="GAS">
+<meta property="article:tag" content="作品集">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wyws1218.github.io/images/dash1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://wyws1218.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-GAS-Part2-Dash-Decoupling" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/03/24/GAS-Part2-Dash-Decoupling/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T05:00:00.000Z" itemprop="datePublished">2026-03-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%BD%9C%E5%93%81%E9%9B%86%E5%B1%95%E7%A4%BA/">作品集展示</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      【第二章】冲刺技能 (Dash) 的实现与解耦
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <br>
+
+<h2 id="1-创建冲刺技能-GA-与核心配置"><a href="#1-创建冲刺技能-GA-与核心配置" class="headerlink" title="1. 创建冲刺技能 (GA) 与核心配置"></a>1. 创建冲刺技能 (GA) 与核心配置</h2><p>为了将冲刺逻辑与角色实体解耦，首先需要创建一个专门负责处理冲刺逻辑的技能容器。这里我新建一个继承自 <code>GameplayAbility</code> 的蓝图类，将其命名为 <code>GA_Dash</code>。<br><img src="/images/dash1.png"></p>
+<center><b>图 1： 创建 GA_Dash 蓝图类</b></center>
+
+<p>将技能独立为单独的 GA 资产后，我不仅实现了代码的解耦，还可以通过配置参数来决定该技能在多人网络环境下的运行表现。这也是 GAS 框架最强大的优势之一。<br><img src="/images/dash2.png"></p>
+<center><b>图 2： GA_Dash 的核心标签与网络参数配置</b></center>
+
+<p>在 <code>GA_Dash</code> 的类默认设置 (Class Defaults) 中，有三个极其关键的配置，这也是多人动作游戏开发中的核心考点：</p>
+<ol>
+<li>Ability Tags (标签驱动)：赋予其 <code>GameplayAbility.Movement.Dash</code> 标签。GAS 倡导“标签驱动”思想，后续我们可以通过判断角色身上是否有该标签，来替代传统的布尔值判断，彻底告别硬编码。</li>
+<li>Instancing Policy (实例化策略)：设置为 <code>Instanced Per Actor</code> (每个 Actor 实例化)。因为冲刺技能在释放过程中需要保存一些内部状态，非实例化策略无法存储状态，因此必须为每个角色单独实例化一个 GA 对象。</li>
+<li>Net Execution Policy (网络执行策略)：设置为 <code>Local Predicted</code> (本地预测)。这是多人动作游戏保证手感的灵魂。它允许客户端立刻在本地执行冲刺表现，而不需要等待服务器的 RPC 确认，实现客户端的“零延迟”体验。<br>
+<br></li>
+</ol>
+<h2 id="2-冲刺事件图表：提交逻辑与异步-Task"><a href="#2-冲刺事件图表：提交逻辑与异步-Task" class="headerlink" title="2. 冲刺事件图表：提交逻辑与异步 Task"></a>2. 冲刺事件图表：提交逻辑与异步 Task</h2><p>进入 <code>GA_Dash</code> 的事件图表 ，首先需要处理技能的触发。在 GAS 框架中，一个规范的技能生命周期通常包含：激活 (Activate)、提交消耗 (Cost)、执行异步行为 (Ability Task) 以及结束技能 (End Ability)。<br><img src="/images/dash3.png"></p>
+<center><b>图 3： GA_Dash 的完整事件图表逻辑</b></center>
+
+<p>这张图表包含了 GAS 动作开发中的几个核心规范：</p>
+<ol>
+<li>消耗与冷却的精准控制：技能通过 <code>Event ActivateAbility</code> 激活后，第一时间调用 <code>CommitAbilityCost</code> 扣除玩家体力（Cost）。而冷却（Cooldown）则挂载在位移结束的分支上通过 <code>CommitAbilityCooldown</code> 提交。</li>
+<li>利用 Ability Task 处理异步位移：冲刺是一个持续的过程。这里摒弃了传统的 Timeline 或 Tick 位移，使用了 GAS 内置的异步任务节点 <code>Apply Root Motion Constant Force</code>。它能给角色根组件施加一个持续 0.3 秒、强度为 2000 的推力，并在结束时利用 <code>Clamp Velocity on Finish</code> 限制最终速度，保证冲刺结束时的手感平滑，不会因为惯性滑步。</li>
+<li>表现与逻辑的彻底解耦 ： <code>Apply Root Motion</code> 节点右上方的异步触发引脚，它连接了 <code>Add GameplayCue To Owner</code> 节点。我没有在这里生成任何粒子特效或播放音效，而是仅仅发送了一个 <code>Gameplaycue.Dash.Fast</code> 的标签给系统。所有相关的视听表现，都交由客户端的 Gameplay Cue (GC) 去监听该标签并独立执行。这完美贯彻了“逻辑与表现分离”的 MVC 架构思想。</li>
+<li>规范闭环：当 Task 的 <code>On Finish</code> (任务完成) 触发时，必须调用 <code>End Ability</code> 来清理状态机，规范地结束该技能。<br>
+<br></li>
+</ol>
+<h2 id="3-获取物理化身：蓝图与-C-底层联动"><a href="#3-获取物理化身：蓝图与-C-底层联动" class="headerlink" title="3. 获取物理化身：蓝图与 C++ 底层联动"></a>3. 获取物理化身：蓝图与 C++ 底层联动</h2><p>在冲刺技能中，Task 节点需要知道应该对哪个目标施加物理推力。为了获取正确的方向，我使用了 <code>Get Avatar Actor from Actor Info</code> 节点，从系统信息表中把角色的物理化身提取出来单独使用。<br><img src="/images/dash4.png"></p>
+<center><b>图 4： 提取物理化身节点</b></center>
+这个节点之所以能成功获取到当前的实体角色，完全依赖于第一章角色初始化阶段我在 C++ 中写入的底层配置。
+
+<p><img src="/images/dash5.png"></p>
+<center><b>图 5： 相关代码</b></center>
+
+<p>在 GAS 系统的底层架构里，一个角色被分成了两个核心部分：</p>
+<ol>
+<li>Owner: 负责管理数据的“大脑”，比如判断技能冷却好了没、蓝量够不够。</li>
+<li>Avatar: 负责在游戏里跑跳、播放动画、被物理碰撞推着走的“肉体”。</li>
+</ol>
+<p>我在 C++ 阶段分别在服务端的 <code>PossessedBy</code> 和客户端的 <code>OnRep_PlayerState</code> 中调用了 <code>InitAbilityActorInfo(this, this)</code> 函数。传入的两个 <code>this</code> 就相当于在系统双端登记表上写明，我既是管理数据的大脑，我也是负责挨打和跑跳的肉体。</p>
+<p>冲刺的 Task 节点本身没有目标识别能力，它不知道要推谁。因此它必须通过这个蓝图节点去查阅 C++ 写的登记表，拿到登记好的肉体角色，再获取它的前向向量，最终把推力精准地作用在这个肉体上。如果当时没有写那段 C++ 代码做初始化，蓝图节点就会查不到肉体，冲刺技能便会因为找不到受力对象而当场报错失效。<br><br><br><br></p>
+<h2 id="4-技能的赋予与激活"><a href="#4-技能的赋予与激活" class="headerlink" title="4. 技能的赋予与激活"></a>4. 技能的赋予与激活</h2><p>在 GAS 框架中，技能的使用遵循一个严格的两步流程：先赋予，再激活。我首先在角色初始化完成后的逻辑中，调用了 Give Ability 节点，将 GA_Dash 这个类注册到角色的 Ability System Component 中。这相当于把技能真正装进了角色的技能栏里。</p>
+<p><img src="/images/dash6.png"></p>
+<center><b>图 6： 赋予角色冲刺能力</b></center>
+
+<p>技能装备好之后，我就可以在角色的事件图表中处理玩家的输入逻辑了。</p>
+<p><img src="/images/dash7.png"></p>
+<center><b>图 7： 通过按键激活冲刺技能</b></center>
+
+<p>当玩家按下 Q 键时，我调用了 Try Activate Ability by Class 节点，并指定了之前赋予的 GA_Dash 类。此时系统会自动去角色的技能栏里查找是否拥有这个技能，如果有且满足冷却和消耗条件，就会真正触发前面写的冲刺事件图表逻辑。节点上的 Allow Remote Activation 选项被勾选，这保证了客户端按下按键时，可以通过网络通知服务器同步激活该技能。<br><br><br><br></p>
+<h2 id="5-表现解耦：Gameplay-Cue-接管视听效果"><a href="#5-表现解耦：Gameplay-Cue-接管视听效果" class="headerlink" title="5. 表现解耦：Gameplay Cue 接管视听效果"></a>5. 表现解耦：Gameplay Cue 接管视听效果</h2><p>在传统的开发流程里，播放特效和音效的代码通常和位移逻辑混杂在一起。但在本套 GAS 框架中，<code>GC_Dash</code> 里只需要重写一个核心函数即可完成所有工作。</p>
+<p>其核心机制是标签监听。我首先在它的详情面板中，将这个蓝图类与 <code>Gameplaycue.Dash.Fast</code> 标签进行了绑定。</p>
+<p><img src="/images/dash8.png"></p>
+<center><b>图 8： 绑定对应的 Gameplay Cue 标签</b></center>
+
+<p>回忆一下前面在冲刺的 GA 蓝图里，我在 Task 节点上方单独调用了 Add GameplayCue 节点来发送这个标签，并在技能结束时自动移除它。这就意味着，系统会自动根据这个标签的添加和移除，来触发 <code>GC_Dash</code> 里的 <code>HandleGameplayCue</code> 函数。</p>
+<p><img src="/images/dash9.png"></p>
+<center><b>图 9： HandleGameplayCue 的完整表现逻辑</b></center>
+
+<p>在这个核心函数中，我使用了 <code>Switch on EGameplayCueEvent</code> 节点。这个节点极其强大，它能根据标签所处的生命周期，将表现逻辑完美拆分：</p>
+<ol>
+<li>On Active 阶段：当冲刺刚开始，标签被添加时触发。我在这里生成了一个附着在根组件上的拖尾粒子特效，播放了风声破空的音效。同时，为了体现冲刺极快的视觉冲击力，我获取了角色的 Mesh 网格体并将其隐藏，模拟出一种瞬间闪现的视觉感。</li>
+<li>Removed 阶段：当 Task 任务完成，GA 调用 End Ability 导致标签被移除时触发。此时我播放了技能结束的音效，在角色当前落地位置生成了一个结尾爆点特效，并将隐藏的角色模型重新显示出来。</li>
+</ol>
+<p>通过这种方式，冲刺的物理逻辑和视听表现彻底分家。将来美术同学如果需要替换特效或调整表现逻辑，只需要打开这个 GC 蓝图即可，完全没有破坏核心技能逻辑的风险。这种高度解耦的架构，也是大型多人游戏项目必备的底层设计。<br><br><br><br></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmn780yb9000108vndkbp224y" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GAS/" rel="tag">GAS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UE5/" rel="tag">UE5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" rel="tag">作品集</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2026/03/24/GAS-Part3-Attribute-UI/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2026/03/23/GAS-Part1-Initialization/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【第一章】GAS 底层基建与 C++ 初始化实践</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BD%9C%E5%93%81%E9%9B%86%E5%B1%95%E7%A4%BA/">作品集展示</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GAS/" rel="tag">GAS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UE5/" rel="tag">UE5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" rel="tag">作品集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/GAS/" style="font-size: 10px;">GAS</a> <a href="/tags/UE5/" style="font-size: 10px;">UE5</a> <a href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" style="font-size: 10px;">作品集</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" style="font-size: 10px;">游戏开发</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">March 2026</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/03/25/GAS-Part5-Plugin/">【第五章】GAS 框架的插件化封装</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/25/GAS-Part4-TargetData-Damage/">【第四章】TargetData 目标提取与伤害输出闭环</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/24/GAS-Part3-Attribute-UI/">【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/24/GAS-Part2-Dash-Decoupling/">【第二章】冲刺技能 (Dash) 的实现与解耦</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/23/GAS-Part1-Initialization/">【第一章】GAS 底层基建与 C++ 初始化实践</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
