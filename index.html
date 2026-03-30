@@ -137,11 +137,79 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmndexlwn001g3gvn30x7aa05" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/" data-id="cmndfglh20006ngvndbpxb8aa" data-title="【项目总览】基于 UE5 GAS 的游戏技能框架" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GAS/" rel="tag">GAS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UE5/" rel="tag">UE5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" rel="tag">作品集</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Wuthering-Waves-Analysis" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/03/31/Wuthering-Waves-Analysis/" class="article-date">
+  <time class="dt-published" datetime="2026-03-31T02:00:00.000Z" itemprop="datePublished">2026-03-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%B8%B8%E6%88%8F%E5%88%86%E6%9E%90%E6%8A%A5%E5%91%8A/">游戏分析报告</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/03/31/Wuthering-Waves-Analysis/">【战斗拆解】《鸣潮》核心机制逆向推演与 UE5 落地探讨 —— 以「今汐」为例</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="1-拆解前言与核心体验定位"><a href="#1-拆解前言与核心体验定位" class="headerlink" title="1. 拆解前言与核心体验定位"></a>1. 拆解前言与核心体验定位</h2><p>作为《鸣潮》的开服玩家（当前 62 级），本报告旨在从<strong>技术策划 &#x2F; 战斗策划</strong>的视角，逆向推演其底层战斗博弈闭环。<br>《鸣潮》在战斗设计上的核心竞争力在于：<strong>极具进攻性的动作交互反馈</strong>与<strong>多角色无缝连携体系</strong>。本文将重点切入游戏的核心博弈，并以机制极具代表性的共鸣者「今汐」为例，推演其在 UE5 GAS框架下的底层落地可行性。</p>
+<h2 id="2-核心博弈循环：弹刀、闪避与共振削韧"><a href="#2-核心博弈循环：弹刀、闪避与共振削韧" class="headerlink" title="2. 核心博弈循环：弹刀、闪避与共振削韧"></a>2. 核心博弈循环：弹刀、闪避与共振削韧</h2><p>在《鸣潮》的高难战斗（如全息战略）中，玩家的核心目标是<strong>“快速打空敌人的共振度（韧性条）使其瘫痪”</strong>。</p>
+<ul>
+<li><strong>机制拆解：</strong> 游戏通过“黄光弹刀”机制，极大地降低了视觉成本，鼓励玩家主动迎击。精准闪避则提供子弹时间与连段派生。</li>
+<li><strong>UE5 底层落地推演：</strong> 在 GAS 框架中，当敌人发动黄光攻击时，赋予其携带 <code>Combat.State.Parryable</code> 标签的 Gameplay Effect。玩家施放普攻（Ability）时，若检测到目标包含此 Tag，且自身处于特定攻击判定帧（利用 Anim Notify 触发），则阻断原伤害结算，触发 <code>GameplayEvent.ParrySuccess</code>，并通过核心属性集（AttributeSet）直接扣减怪物的 <code>ResonanceValue</code>（共振值）。</li>
+</ul>
+<h2 id="3-复杂状态机与跨角色连携：以「今汐」为例"><a href="#3-复杂状态机与跨角色连携：以「今汐」为例" class="headerlink" title="3. 复杂状态机与跨角色连携：以「今汐」为例"></a>3. 复杂状态机与跨角色连携：以「今汐」为例</h2><p>「今汐」是《鸣潮》战斗管线复杂度的集大成者。她的核心设计围绕着<strong>滞空多阶状态机</strong>与<strong>跨角色资源（韶光）</strong>展开。</p>
+<h3 id="3-1-多阶状态切换与动作树-Anim-State-Machine"><a href="#3-1-多阶状态切换与动作树-Anim-State-Machine" class="headerlink" title="3.1 多阶状态切换与动作树 (Anim State Machine)"></a>3.1 多阶状态切换与动作树 (Anim State Machine)</h3><ul>
+<li><strong>机制表现：</strong> 今汐的共鸣技能（E）具有极强的形态变化。普通状态下是【惊龙迎春】；普攻四段后进入「乘龙」状态变为【九霄·惊龙】；在空中攒满能量后变为终极核爆【惊龙破阵】。</li>
+<li><strong>技术推演：</strong> 这种设计摒弃了传统的单线技能树。在底层逻辑中，需要为今汐配置一个极其严密的“自定义状态管理器”。每次普攻结算或技能释放，都会向管理器赋予不同的 Gameplay Tag（如 <code>State.Jinhsi.RidingDragon</code> 或 <code>State.Airborne</code>）。其共鸣技能（E）实际上是一个“壳技能（Wrapper Ability）”，它在激活瞬间会读取当前的 Tag 组合，利用 <code>Instancing</code> 机制动态派生并执行不同阶段的真实子技能。</li>
+</ul>
+<h3 id="3-2-跨角色资源池：「韶光」机制解耦"><a href="#3-2-跨角色资源池：「韶光」机制解耦" class="headerlink" title="3.2 跨角色资源池：「韶光」机制解耦"></a>3.2 跨角色资源池：「韶光」机制解耦</h3><ul>
+<li><strong>机制表现：</strong> 今汐最恐怖的爆发（惊龙破阵）依赖于消耗 50 点「韶光」。而「韶光」的高效获取，要求队伍中<strong>其他角色</strong>造成同属性或协同攻击伤害。</li>
+<li><strong>技术推演（纯数据驱动架构）：</strong> 这体现了《鸣潮》深度的逻辑解耦。在 GAS 中落地时，「韶光」不应写死在今汐的蓝图中，而应作为小队共享的 <code>TeamAttribute</code>（小队属性集），或挂载在全局的 <code>GameState</code> 中。<ul>
+<li>后台角色（如渊武或吟霖）触发协同攻击时，执行一个全局的 <code>GameplayEffect</code>，该 Effect 监听伤害结算事件（Execution Calculation），按比例将伤害次数转化为「韶光」层数。</li>
+<li>这种<strong>基于事件总线（Event-Driven）的资源流转</strong>，使得今汐的逻辑完全不需要知道队友是谁，完美实现了高内聚低耦合，极大地提高了未来新角色的拓展性。</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-3-动作取消-Cancel-与留场机制"><a href="#3-3-动作取消-Cancel-与留场机制" class="headerlink" title="3.3 动作取消 (Cancel) 与留场机制"></a>3.3 动作取消 (Cancel) 与留场机制</h3><ul>
+<li><strong>机制表现：</strong> 释放今汐的大招（共鸣解放）时，有着较长的动画演出。高阶玩家会在此刻立刻切换队友（如维里奈）上场加 Buff，而今汐的核爆依然会在后台完成结算。</li>
+<li><strong>技术推演：</strong> 当 PlayerController 执行 <code>Possess</code> 切换到新角色时，旧角色实例不能立刻销毁。底层需由 AI Controller 瞬间接管今汐，保持其动画蒙太奇（Anim Montage）的完整播放，且其挂载的 ASC (Ability System Component) 必须保持存活状态，以确保后续伤害事件的合法判定与触发。</li>
+</ul>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h2><p>《鸣潮》通过「今汐」这类角色，展示了极具深度的底层状态机管理和跨角色资源调度能力。结合 UE5 GAS 框架的推演，这套机制背后的纯数据驱动设计与表现解耦逻辑，为动作游戏的工业化管线提供了优秀的范式。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://wyws1218.github.io/2026/03/31/Wuthering-Waves-Analysis/" data-id="cmndfglh60020ngvn2b653uwe" data-title="【战斗拆解】《鸣潮》核心机制逆向推演与 UE5 落地探讨 —— 以「今汐」为例" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GAS/" rel="tag">GAS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UE5/" rel="tag">UE5</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%88%98%E6%96%97%E6%8B%86%E8%A7%A3/" rel="tag">战斗拆解</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E7%AD%96%E5%88%92/" rel="tag">游戏策划</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%B8%A3%E6%BD%AE/" rel="tag">鸣潮</a></li></ul>
 
     </footer>
   </div>
@@ -194,7 +262,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/25/GAS-Part5-Plugin/" data-id="cmndexlwn001f3gvn8xv8fojy" data-title="【第五章】GAS 框架的插件化封装" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/25/GAS-Part5-Plugin/" data-id="cmndfglh10005ngvn94p2a85f" data-title="【第五章】GAS 框架的插件化封装" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -274,7 +342,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/25/GAS-Part4-TargetData-Damage/" data-id="cmndexlwk00063gvnediagszv" data-title="【第四章】TargetData 目标提取与伤害输出闭环" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/25/GAS-Part4-TargetData-Damage/" data-id="cmndfglh20007ngvn3rfj2m1c" data-title="【第四章】TargetData 目标提取与伤害输出闭环" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -395,7 +463,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part3-Attribute-UI/" data-id="cmndexlwk00053gvn6u4yfuif" data-title="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part3-Attribute-UI/" data-id="cmndfglh3000angvnbe4r2ani" data-title="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -503,7 +571,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmndexlwh00013gvneg8k5ajx" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/24/GAS-Part2-Dash-Decoupling/" data-id="cmndfglh00002ngvn0by7hfyu" data-title="【第二章】冲刺技能 (Dash) 的实现与解耦" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -582,7 +650,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/" data-id="cmndexlwi00023gvne69o8mq8" data-title="【第一章】GAS 底层基建与 C++ 初始化实践" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://wyws1218.github.io/2026/03/23/GAS-Part1-Initialization/" data-id="cmndfglgz0001ngvnftf5f8re" data-title="【第一章】GAS 底层基建与 C++ 初始化实践" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -606,7 +674,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BD%9C%E5%93%81%E9%9B%86%E5%B1%95%E7%A4%BA/">作品集展示</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BD%9C%E5%93%81%E9%9B%86%E5%B1%95%E7%A4%BA/">作品集展示</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B8%B8%E6%88%8F%E5%88%86%E6%9E%90%E6%8A%A5%E5%91%8A/">游戏分析报告</a></li></ul>
     </div>
   </div>
 
@@ -616,7 +684,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GAS/" rel="tag">GAS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UE5/" rel="tag">UE5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" rel="tag">作品集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GAS/" rel="tag">GAS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UE5/" rel="tag">UE5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" rel="tag">作品集</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%88%98%E6%96%97%E6%8B%86%E8%A7%A3/" rel="tag">战斗拆解</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" rel="tag">游戏开发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E7%AD%96%E5%88%92/" rel="tag">游戏策划</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%B8%A3%E6%BD%AE/" rel="tag">鸣潮</a></li></ul>
     </div>
   </div>
 
@@ -626,7 +694,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/GAS/" style="font-size: 10px;">GAS</a> <a href="/tags/UE5/" style="font-size: 10px;">UE5</a> <a href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" style="font-size: 10px;">作品集</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" style="font-size: 10px;">游戏开发</a>
+      <a href="/tags/C/" style="font-size: 15px;">C++</a> <a href="/tags/GAS/" style="font-size: 20px;">GAS</a> <a href="/tags/UE5/" style="font-size: 20px;">UE5</a> <a href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/" style="font-size: 15px;">作品集</a> <a href="/tags/%E6%88%98%E6%96%97%E6%8B%86%E8%A7%A3/" style="font-size: 10px;">战斗拆解</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" style="font-size: 15px;">游戏开发</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E7%AD%96%E5%88%92/" style="font-size: 10px;">游戏策划</a> <a href="/tags/%E9%B8%A3%E6%BD%AE/" style="font-size: 10px;">鸣潮</a>
     </div>
   </div>
 
@@ -648,6 +716,10 @@
       <ul>
         
           <li>
+            <a href="/2026/03/31/Wuthering-Waves-Analysis/">【战斗拆解】《鸣潮》核心机制逆向推演与 UE5 落地探讨 —— 以「今汐」为例</a>
+          </li>
+        
+          <li>
             <a href="/2026/03/25/GAS-Part5-Plugin/">【第五章】GAS 框架的插件化封装</a>
           </li>
         
@@ -661,10 +733,6 @@
         
           <li>
             <a href="/2026/03/24/GAS-Part2-Dash-Decoupling/">【第二章】冲刺技能 (Dash) 的实现与解耦</a>
-          </li>
-        
-          <li>
-            <a href="/2026/03/23/GAS-Part1-Initialization/">【第一章】GAS 底层基建与 C++ 初始化实践</a>
           </li>
         
       </ul>
