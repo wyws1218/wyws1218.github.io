@@ -1,0 +1,223 @@
+# --------------------------------------
+# Butterfly 主题覆盖配置
+# 只写需要覆盖默认值的字段，其余走 node_modules/hexo-theme-butterfly/_config.yml 的默认
+# 字段含义查 https://butterfly.js.org/posts/dc584b87/
+# --------------------------------------
+
+# ==== 导航栏 ====
+nav:
+  display_title: true
+  display_post_title: true
+  fixed: true
+
+menu:
+
+# ==== 社交链接（页脚） ====
+social:
+  fab fa-github: https://github.com/wyws1218 || GitHub
+
+# ==== 全站关闭右栏 aside ====
+aside:
+  enable: false
+  hide: false
+  button: false
+  mobile: false
+
+# ==== 关闭不蒜子（避免请求外部 API 拖慢加载） ====
+busuanzi:
+  site_uv: false
+  site_pv: false
+  page_pv: false
+
+# ==== 评论：关闭 ====
+comments:
+  use:
+  text: false
+  lazyload: false
+
+# ==== 暗黑模式 ====
+darkmode:
+  enable: true
+  button: true
+  autoChangeMode: 1
+
+# ==== 灯箱（图片放大查看，对 GAS 蓝图截图很有用） ====
+lightbox: medium_zoom
+
+# ==== 阅读模式按钮 ====
+readmode: true
+
+# ==== 文章版权：关闭 ====
+post_copyright:
+  enable: false
+
+# ==== 文章分享：关闭 ====
+share:
+  use:
+
+# ==== 相关文章：关闭 ====
+related_post:
+  enable: false
+
+# ==== 上下篇导航：关闭 ====
+post_pagination: false
+
+# ==== 文章顶部 meta（保留发表日期 + 分类，去掉 tags 行） ====
+post_meta:
+  page:
+    date_type: created
+    date_format: date
+    categories: true
+    tags: false
+    label: true
+  post:
+    position: left
+    date_type: created
+    date_format: date
+    categories: true
+    tags: false
+    label: true
+
+# ==== 页脚 ====
+footer:
+  owner:
+    enable: true
+    since: 2026
+  copyright:
+    enable: true
+    version: false
+  custom_text: 'Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> &amp; <a href="https://butterfly.js.org" target="_blank">Butterfly</a>'
+
+# ==== 首页文章排版 ====
+index_layout: 3
+index_post_content:
+  method: 3
+  length: 200
+
+# ==== 站点验证 / SEO ====
+Open_Graph_meta:
+  enable: true
+
+# ==== 自定义 CSS / JS 注入 ====
+# 内页（除首页 /）隐藏顶部蓝色横幅 + 兜底隐藏文章页底部杂项（防止主题改版后某些块残留）
+inject:
+  head:
+    - |
+      <style>
+      /* 内页：隐藏顶部蓝色横幅（list / page / post 三种 #page-header class 都覆盖） */
+      html.is-not-home #page-header.not-home-page,
+      html.is-not-home #page-header.full_page,
+      html.is-not-home #page-header.post-bg {
+        height: auto !important;
+        min-height: 0 !important;
+        background: transparent !important;
+        background-image: none !important;
+      }
+      html.is-not-home #page-header.not-home-page::before,
+      html.is-not-home #page-header.full_page::before,
+      html.is-not-home #page-header.post-bg::before {
+        display: none !important;
+      }
+      html.is-not-home #page-site-info,
+      html.is-not-home #page-name,
+      html.is-not-home #site-title,
+      html.is-not-home #site-subtitle,
+      html.is-not-home #post-info {
+        display: none !important;
+      }
+      html.is-not-home #content-inner {
+        margin-top: 70px;
+      }
+
+      /* 文章页底部杂项兜底隐藏：版权、tags、分享、上下篇、相关推荐、评论 */
+      .post-copyright,
+      #post .tag_share .post-meta__tag-list,
+      #post .tag_share .post-meta__tags,
+      .post-meta__tag-list,
+      #post .tag_share,
+      .share-area,
+      .post_share,
+      #share,
+      .pagination-post,
+      .relatedPosts,
+      #relatedPosts,
+      #post-comment,
+      .post-comment,
+      .comments-area {
+        display: none !important;
+      }
+
+      /* 全站关掉 aside 后，把内容主区拉满 */
+      #aside-content {
+        display: none !important;
+      }
+      .layout > #content-inner,
+      .layout > .recent-posts {
+        max-width: 1000px;
+      }
+
+      /* 文章里 <center> 用作图注：上下加间距、字号缩小、灰色 */
+      #article-container > center {
+        display: block;
+        margin: 6px 0 32px;
+        color: #888;
+        font-size: 0.9em;
+        line-height: 1.5;
+      }
+
+      /* 章节 H2 上方留出更大的视觉间距，模拟两段空行 */
+      #article-container h2 {
+        margin-top: 56px;
+      }
+      #article-container > h2:first-child {
+        margin-top: 0;
+      }
+
+      /* 内页 nav：始终白底黑字 + 阴影，关掉顶部透明渐隐导致的模糊感 */
+      html.is-not-home #nav {
+        background-color: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: saturate(180%) blur(8px);
+        -webkit-backdrop-filter: saturate(180%) blur(8px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+        transition: none !important;
+      }
+      html.is-not-home #nav,
+      html.is-not-home #nav a,
+      html.is-not-home #nav span,
+      html.is-not-home #nav i {
+        color: #000 !important;
+        opacity: 1 !important;
+        text-shadow: none !important;
+        filter: none !important;
+      }
+
+      /* 内页只保留 nav-site-title 这一个返回入口（隐藏滚动后才出现的页面标题） */
+      html.is-not-home .nav-page-title {
+        display: none !important;
+      }
+      html.is-not-home .nav-site-title {
+        display: inline-flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+      }
+
+      /* 把「Kuoyu 的笔记本」替换为「← 返回上一页」 */
+      html.is-not-home .nav-site-title .site-name {
+        font-size: 0 !important;
+      }
+      html.is-not-home .nav-site-title .site-name::before {
+        content: '← 返回上一页';
+        font-size: 17px;
+        font-weight: 500;
+        color: #000;
+        letter-spacing: 0.5px;
+      }
+      </style>
+    - |
+      <script>
+      (function () {
+        if (location.pathname !== '/' && location.pathname !== '/index.html') {
+          document.documentElement.classList.add('is-not-home');
+        }
+      })();
+      </script>
