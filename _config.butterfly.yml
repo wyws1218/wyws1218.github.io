@@ -35,11 +35,11 @@ comments:
   text: false
   lazyload: false
 
-# ==== 暗黑模式 ====
+# ==== 暗黑模式：彻底关闭，始终浅色（不跟随系统、不显示切换按钮） ====
 darkmode:
-  enable: true
-  button: true
-  autoChangeMode: 1
+  enable: false
+  button: false
+  autoChangeMode: false
 
 # ==== 灯箱（图片放大查看，对 GAS 蓝图截图很有用） ====
 lightbox: medium_zoom
@@ -104,6 +104,16 @@ inject:
   head:
     - |
       <style>
+      /* 强制浅色：忽略系统深色模式偏好 */
+      :root,
+      html[data-theme="dark"],
+      html.dark {
+        color-scheme: light !important;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root { color-scheme: light !important; }
+      }
+
       /* 内页：隐藏顶部蓝色横幅（list / page / post 三种 #page-header class 都覆盖） */
       html.is-not-home #page-header.not-home-page,
       html.is-not-home #page-header.full_page,
