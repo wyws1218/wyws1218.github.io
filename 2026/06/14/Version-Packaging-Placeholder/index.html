@@ -1,27 +1,25 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>【第五章】GAS 框架的插件化封装 | Kuoyu 的笔记本</title><meta name="robots" content="noindex"><meta name="author" content="Kuoyu"><meta name="copyright" content="Kuoyu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="在完成了整个底层基建、技能配置、动态 UI 绑定以及目标数据提取的闭环后，这套轻量级的 GAS 框架已经具备了一定完整性。为了将其打造成一个真正意义上的可复用资产，我决定在最后一章将它进行插件化封装。 1. 核心资产的安全迁移在 UE5 中，将项目级别的资产提取为插件的核心在于路径的平滑过渡。为了防止底层 C++ 与蓝图之间的强引用断裂，我采用了严谨的安全迁移标准。  图 1： 核心资产成功迁移至">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>【施工中】UE5 版本分包 | Kuoyu 的笔记本</title><meta name="robots" content="noindex"><meta name="author" content="Kuoyu"><meta name="copyright" content="Kuoyu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本章节正在施工中，敬请期待。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【第五章】GAS 框架的插件化封装">
-<meta property="og:url" content="https://wyws1218.github.io/2026/03/25/GAS-Part5-Plugin/index.html">
+<meta property="og:title" content="【施工中】UE5 版本分包">
+<meta property="og:url" content="https://wyws1218.github.io/2026/06/14/Version-Packaging-Placeholder/index.html">
 <meta property="og:site_name" content="Kuoyu 的笔记本">
-<meta property="og:description" content="在完成了整个底层基建、技能配置、动态 UI 绑定以及目标数据提取的闭环后，这套轻量级的 GAS 框架已经具备了一定完整性。为了将其打造成一个真正意义上的可复用资产，我决定在最后一章将它进行插件化封装。 1. 核心资产的安全迁移在 UE5 中，将项目级别的资产提取为插件的核心在于路径的平滑过渡。为了防止底层 C++ 与蓝图之间的强引用断裂，我采用了严谨的安全迁移标准。  图 1： 核心资产成功迁移至">
+<meta property="og:description" content="本章节正在施工中，敬请期待。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://wyws1218.github.io/img/butterfly-icon.png">
-<meta property="article:published_time" content="2026-03-25T08:00:00.000Z">
+<meta property="article:published_time" content="2026-06-14T16:00:00.000Z">
 <meta property="article:modified_time" content="2026-06-15T09:16:50.021Z">
 <meta property="article:author" content="Kuoyu">
 <meta property="article:tag" content="UE5">
-<meta property="article:tag" content="C++">
-<meta property="article:tag" content="游戏开发">
-<meta property="article:tag" content="GAS">
-<meta property="article:tag" content="作品集">
+<meta property="article:tag" content="版本分包">
+<meta property="article:tag" content="占位">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://wyws1218.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "【第五章】GAS 框架的插件化封装",
-  "url": "https://wyws1218.github.io/2026/03/25/GAS-Part5-Plugin/",
+  "headline": "【施工中】UE5 版本分包",
+  "url": "https://wyws1218.github.io/2026/06/14/Version-Packaging-Placeholder/",
   "image": "https://wyws1218.github.io/img/butterfly-icon.png",
-  "datePublished": "2026-03-25T08:00:00.000Z",
+  "datePublished": "2026-06-14T16:00:00.000Z",
   "dateModified": "2026-06-15T09:16:50.021Z",
   "author": [
     {
@@ -30,7 +28,7 @@
       "url": "https://wyws1218.github.io"
     }
   ]
-}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://wyws1218.github.io/2026/03/25/GAS-Part5-Plugin/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.5.5"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css"><script>
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://wyws1218.github.io/2026/06/14/Version-Packaging-Placeholder/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.5.5"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css"><script>
     (() => {
       
     const saveToLocal = {
@@ -134,7 +132,7 @@
   },
   autoDarkmode: false
 }</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: '【第五章】GAS 框架的插件化封装',
+  title: '【施工中】UE5 版本分包',
   isHighlightShrink: false,
   isToc: false,
   pageType: 'post'
@@ -270,17 +268,7 @@ html.is-not-home .nav-site-title .site-name::before {
   }
 })();
 </script>
-<meta name="generator" content="Hexo 7.3.0"></head><body><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Kuoyu 的笔记本</span></a><a class="nav-page-title" href="/"><span class="site-name">【第五章】GAS 框架的插件化封装</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">【第五章】GAS 框架的插件化封装</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2026-03-25T08:00:00.000Z" title="发表于 2026-03-25 16:00:00">2026-03-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE-%E6%8A%80%E6%9C%AF/">UE 技术</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE-%E6%8A%80%E6%9C%AF/GAS/">GAS</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout hide-aside" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>在完成了整个底层基建、技能配置、动态 UI 绑定以及目标数据提取的闭环后，这套轻量级的 GAS 框架已经具备了一定完整性。为了将其打造成一个真正意义上的可复用资产，我决定在最后一章将它进行插件化封装。</p>
-<h2 id="1-核心资产的安全迁移"><a href="#1-核心资产的安全迁移" class="headerlink" title="1. 核心资产的安全迁移"></a>1. 核心资产的安全迁移</h2><p>在 UE5 中，将项目级别的资产提取为插件的核心在于路径的平滑过渡。为了防止底层 C++ 与蓝图之间的强引用断裂，我采用了严谨的安全迁移标准。</p>
-<p><img src="/images/plugin1.png"></p>
-<center>图 1： 核心资产成功迁移至独立插件目录</center>
-
-<p>我首先创建了一个名为 WyGasFramework 的空模板插件，随后将前期编写的基础属性集、技能基类、动态 UI 容器以及蓝图函数库等核心文件统统迁移至插件的内容目录中。迁移完成后，我通过引擎自带的重定向器修复功能，刷新了所有底层的指针路径，确保整个框架在脱离原项目后依然能够无缝运转。</p>
-<h2 id="2-插件打包与跨项目部署"><a href="#2-插件打包与跨项目部署" class="headerlink" title="2. 插件打包与跨项目部署"></a>2. 插件打包与跨项目部署</h2><p>资产就位后，接下来就是将其打包为独立的模块。我在引擎的插件管理器中选中了这套框架，并执行了打包操作。系统自动剥离了原项目的零散业务逻辑，将这套纯粹的底层战斗框架编译成了一个极其轻量级的独立包。</p>
-<p>对于任何全新的 UE5 项目，我只需要将这个打包好的文件夹拖入新项目的插件目录下。重启引擎后，即可在插件列表中搜索并勾选启用这套系统。</p>
-<p><img src="/images/plugin2.png"></p>
-<center>图 2： 在新项目中成功挂载并启用独立插件</center>
-
-<p>启用之后，新角色就能瞬间无缝接入完整的 GAS 驱动能力，包括自动生成动态技能框、处理消耗与冷却，以及标准的伤害目标提取闭环。</p>
-<p>这不仅极大地缩短了其他同类型Demo的开发周期，也是对我这段时间学习引擎底层架构交出的一份详细记录。至此，我的这套 UE5 技能系统全记录正式完结。<br><br></p>
+<meta name="generator" content="Hexo 7.3.0"></head><body><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Kuoyu 的笔记本</span></a><a class="nav-page-title" href="/"><span class="site-name">【施工中】UE5 版本分包</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">【施工中】UE5 版本分包</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2026-06-14T16:00:00.000Z" title="发表于 2026-06-15 00:00:00">2026-06-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE-%E6%8A%80%E6%9C%AF/">UE 技术</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE-%E6%8A%80%E6%9C%AF/%E7%89%88%E6%9C%AC%E5%88%86%E5%8C%85/">版本分包</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout hide-aside" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p>本章节正在施工中，敬请期待。</p>
+</blockquote>
 <!-- flag of hidden posts --></article><div class="tag_share"></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Kuoyu</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></span></div><div class="footer_custom_text">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> &amp; <a href="https://butterfly.js.org" target="_blank">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.5"></script><script src="/js/main.js?v=5.5.5"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script><div class="js-pjax"></div></div></body></html>
