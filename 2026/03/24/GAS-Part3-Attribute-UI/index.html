@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框 | Kuoyu 的笔记本</title><meta name="robots" content="noindex"><meta name="author" content="Kuoyu"><meta name="copyright" content="Kuoyu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="在完成了冲刺技能的物理位移与表现分离后，接下来我需要为技能引入消耗与冷却机制，并实现高度复用的 UI 绑定。这一切的基础，在于构建 GAS 的核心数据容器 AttributeSet。 1. C++ 构建基础属性集在 GAS 中，角色的血量、蓝量、耐力等所有数值都统一由 AttributeSet 进行管理。我创建了一个名为 UWyBasicAttributeSet 的 C++ 类，并在头文件中声明了">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框 | 王一的个人博客</title><meta name="robots" content="noindex"><meta name="author" content="Kuoyu"><meta name="copyright" content="Kuoyu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="在完成了冲刺技能的物理位移与表现分离后，接下来我需要为技能引入消耗与冷却机制，并实现高度复用的 UI 绑定。这一切的基础，在于构建 GAS 的核心数据容器 AttributeSet。 1. C++ 构建基础属性集在 GAS 中，角色的血量、蓝量、耐力等所有数值都统一由 AttributeSet 进行管理。我创建了一个名为 UWyBasicAttributeSet 的 C++ 类，并在头文件中声明了">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框">
 <meta property="og:url" content="https://wyws1218.github.io/2026/03/24/GAS-Part3-Attribute-UI/index.html">
-<meta property="og:site_name" content="Kuoyu 的笔记本">
+<meta property="og:site_name" content="王一的个人博客">
 <meta property="og:description" content="在完成了冲刺技能的物理位移与表现分离后，接下来我需要为技能引入消耗与冷却机制，并实现高度复用的 UI 绑定。这一切的基础，在于构建 GAS 的核心数据容器 AttributeSet。 1. C++ 构建基础属性集在 GAS 中，角色的血量、蓝量、耐力等所有数值都统一由 AttributeSet 进行管理。我创建了一个名为 UWyBasicAttributeSet 的 C++ 类，并在头文件中声明了">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://wyws1218.github.io/img/butterfly-icon.png">
 <meta property="article:published_time" content="2026-03-24T13:00:00.000Z">
-<meta property="article:modified_time" content="2026-06-15T09:38:37.256Z">
+<meta property="article:modified_time" content="2026-06-21T09:32:17.478Z">
 <meta property="article:author" content="Kuoyu">
 <meta property="article:tag" content="UE5">
 <meta property="article:tag" content="C++">
@@ -22,7 +22,7 @@
   "url": "https://wyws1218.github.io/2026/03/24/GAS-Part3-Attribute-UI/",
   "image": "https://wyws1218.github.io/img/butterfly-icon.png",
   "datePublished": "2026-03-24T13:00:00.000Z",
-  "dateModified": "2026-06-15T09:38:37.256Z",
+  "dateModified": "2026-06-21T09:32:17.478Z",
   "author": [
     {
       "@type": "Person",
@@ -251,7 +251,7 @@ html.is-not-home .nav-site-title {
   visibility: visible !important;
 }
 
-/* 把「Kuoyu 的笔记本」替换为「← 返回上一页」 */
+/* 把 site name 替换为「← 返回上一页」 */
 html.is-not-home .nav-site-title .site-name {
   font-size: 0 !important;
 }
@@ -270,7 +270,7 @@ html.is-not-home .nav-site-title .site-name::before {
   }
 })();
 </script>
-<meta name="generator" content="Hexo 7.3.0"></head><body><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Kuoyu 的笔记本</span></a><a class="nav-page-title" href="/"><span class="site-name">【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2026-03-24T13:00:00.000Z" title="发表于 2026-03-24 21:00:00">2026-03-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE-%E6%8A%80%E6%9C%AF/">UE 技术</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE-%E6%8A%80%E6%9C%AF/GAS/">GAS</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout hide-aside" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>在完成了冲刺技能的物理位移与表现分离后，接下来我需要为技能引入消耗与冷却机制，并实现高度复用的 UI 绑定。这一切的基础，在于构建 GAS 的核心数据容器 AttributeSet。</p>
+<meta name="generator" content="Hexo 7.3.0"></head><body><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">王一的个人博客</span></a><a class="nav-page-title" href="/"><span class="site-name">【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">【第三章】属性集构建与 UI 解耦：消耗、冷却与动态技能框</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2026-03-24T13:00:00.000Z" title="发表于 2026-03-24 21:00:00">2026-03-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE-%E6%8A%80%E6%9C%AF/">UE 技术</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE-%E6%8A%80%E6%9C%AF/GAS/">GAS</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout hide-aside" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>在完成了冲刺技能的物理位移与表现分离后，接下来我需要为技能引入消耗与冷却机制，并实现高度复用的 UI 绑定。这一切的基础，在于构建 GAS 的核心数据容器 AttributeSet。</p>
 <h2 id="1-C-构建基础属性集"><a href="#1-C-构建基础属性集" class="headerlink" title="1. C++ 构建基础属性集"></a>1. C++ 构建基础属性集</h2><p>在 GAS 中，角色的血量、蓝量、耐力等所有数值都统一由 AttributeSet 进行管理。我创建了一个名为 UWyBasicAttributeSet 的 C++ 类，并在头文件中声明了耐力值与最大耐力值属性。</p>
 <p><img src="/images/attr1.png"></p>
 <center>图 1： C++ 定义耐力值属性</center>

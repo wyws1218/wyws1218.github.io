@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>【第五章】GAS 框架的插件化封装 | Kuoyu 的笔记本</title><meta name="robots" content="noindex"><meta name="author" content="Kuoyu"><meta name="copyright" content="Kuoyu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="在完成了整个底层基建、技能配置、动态 UI 绑定以及目标数据提取的闭环后，这套轻量级的 GAS 框架已经具备了一定完整性。为了将其打造成一个真正意义上的可复用资产，我决定在最后一章将它进行插件化封装。 1. 核心资产的安全迁移在 UE5 中，将项目级别的资产提取为插件的核心在于路径的平滑过渡。为了防止底层 C++ 与蓝图之间的强引用断裂，我采用了严谨的安全迁移标准。  图 1： 核心资产成功迁移至">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>【第五章】GAS 框架的插件化封装 | 王一的个人博客</title><meta name="robots" content="noindex"><meta name="author" content="Kuoyu"><meta name="copyright" content="Kuoyu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="在完成了整个底层基建、技能配置、动态 UI 绑定以及目标数据提取的闭环后，这套轻量级的 GAS 框架已经具备了一定完整性。为了将其打造成一个真正意义上的可复用资产，我决定在最后一章将它进行插件化封装。 1. 核心资产的安全迁移在 UE5 中，将项目级别的资产提取为插件的核心在于路径的平滑过渡。为了防止底层 C++ 与蓝图之间的强引用断裂，我采用了严谨的安全迁移标准。  图 1： 核心资产成功迁移至">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【第五章】GAS 框架的插件化封装">
 <meta property="og:url" content="https://wyws1218.github.io/2026/03/25/GAS-Part5-Plugin/index.html">
-<meta property="og:site_name" content="Kuoyu 的笔记本">
+<meta property="og:site_name" content="王一的个人博客">
 <meta property="og:description" content="在完成了整个底层基建、技能配置、动态 UI 绑定以及目标数据提取的闭环后，这套轻量级的 GAS 框架已经具备了一定完整性。为了将其打造成一个真正意义上的可复用资产，我决定在最后一章将它进行插件化封装。 1. 核心资产的安全迁移在 UE5 中，将项目级别的资产提取为插件的核心在于路径的平滑过渡。为了防止底层 C++ 与蓝图之间的强引用断裂，我采用了严谨的安全迁移标准。  图 1： 核心资产成功迁移至">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://wyws1218.github.io/img/butterfly-icon.png">
 <meta property="article:published_time" content="2026-03-25T08:00:00.000Z">
-<meta property="article:modified_time" content="2026-06-15T09:38:37.256Z">
+<meta property="article:modified_time" content="2026-06-21T09:32:17.478Z">
 <meta property="article:author" content="Kuoyu">
 <meta property="article:tag" content="UE5">
 <meta property="article:tag" content="C++">
@@ -22,7 +22,7 @@
   "url": "https://wyws1218.github.io/2026/03/25/GAS-Part5-Plugin/",
   "image": "https://wyws1218.github.io/img/butterfly-icon.png",
   "datePublished": "2026-03-25T08:00:00.000Z",
-  "dateModified": "2026-06-15T09:38:37.256Z",
+  "dateModified": "2026-06-21T09:32:17.478Z",
   "author": [
     {
       "@type": "Person",
@@ -251,7 +251,7 @@ html.is-not-home .nav-site-title {
   visibility: visible !important;
 }
 
-/* 把「Kuoyu 的笔记本」替换为「← 返回上一页」 */
+/* 把 site name 替换为「← 返回上一页」 */
 html.is-not-home .nav-site-title .site-name {
   font-size: 0 !important;
 }
@@ -270,7 +270,7 @@ html.is-not-home .nav-site-title .site-name::before {
   }
 })();
 </script>
-<meta name="generator" content="Hexo 7.3.0"></head><body><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Kuoyu 的笔记本</span></a><a class="nav-page-title" href="/"><span class="site-name">【第五章】GAS 框架的插件化封装</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">【第五章】GAS 框架的插件化封装</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2026-03-25T08:00:00.000Z" title="发表于 2026-03-25 16:00:00">2026-03-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE-%E6%8A%80%E6%9C%AF/">UE 技术</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE-%E6%8A%80%E6%9C%AF/GAS/">GAS</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout hide-aside" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>在完成了整个底层基建、技能配置、动态 UI 绑定以及目标数据提取的闭环后，这套轻量级的 GAS 框架已经具备了一定完整性。为了将其打造成一个真正意义上的可复用资产，我决定在最后一章将它进行插件化封装。</p>
+<meta name="generator" content="Hexo 7.3.0"></head><body><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">王一的个人博客</span></a><a class="nav-page-title" href="/"><span class="site-name">【第五章】GAS 框架的插件化封装</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">【第五章】GAS 框架的插件化封装</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2026-03-25T08:00:00.000Z" title="发表于 2026-03-25 16:00:00">2026-03-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE-%E6%8A%80%E6%9C%AF/">UE 技术</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE-%E6%8A%80%E6%9C%AF/GAS/">GAS</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout hide-aside" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>在完成了整个底层基建、技能配置、动态 UI 绑定以及目标数据提取的闭环后，这套轻量级的 GAS 框架已经具备了一定完整性。为了将其打造成一个真正意义上的可复用资产，我决定在最后一章将它进行插件化封装。</p>
 <h2 id="1-核心资产的安全迁移"><a href="#1-核心资产的安全迁移" class="headerlink" title="1. 核心资产的安全迁移"></a>1. 核心资产的安全迁移</h2><p>在 UE5 中，将项目级别的资产提取为插件的核心在于路径的平滑过渡。为了防止底层 C++ 与蓝图之间的强引用断裂，我采用了严谨的安全迁移标准。</p>
 <p><img src="/images/plugin1.png"></p>
 <center>图 1： 核心资产成功迁移至独立插件目录</center>
