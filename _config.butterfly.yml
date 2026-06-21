@@ -216,7 +216,7 @@ inject:
         visibility: visible !important;
       }
 
-      /* 把「Kuoyu 的笔记本」替换为「← 返回上一页」 */
+      /* 把 site name 替换为「← 返回上一页」 */
       html.is-not-home .nav-site-title .site-name {
         font-size: 0 !important;
       }
