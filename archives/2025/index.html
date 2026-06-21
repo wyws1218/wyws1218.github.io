@@ -241,6 +241,11 @@ html.is-not-home .nav-site-title .site-name::before {
   color: #000;
   letter-spacing: 0.5px;
 }
+
+/* 首页左上角小字 site name 完全隐藏 */
+html:not(.is-not-home) .nav-site-title {
+  display: none !important;
+}
 </style>
 <script>
 (function () {
