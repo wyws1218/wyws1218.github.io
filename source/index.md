@@ -1,5 +1,5 @@
 ---
-title: Kuoyu 的笔记本
+title: 王一的个人博客
 date: 2026-03-31 10:00:00
 type: 'home'
 aside: false
