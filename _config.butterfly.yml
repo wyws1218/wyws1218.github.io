@@ -254,5 +254,13 @@ inject:
         if (location.pathname !== '/' && location.pathname !== '/index.html') {
           document.documentElement.classList.add('is-not-home');
         }
+        // 章节文章（GAS-PartX）的「返回上一页」指回项目背景总览页，而非首页
+        var OVERVIEW_URL = '/2026/03/22/GAS-Project-Overview/';
+        if (/\/GAS-Part/.test(location.pathname)) {
+          document.addEventListener('DOMContentLoaded', function () {
+            var link = document.querySelector('.nav-site-title');
+            if (link) link.setAttribute('href', OVERVIEW_URL);
+          });
+        }
       })();
       </script>

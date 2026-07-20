@@ -6,7 +6,7 @@ categories: [UE 技术, GAS]
 sticky: 100
 ---
 
-## 项目背景与演示
+## 项目背景
 
 为了解决技能系统耦合度高、扩展性差的问题，利用 GAS 框架制作了可复用的技能框架插件。
 
@@ -22,17 +22,11 @@ sticky: 100
    * 使用 Gameplay Cue 全权接管客户端的粒子特效、音效与模型显隐，实现严格的逻辑与表现分离。
 3. 数据驱动设计 告别硬编码
    * 利用 Gameplay Effect 的 Cost 机制替代传统的逻辑判断，提升了代码可读性与策划配表自由度。
-4. MVC 架构思考的沉淀
-   * 摒弃了将移动逻辑塞入 PlayerController 的做法，将状态收束至 Character，贯彻高内聚设计。
 
-## 详细技术沉淀 系列目录
-
-这里记录了我在搭建这套 GAS 框架时的详细过程、源码解析以及踩坑记录：
+## 系列目录
 
 * {% post_link GAS-Part1-Initialization 第一章：GAS 底层基建与 C++ 初始化实践 %}
 * {% post_link GAS-Part2-Dash-Decoupling 第二章：冲刺技能实现、Task 运用与表现解耦 %}
 * {% post_link GAS-Part3-Attribute-UI 第三章：属性集构建与 UI 解耦：消耗、冷却与动态技能框 %}
 * {% post_link GAS-Part4-TargetData-Damage 第四章：TargetData 目标提取与伤害输出闭环 %}
 * {% post_link GAS-Part5-Plugin 第五章：框架剥离与独立插件打包实战 %}
-
-> 注：点击上方链接进入对应章节查看详细的蓝图截图与 C++ 源码分析。
