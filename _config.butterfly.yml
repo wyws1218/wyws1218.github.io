@@ -232,6 +232,21 @@ inject:
       html:not(.is-not-home) .nav-site-title {
         display: none !important;
       }
+
+      /* 博客列表（/posts/）卡片：只保留标题，隐藏日期分类行和摘要，压缩卡片高度 */
+      .recent-posts .recent-post-item {
+        height: auto !important;
+      }
+      .recent-posts .recent-post-info > .article-meta-wrap,
+      .recent-posts .recent-post-info > .content {
+        display: none !important;
+      }
+      .recent-posts .recent-post-info {
+        padding: 28px 40px !important;
+      }
+      .recent-posts .recent-post-info > .article-title {
+        margin: 0 !important;
+      }
       </style>
     - |
       <script>
