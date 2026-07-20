@@ -4,8 +4,6 @@ date: 2026-03-31 10:00:00
 type: 'home'
 aside: false
 comments: false
-# 首页顶部背景图：把图片放到 source/img/ 下，再把下面这行的 # 去掉、路径换成你的文件名
-# top_img: /img/home-bg.jpg
 ---
 
 <div class="home-grid">
@@ -41,19 +39,35 @@ comments: false
 </div>
 
 <style>
+/* 首页专属：隐藏顶部导航白条、蓝色横幅标题、页脚；页面固定不滚动 */
+#nav { display: none !important; }
+#page-header { display: none !important; }
+#footer, footer { display: none !important; }
+#rightside { display: none !important; }
+#page { background: transparent !important; box-shadow: none !important; border: none !important; }
+html, body { height: 100%; overflow: hidden !important; }
+
 .home-grid {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: -moz-fit-content;
+  width: fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 28px;
-  max-width: 640px;
-  margin: 60px auto;
-  padding: 0 16px;
+  grid-template-columns: repeat(2, 210px);
+  grid-template-rows: repeat(2, 210px);
+  gap: 26px;
+  max-width: none;
+  padding: 0;
 }
 
 .home-card {
   position: relative;
   display: block;
-  aspect-ratio: 1 / 1;
+  width: 100%;
+  height: 100%;
   border-radius: 18px;
   overflow: hidden;
   background: var(--card-bg, #fff);
@@ -88,15 +102,7 @@ comments: false
 .home-card-title {
   font-size: 22px;
   font-weight: 600;
-  margin-bottom: 8px;
   color: var(--font-color, #333);
-}
-
-.home-card-desc {
-  font-size: 13px;
-  opacity: 0.75;
-  color: var(--font-color, #666);
-  line-height: 1.4;
 }
 
 [data-theme='dark'] .home-card {
@@ -109,12 +115,12 @@ comments: false
 
 @media (max-width: 480px) {
   .home-grid {
+    grid-template-columns: repeat(2, 40vw);
+    grid-template-rows: repeat(2, 40vw);
     gap: 14px;
-    margin: 30px auto;
   }
   .home-card-icon { font-size: 32px; margin-bottom: 10px; }
   .home-card-title { font-size: 16px; }
-  .home-card-desc { font-size: 11px; }
 }
 </style>
 
