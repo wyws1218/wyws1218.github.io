@@ -24,8 +24,8 @@ comments: false
 
   <a class="home-card" href="/links/">
     <div class="home-card-inner">
-      <div class="home-card-icon"><i class="fas fa-link"></i></div>
-      <div class="home-card-title">相关链接</div>
+      <div class="home-card-icon"><i class="fas fa-book"></i></div>
+      <div class="home-card-title">游戏拆解</div>
     </div>
   </a>
 
