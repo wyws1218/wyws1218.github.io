@@ -1,17 +1,20 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>🤖 基于马尔可夫算法的 AI 预测敌人 | 王一的个人博客</title><meta name="author" content="Kuoyu"><meta name="copyright" content="Kuoyu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本章节正在施工中，敬请期待。">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>🤖 基于马尔可夫算法的 AI 预测敌人 | 王一的个人博客</title><meta name="author" content="Kuoyu"><meta name="copyright" content="Kuoyu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="项目背景传统魂类 Boss 的智能，本质是一张写死的”距离—状态”查表：玩家喝药它就丢火球，玩家举剑它就举盾。这种 0 帧读指令式的条件反射，缺乏单局内的短期记忆，玩家一旦摸清固定规律，就能靠背板无伤”逃课”。 这个项目想让 Boss 换一种活法：在短时间内实时统计玩家的出招习惯，预判你”即将做”的动作，并在你的前摇还没开始时就提前打出克制。核心是用一阶马尔可夫转移矩阵记录连招频次，靠 GAS 的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="🤖 基于马尔可夫算法的 AI 预测敌人">
 <meta property="og:url" content="https://wyws1218.github.io/2025/12/31/Version-Packaging-Placeholder/index.html">
 <meta property="og:site_name" content="王一的个人博客">
-<meta property="og:description" content="本章节正在施工中，敬请期待。">
+<meta property="og:description" content="项目背景传统魂类 Boss 的智能，本质是一张写死的”距离—状态”查表：玩家喝药它就丢火球，玩家举剑它就举盾。这种 0 帧读指令式的条件反射，缺乏单局内的短期记忆，玩家一旦摸清固定规律，就能靠背板无伤”逃课”。 这个项目想让 Boss 换一种活法：在短时间内实时统计玩家的出招习惯，预判你”即将做”的动作，并在你的前摇还没开始时就提前打出克制。核心是用一阶马尔可夫转移矩阵记录连招频次，靠 GAS 的">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://wyws1218.github.io/img/butterfly-icon.png">
 <meta property="article:published_time" content="2025-12-31T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-07-20T07:11:08.439Z">
+<meta property="article:modified_time" content="2026-07-20T07:32:57.829Z">
 <meta property="article:author" content="Kuoyu">
 <meta property="article:tag" content="UE5">
-<meta property="article:tag" content="版本分包">
-<meta property="article:tag" content="占位">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="游戏开发">
+<meta property="article:tag" content="GAS">
+<meta property="article:tag" content="作品集">
+<meta property="article:tag" content="AI">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://wyws1218.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
   "@context": "https://schema.org",
@@ -20,7 +23,7 @@
   "url": "https://wyws1218.github.io/2025/12/31/Version-Packaging-Placeholder/",
   "image": "https://wyws1218.github.io/img/butterfly-icon.png",
   "datePublished": "2025-12-31T16:00:00.000Z",
-  "dateModified": "2026-07-20T07:11:08.439Z",
+  "dateModified": "2026-07-20T07:32:57.829Z",
   "author": [
     {
       "@type": "Person",
@@ -296,7 +299,97 @@ html:not(.is-not-home) .nav-site-title {
   }
 })();
 </script>
-<meta name="generator" content="Hexo 7.3.0"></head><body><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">王一的个人博客</span></a><a class="nav-page-title" href="/"><span class="site-name">🤖 基于马尔可夫算法的 AI 预测敌人</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">🤖 基于马尔可夫算法的 AI 预测敌人</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2025-12-31T16:00:00.000Z" title="发表于 2026-01-01 00:00:00">2026-01-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE-%E6%8A%80%E6%9C%AF/">UE 技术</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE-%E6%8A%80%E6%9C%AF/%E7%89%88%E6%9C%AC%E5%88%86%E5%8C%85/">版本分包</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout hide-aside" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
-<p>本章节正在施工中，敬请期待。</p>
-</blockquote>
+<meta name="generator" content="Hexo 7.3.0"></head><body><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">王一的个人博客</span></a><a class="nav-page-title" href="/"><span class="site-name">🤖 基于马尔可夫算法的 AI 预测敌人</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">🤖 基于马尔可夫算法的 AI 预测敌人</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2025-12-31T16:00:00.000Z" title="发表于 2026-01-01 00:00:00">2026-01-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE-%E6%8A%80%E6%9C%AF/">UE 技术</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE-%E6%8A%80%E6%9C%AF/AI/">AI</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout hide-aside" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="项目背景"><a href="#项目背景" class="headerlink" title="项目背景"></a>项目背景</h2><p>传统魂类 Boss 的智能，本质是一张写死的”距离—状态”查表：玩家喝药它就丢火球，玩家举剑它就举盾。这种 0 帧读指令式的条件反射，缺乏单局内的短期记忆，玩家一旦摸清固定规律，就能靠背板无伤”逃课”。</p>
+<p>这个项目想让 Boss 换一种活法：<strong>在短时间内实时统计玩家的出招习惯，预判你”即将做”的动作，并在你的前摇还没开始时就提前打出克制</strong>。核心是用一阶马尔可夫转移矩阵记录连招频次，靠 GAS 的 GameplayTag 采集数据，用嵌套 TMap 把”习惯学习”降维成 O(1) 的查表操作，全程白盒可控，不依赖神经网络，也不吃 CPU。</p>
+<p><img src="/images/markov-demo.jpg"></p>
+<center>图 1： 魂类 AI RPG 核心系统界面原型（Demo Boss：霜巨人）</center>
+
+<h2 id="1-为什么是马尔可夫，而不是神经网络"><a href="#1-为什么是马尔可夫，而不是神经网络" class="headerlink" title="1. 为什么是马尔可夫，而不是神经网络"></a>1. 为什么是马尔可夫，而不是神经网络</h2><p>要让 AI 变聪明，学术界的第一反应是深度强化学习。但实时动作游戏要求 60 帧运行，每帧逻辑只有约 16 毫秒，挂一个神经网络不仅算力开销大、会掉帧，而且它是个”黑盒”——设计师根本无法控制 Boss 突然做出什么诡异举动，破坏关卡体验。</p>
+<p>马尔可夫假设给了一条更轻的路：<strong>当前状态只取决于有限个先前状态</strong>。放到战斗里，就是”玩家下一招”只和”玩家上一招”强相关。我用有限的玩家输入信息，去预测下一次最可能的输入，得到的是一个粗略但足够用的概率近似——代价极低，却刚好够 Boss 看穿你的连招惯性。这也正是格斗游戏（如《杀手本能》的 Shadow AI）采用 N-Gram &#x2F; 马尔可夫矩阵统计玩家习惯的思路。</p>
+<h2 id="2-数据采集：用-GameplayTag-定义攻防词汇表"><a href="#2-数据采集：用-GameplayTag-定义攻防词汇表" class="headerlink" title="2. 数据采集：用 GameplayTag 定义攻防词汇表"></a>2. 数据采集：用 GameplayTag 定义攻防词汇表</h2><p>预测的前提是把”动作”变成机器能统计的离散符号。我没有去监听底层按键，而是直接复用 GAS 的 GameplayTag——玩家和 Boss 的每一个战斗动作都对应一个标签。</p>
+<p><img src="/images/markov-tags.png"></p>
+<center>图 2： Combat 标签层级：Player 四招与 Boss 四个克制招一一对应</center>
+
+<p>标签分成两组，构成严格的克制关系：</p>
+<table>
+<thead>
+<tr>
+<th>玩家动作</th>
+<th>Boss 克制</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Combat.Player.Light</code> (轻击)</td>
+<td><code>Combat.Boss.CounterLight</code> (格挡+怒吼)</td>
+<td>先只做反击一套</td>
+</tr>
+<tr>
+<td><code>Combat.Player.Heavy</code> (重击)</td>
+<td><code>Combat.Boss.CounterHeavy</code> (闪避+平A反击)</td>
+<td>Boss 根据预测反击</td>
+</tr>
+<tr>
+<td><code>Combat.Player.Dodge</code> (闪避)</td>
+<td><code>Combat.Boss.CounterDodge</code> (追踪技能)</td>
+<td>预测成功玩家扣血</td>
+</tr>
+<tr>
+<td><code>Combat.Player.Block</code> (格挡)</td>
+<td><code>Combat.Boss.CounterBlock</code> (突刺，抓前摇)</td>
+<td>扣血只为展示预测算法</td>
+</tr>
+</tbody></table>
+<p>因为原项目本身就是 GAS 架构，玩家的轻击、重击等操作本来就会激活对应的 Gameplay Ability。我只需要在 GA 激活的那一瞬间，把动作标签广播给 Boss 身上的”大脑”，让它记一笔。</p>
+<p><img src="/images/markov-broadcast.png"></p>
+<center>图 3： 玩家 GA 蓝图：激活能力的瞬间调用 RecordPlayerAction，把 Combat.Player.Light 传给 Boss</center>
+
+<h2 id="3-核心：O-1-的二维转移矩阵"><a href="#3-核心：O-1-的二维转移矩阵" class="headerlink" title="3. 核心：O(1) 的二维转移矩阵"></a>3. 核心：O(1) 的二维转移矩阵</h2><p>Boss 的”大脑”是一个继承自 <code>UActorComponent</code> 的 C++ 组件 <code>UCombatPredictor</code>。它的核心数据结构是一个嵌套 TMap——外层 Key 是”玩家上一个动作”，内层 Key 是”玩家下一个动作”，内层 Value 是这个连招组合出现的次数。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">UCLASS</span>(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ARPG_API</span> UCombatPredictor : <span class="keyword">public</span> UActorComponent</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">GENERATED_BODY</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * O(1) 嵌套哈希矩阵。</span></span><br><span class="line"><span class="comment">     * 外层 Key: 玩家上一个动作</span></span><br><span class="line"><span class="comment">     * 内层 Key: 玩家下一个动作</span></span><br><span class="line"><span class="comment">     * 内层 Value: 该连招出现的次数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    TMap&lt;FGameplayTag, TMap&lt;FGameplayTag, int32&gt;&gt; TransitionMatrix;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 记录玩家上一次使用的动作，作为下一次预测查表时的依据 */</span></span><br><span class="line">    <span class="built_in">UPROPERTY</span>(VisibleAnywhere, BlueprintReadOnly, Category = <span class="string">&quot;AI Brain&quot;</span>)</span><br><span class="line">    FGameplayTag LastPlayerAction;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>选 TMap 的理由很实在：它底层是哈希表，寻址复杂度是 O(1)。玩家每打出一招，我只要 <code>FindOrAdd</code> 两层、给计数 +1 即可，完全不需要遍历历史序列。这就是”把复杂的习惯学习降维成查表”的关键——极低算力下拿到媲美高级 AI 的拟真决策，而且过程 100% 结构化、可断点调试。</p>
+<p><strong>记录玩家动作</strong>：只有当”上一招”和”当前招”都合法时才构成一个连招组合（开局第一招没有前驱，跳过），然后累加频次并更新指针。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">UCombatPredictor::RecordPlayerAction</span><span class="params">(FGameplayTag NewAction)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 确保这不是开局第一招（第一招没有&quot;上一个动作&quot;，无法构成连招组合）</span></span><br><span class="line">    <span class="keyword">if</span> (LastPlayerAction.<span class="built_in">IsValid</span>() &amp;&amp; NewAction.<span class="built_in">IsValid</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// O(1) 寻址：取出&quot;上一个动作&quot;对应的内层字典</span></span><br><span class="line">        TMap&lt;FGameplayTag, int32&gt;&amp; InnerMap = TransitionMatrix.<span class="built_in">FindOrAdd</span>(LastPlayerAction);</span><br><span class="line">        <span class="comment">// O(1) 寻址：把&quot;当前动作&quot;的频次 +1</span></span><br><span class="line">        int32&amp; Count = InnerMap.<span class="built_in">FindOrAdd</span>(NewAction);</span><br><span class="line">        Count++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 更新&quot;上一个动作&quot;指针，为下次查表做准备</span></span><br><span class="line">    LastPlayerAction = NewAction;</span><br><span class="line">    bHasUnprocessedAction = <span class="literal">true</span>;   <span class="comment">// 标记有未处理的新情报（见第 5 节）</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-预测与克制：查表取最高频，决策树下发"><a href="#4-预测与克制：查表取最高频，决策树下发" class="headerlink" title="4. 预测与克制：查表取最高频，决策树下发"></a>4. 预测与克制：查表取最高频，决策树下发</h2><p>Boss 需要出手时调用 <code>GetCounterAction</code>：抽出”玩家刚打出的那一招”对应的历史统计表，遍历内层字典（最多 4 个状态，开销近乎为 0）找出频次最高的那一招，就是预测结果；再经一个决策树映射到对应的克制标签。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// O(1) 查表：取出玩家刚打出的动作对应的&quot;历史习惯统计表&quot;</span></span><br><span class="line">TMap&lt;FGameplayTag, int32&gt;* InnerMap = TransitionMatrix.<span class="built_in">Find</span>(LastPlayerAction);</span><br><span class="line"><span class="keyword">if</span> (!InnerMap || InnerMap-&gt;<span class="built_in">Num</span>() == <span class="number">0</span>) <span class="keyword">return</span> FGameplayTag::EmptyTag;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 遍历内层字典，找出频次最高的那一招</span></span><br><span class="line">FGameplayTag PredictedAction = FGameplayTag::EmptyTag;</span><br><span class="line">int32 MaxCount = <span class="number">-1</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">const</span> TPair&lt;FGameplayTag, int32&gt;&amp; Pair : *InnerMap)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (Pair.Value &gt; MaxCount) &#123; MaxCount = Pair.Value; PredictedAction = Pair.Key; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 决策树：根据预测动作下发克制标签</span></span><br><span class="line">FGameplayTag BossCounter = FGameplayTag::EmptyTag;</span><br><span class="line"><span class="keyword">if</span> (PredictedAction.<span class="built_in">MatchesTag</span>(FGameplayTag::<span class="built_in">RequestGameplayTag</span>(<span class="string">&quot;Combat.Player.Light&quot;</span>)))</span><br><span class="line">    BossCounter = FGameplayTag::<span class="built_in">RequestGameplayTag</span>(<span class="string">&quot;Combat.Boss.CounterLight&quot;</span>);</span><br><span class="line"><span class="comment">// ... Heavy / Dodge / Block 同理</span></span><br></pre></td></tr></table></figure>
+
+<p>举个具体例子：玩家刚打出第一招 <code>Light</code>，AI 立刻查矩阵中 <code>[Light]</code> 转移到下一招的概率。如果算出 <code>[Light] -&gt; [Heavy]</code> 高达 90%，那么在 Light 刚结束、Heavy 前摇还没开始的瞬间，Boss 就抢先启动克制 Heavy 的动作——这就是”看穿意图”，而不是等你打出来再反应。</p>
+<p>这套预测大脑挂在 Boss 蓝图的组件列表里，和 ASC、Motion Warping 等组件平级。</p>
+<p><img src="/images/markov-component.png"></p>
+<center>图 4： CombatPredictor 组件挂载在 Boss 身上</center>
+
+<p>预测出的克制标签，在 Boss 蓝图的反击函数里被翻译成具体技能：</p>
+<p><img src="/images/markov-counter-bp.png"></p>
+<center>图 5： Boss 蓝图 ExecuteCounterAttack：按克制标签分发到对应反击招式</center>
+
+<h2 id="5-让预测接管行为树：自定义-BTTask"><a href="#5-让预测接管行为树：自定义-BTTask" class="headerlink" title="5. 让预测接管行为树：自定义 BTTask"></a>5. 让预测接管行为树：自定义 BTTask</h2><p>预测算出来了，还得让 Boss 真的动起来。我写了一个自定义任务节点 <code>BTTask_PredictiveCounter</code>，挂在行为树”近战攻击”分支下，与原有的 Melee Attack 序列并列。</p>
+<p><img src="/images/markov-bt.png"></p>
+<center>图 6： 行为树：自建的 BTTask_PredictiveCounter 节点</center>
+
+<p>节点内部逻辑很直接：拿到被控 Pawn，Cast 成 Boss，调用前面的 <code>GetCounterAction</code> &#x2F; 反击函数，成功就 <code>Finish Execute(Success)</code>；如果转换失败则走另一条 Finish 分支，防止节点卡死。</p>
+<p><img src="/images/markov-bttask.png"></p>
+<center>图 7： BTTask_PredictiveCounter 事件图：Cast Boss → 执行反击 → Finish Execute</center>
+
+<h2 id="6-踩坑：Boss-对同一个动作无限反击"><a href="#6-踩坑：Boss-对同一个动作无限反击" class="headerlink" title="6. 踩坑：Boss 对同一个动作无限反击"></a>6. 踩坑：Boss 对同一个动作无限反击</h2><p>联调时出现一个典型 bug：<strong>只要玩家停手不出招，Boss 就对着最后那一招无限循环反击</strong>。</p>
+<p>排查后定位到冲突本质：<code>LastPlayerAction</code> 这个指针需要被保留下来供后续数学计算，但行为树是循环 tick 的——它跑完一次反击任务，Boss 还在近战距离内，下一秒又跑回来问大脑”玩家最后做了什么”。因为玩家没再出招，指针依然停留在 <code>Combat.Player.Light</code>，于是 Boss 觉得”还没反击够”，又放了一次。</p>
+<p>解决办法借鉴微信消息的”已读回执”（Intel Freshness）：情报一直在（保留给马尔可夫计算），但加一个”未读小红点”标志位 <code>bHasUnprocessedAction</code>。收到新动作时置 <code>true</code>，反击处理一次后立刻置 <code>false</code>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">FGameplayTag <span class="title">UCombatPredictor::GetCounterAction</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 情报已被处理过（旧的），直接拒绝反击</span></span><br><span class="line">    <span class="keyword">if</span> (!bHasUnprocessedAction) <span class="keyword">return</span> FGameplayTag::EmptyTag;</span><br><span class="line">    <span class="comment">// 新鲜情报，立刻&quot;已读&quot;，消费掉这次情报</span></span><br><span class="line">    bHasUnprocessedAction = <span class="literal">false</span>;</span><br><span class="line">    <span class="comment">// ... 后续正常查表预测</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样一来，Boss 每次玩家出招只反击一次，指针依旧保留给下一次连招统计，两个需求互不打架。</p>
+<h2 id="7-系统架构总览"><a href="#7-系统架构总览" class="headerlink" title="7. 系统架构总览"></a>7. 系统架构总览</h2><p>整套系统分三层：表现与交互层跑在 UE5 客户端（GAS &#x2F; AIModule &#x2F; Motion Warping），决策与预测层是核心——AI 大脑组件负责监听标签、更新 TMap 矩阵，决策核心负责查表选出克制技能，再由 GAS 集成服务把克制标签通过打断行为树的方式下发给 Boss 执行。</p>
+<p><img src="/images/markov-arch.png"></p>
+<center>图 8： 系统架构：表现层 / 决策预测层 / GAS 集成服务</center>
+
+<p>Demo 的战斗场景基于 SketchFab 地形资源搭建，重新烘焙了导航网格，保证 Boss 的 EQS 游走和近战逼近正常工作。</p>
+<p><img src="/images/markov-arena.png"></p>
+<center>图 9： 战斗场景与导航网格</center>
+
+<h2 id="8-创新点与收敛表现"><a href="#8-创新点与收敛表现" class="headerlink" title="8. 创新点与收敛表现"></a>8. 创新点与收敛表现</h2><p>和传统方案比，这套 AI 的差异在三处：</p>
+<ol>
+<li><strong>零态预测与习惯抓取</strong>：传统魂类先手基于静态的距离&#x2F;几何判断，这里引入玩家习惯统计，做的是带心理博弈的动态预判。</li>
+<li><strong>序列转移的未来截断</strong>：传统后手是 0 帧读指令，这里靠概率（如 <code>Light→Heavy</code> 达 70%）在玩家前置动作刚结束时就提前反击，实现真正的”看穿意图”。</li>
+<li><strong>极短的收敛时间</strong>：格斗游戏的影子 AI 往往需要多局训练，而这套矩阵能在单局内动态收敛权重，玩家几个回合就能直观感受到 Boss 在”进化”。</li>
+</ol>
+<p>同时系统保留了降级容错：如果玩家毫无逻辑地乱按，各分支概率会趋于平均、置信度过低，此时自动退回传统的”查表条件反射”，避免被噪声数据带偏。</p>
 </article><div class="tag_share"></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Kuoyu</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></span></div><div class="footer_custom_text">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> &amp; <a href="https://butterfly.js.org" target="_blank">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.5"></script><script src="/js/main.js?v=5.5.5"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script><div class="js-pjax"></div></div></body></html>
