@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>基于UE5 GAS框架的游戏技能插件 | 王一的个人博客</title><meta name="author" content="Kuoyu"><meta name="copyright" content="Kuoyu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="项目背景与演示在类似 MOBA 与 MMO 游戏中，技能系统的可扩展性是核心痛点。我想要脱离庞杂的业务逻辑，从零开始使用 C++ 与蓝图混合开发的模式，搭建一套 GAS 底层框架。 目前我已经将该框架的核心运行闭环打通，并逐步封装为独立可拔插的 UE5 插件。  🔗 源码仓库：点击访问我的 GitHub 源码 gasup  核心工程亮点 C++ 底层基建与网络优化 在 BaseCharacter">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>基于UE5 GAS框架的游戏技能插件 | 王一的个人博客</title><meta name="author" content="Kuoyu"><meta name="copyright" content="Kuoyu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="项目背景与演示为了解决技能系统耦合度高、扩展性差的问题，利用 GAS 框架制作了可复用的技能框架插件。  🔗 源码仓库：点击访问我的 GitHub 源码 gasup  核心工程亮点 C++ 底层基建与网络优化 在 BaseCharacter 中硬编码挂载 ASC，确保最高运行效率。 为玩家与敌人区分了网络同步模式，从底层兼顾了预测精准度与服务器带宽性能。   技能逻辑与视听表现解耦 使用 Gam">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基于UE5 GAS框架的游戏技能插件">
 <meta property="og:url" content="https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/index.html">
 <meta property="og:site_name" content="王一的个人博客">
-<meta property="og:description" content="项目背景与演示在类似 MOBA 与 MMO 游戏中，技能系统的可扩展性是核心痛点。我想要脱离庞杂的业务逻辑，从零开始使用 C++ 与蓝图混合开发的模式，搭建一套 GAS 底层框架。 目前我已经将该框架的核心运行闭环打通，并逐步封装为独立可拔插的 UE5 插件。  🔗 源码仓库：点击访问我的 GitHub 源码 gasup  核心工程亮点 C++ 底层基建与网络优化 在 BaseCharacter">
+<meta property="og:description" content="项目背景与演示为了解决技能系统耦合度高、扩展性差的问题，利用 GAS 框架制作了可复用的技能框架插件。  🔗 源码仓库：点击访问我的 GitHub 源码 gasup  核心工程亮点 C++ 底层基建与网络优化 在 BaseCharacter 中硬编码挂载 ASC，确保最高运行效率。 为玩家与敌人区分了网络同步模式，从底层兼顾了预测精准度与服务器带宽性能。   技能逻辑与视听表现解耦 使用 Gam">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://wyws1218.github.io/img/butterfly-icon.png">
 <meta property="article:published_time" content="2026-03-22T10:00:00.000Z">
-<meta property="article:modified_time" content="2026-07-20T03:53:42.190Z">
+<meta property="article:modified_time" content="2026-07-20T06:24:56.895Z">
 <meta property="article:author" content="Kuoyu">
 <meta property="article:tag" content="UE5">
 <meta property="article:tag" content="C++">
@@ -22,7 +22,7 @@
   "url": "https://wyws1218.github.io/2026/03/22/GAS-Project-Overview/",
   "image": "https://wyws1218.github.io/img/butterfly-icon.png",
   "datePublished": "2026-03-22T10:00:00.000Z",
-  "dateModified": "2026-07-20T03:53:42.190Z",
+  "dateModified": "2026-07-20T06:24:56.895Z",
   "author": [
     {
       "@type": "Person",
@@ -290,8 +290,7 @@ html:not(.is-not-home) .nav-site-title {
   }
 })();
 </script>
-<meta name="generator" content="Hexo 7.3.0"></head><body><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">王一的个人博客</span></a><a class="nav-page-title" href="/"><span class="site-name">基于UE5 GAS框架的游戏技能插件</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">基于UE5 GAS框架的游戏技能插件</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2026-03-22T10:00:00.000Z" title="发表于 2026-03-22 18:00:00">2026-03-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE-%E6%8A%80%E6%9C%AF/">UE 技术</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE-%E6%8A%80%E6%9C%AF/GAS/">GAS</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout hide-aside" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="项目背景与演示"><a href="#项目背景与演示" class="headerlink" title="项目背景与演示"></a>项目背景与演示</h2><p>在类似 MOBA 与 MMO 游戏中，技能系统的可扩展性是核心痛点。我想要脱离庞杂的业务逻辑，从零开始使用 C++ 与蓝图混合开发的模式，搭建一套 GAS 底层框架。</p>
-<p>目前我已经将该框架的核心运行闭环打通，并逐步封装为独立可拔插的 UE5 插件。</p>
+<meta name="generator" content="Hexo 7.3.0"></head><body><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">王一的个人博客</span></a><a class="nav-page-title" href="/"><span class="site-name">基于UE5 GAS框架的游戏技能插件</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">基于UE5 GAS框架的游戏技能插件</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2026-03-22T10:00:00.000Z" title="发表于 2026-03-22 18:00:00">2026-03-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE-%E6%8A%80%E6%9C%AF/">UE 技术</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/UE-%E6%8A%80%E6%9C%AF/GAS/">GAS</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout hide-aside" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="项目背景与演示"><a href="#项目背景与演示" class="headerlink" title="项目背景与演示"></a>项目背景与演示</h2><p>为了解决技能系统耦合度高、扩展性差的问题，利用 GAS 框架制作了可复用的技能框架插件。</p>
 <blockquote>
 <p>🔗 源码仓库：<a target="_blank" rel="noopener" href="https://github.com/wyws1218/GasUp">点击访问我的 GitHub 源码 gasup</a></p>
 </blockquote>
