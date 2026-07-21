@@ -18,9 +18,17 @@ date: 2026-03-31 10:00:00
 </div>
 
 <style>
+/* 去掉自定义页外层白框，仿技术博客列表：内容直接铺在 #content-inner 上 */
+#page {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
 .teardown-list {
   max-width: 1000px;
-  margin: 10px auto 0;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 18px;
