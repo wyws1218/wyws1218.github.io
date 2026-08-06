@@ -7,7 +7,7 @@ date: 2026-03-31 10:00:00
 
   <a class="teardown-item" href="/2026/03/30/Teardown-OpenWorld-Gacha/">
     <span class="teardown-num">1</span>
-    <span class="teardown-title">大世界二游系统拆解</span>
+    <span class="teardown-title">《火影忍者手游》决斗场 - 更高效的1V1卡牌</span>
   </a>
 
   <a class="teardown-item" href="/2026/03/29/Teardown-Naruto-vs-KOF/">
