@@ -12,7 +12,7 @@ date: 2026-03-31 10:00:00
 
   <a class="teardown-item" href="/2026/03/29/Teardown-Naruto-vs-KOF/">
     <span class="teardown-num">2</span>
-    <span class="teardown-title">当大世界变成上班：重复内容该删还是该扫荡</span>
+    <span class="teardown-title">二游中的重复劳动</span>
   </a>
 
 </div>
